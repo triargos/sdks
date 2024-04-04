@@ -2,7 +2,11 @@
   "name": "@triargos/dashboard-node",
   "version": "0.0.0",
   "description": "A nodejs SDK for the dashboard api",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "repository": "https://github.com/triargos/dashboard-node",
   "author": "Tim Zolleis <tim@zolleis.net>",
   "license": "MIT",
@@ -20,6 +24,8 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^1.4.0",
-    "msw": "^2.2.13"
+    "msw": "^2.2.13",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.3"
   }
 }

@@ -73,7 +73,10 @@ export class Dashboard {
 
     private handleErrors(e: any) {
         if (e instanceof AxiosError) {
-            const status = e.response.status
+            const status = e.response?.status
+            if (status === undefined) {
+                throw new UnknownException(e.message)
+            }
             switch (status) {
                 case 401: {
                     throw new MissingAuthenticationException(e.message, status)

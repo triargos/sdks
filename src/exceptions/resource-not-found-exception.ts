@@ -1,8 +1,8 @@
-import {ApiException} from "./api-exception";
+import { ApiException } from './api-exception';
 
 export class ResourceNotFoundException extends ApiException {
-    constructor(message: string, status: number) {
-        super(message, status);
-        this.name = 'ResourceNotFoundException';
-    }
+  constructor(message: string, status: number) {
+    super(message, status);
+    this.name = 'ResourceNotFoundException';
+  }
 }

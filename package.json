@@ -20,7 +20,8 @@
   "scripts": {
     "build": "tsc",
     "test": "vitest",
-    "coverage": "vitest --coverage"
+    "coverage": "vitest --coverage",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^1.4.0",

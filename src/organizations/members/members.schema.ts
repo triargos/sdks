@@ -30,3 +30,14 @@ export const membersSchema = z.object({
 });
 
 export const allMembersSchema = z.array(membersSchema);
+
+export const relationshipSchema = z.object({
+    personId: z.number(),
+    relationshipType: z.enum(['father', 'mother', 'son', 'daughter', 'other', 'child']),
+    custody: z.boolean(),
+    realParent: z.boolean(),
+    physical: z.boolean(),
+    notes: z.string().nullable(),
+});
+
+export const allRelationshipsSchema = z.array(relationshipSchema);

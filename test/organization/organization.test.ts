@@ -17,10 +17,10 @@ const mockOrganizations = [
 ];
 
 const handlers = [
-  http.get(`${STAGING_URL}/v1/organizations`, () => {
+  http.get(`${STAGING_URL}/organizations`, () => {
     return HttpResponse.json(mockOrganizations, { status: 200 });
   }),
-  http.get(`${STAGING_URL}/v1/organizations/org_id`, () => {
+  http.get(`${STAGING_URL}/organizations/org_id`, () => {
     return HttpResponse.json(mockOrganizations[0], { status: 200 });
   }),
 ];

@@ -17,7 +17,7 @@
   },
   "scripts": {
     "generate": "openapi-ts",
-    "postinstall": "build",
+    "postinstall": "yarn build",
     "build": "tsc",
     "test": "vitest",
     "coverage": "vitest --coverage",

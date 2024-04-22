@@ -17,10 +17,10 @@ const mockOrganizations = [
 ];
 
 const handlers = [
-  http.get(`${STAGING_URL}/organizations`, ({ request }) => {
+  http.get(`${STAGING_URL}/v1/organizations`, () => {
     return HttpResponse.json(mockOrganizations, { status: 200 });
   }),
-  http.get(`${STAGING_URL}/organizations/org_id`, ({ request }) => {
+  http.get(`${STAGING_URL}/v1/organizations/org_id`, () => {
     return HttpResponse.json(mockOrganizations[0], { status: 200 });
   }),
 ];
@@ -32,11 +32,13 @@ describe('organization', () => {
   afterAll(() => organizationServer.close());
   const dashboard = getDashboardInstance();
   it('should fetch an organization', async () => {
-    const organization = await dashboard.organizations.findById('org_id');
+    const organization = await dashboard.organizations.getOrganization({
+      organizationId: 'org_id',
+    });
     expect(organization).toEqual(mockOrganizations[0]);
   });
   it('should fetch all organizations', async () => {
-    const res = await dashboard.organizations.findAll();
+    const res = await dashboard.organizations.getOrganizations();
     expect(res).toEqual(mockOrganizations);
   });
 });

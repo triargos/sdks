@@ -16,17 +16,20 @@
     "zod": "^3.22.4"
   },
   "scripts": {
+    "generate": "openapi-ts",
+    "postinstall": "build",
     "build": "tsc",
     "test": "vitest",
     "coverage": "vitest --coverage",
     "format": "prettier --write ."
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "^0.42.1",
     "@types/node": "^20.12.4",
-    "vitest": "^1.4.0",
     "@vitest/coverage-v8": "^1.4.0",
     "msw": "^2.2.13",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "vitest": "^1.4.0"
   }
 }

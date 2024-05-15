@@ -1,3 +1,10 @@
+## @triargos/procurat-node [1.2.1](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.2.0...@triargos/procurat-node@1.2.1) (2024-05-15)
+
+
+### Bug Fixes
+
+* **package.json:** fix type ([5687ea1](https://github.com/triargos/sdks/commit/5687ea1fbfb5b043bcb1234d30e432999af169b3))
+
 # @triargos/procurat-node [1.2.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.1.0...@triargos/procurat-node@1.2.0) (2024-05-15)
 
 

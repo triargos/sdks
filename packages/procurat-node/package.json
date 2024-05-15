@@ -18,7 +18,6 @@
   "scripts": {
     "generate": "openapi-ts",
     "build": "tsc",
-    "test": "vitest",
     "coverage": "vitest --coverage",
     "format": "prettier --write .."
   },

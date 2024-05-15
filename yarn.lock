@@ -935,13 +935,13 @@ __metadata:
   linkType: hard
 
 "@octokit/plugin-paginate-rest@npm:^11.0.0":
-  version: 11.3.0
-  resolution: "@octokit/plugin-paginate-rest@npm:11.3.0"
+  version: 11.3.1
+  resolution: "@octokit/plugin-paginate-rest@npm:11.3.1"
   dependencies:
     "@octokit/types": "npm:^13.5.0"
   peerDependencies:
-    "@octokit/core": ">=6"
-  checksum: 10c0/fbaf656c0cb0eebacad7e0312b9262a669f1f4fac9b034b53b11d7111c16fd451814fe55bae7fa4a9151cf6cbb35854ea5a0b75f31bfb8af5fe12ff0ed8d9ba8
+    "@octokit/core": 5
+  checksum: 10c0/72107ff7e459c49d1f13bbe44ac07b073497692eba28cb5ac6dbfa41e0ebc059ad7bccfa3dd45d3165348adcc2ede8ac159f8a9b637389b8e335af16aaa01469
   languageName: node
   linkType: hard
 

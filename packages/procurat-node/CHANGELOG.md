@@ -1,3 +1,10 @@
+# @triargos/procurat-node [1.2.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.1.0...@triargos/procurat-node@1.2.0) (2024-05-15)
+
+
+### Features
+
+* **release:** release initial version ([fdecea5](https://github.com/triargos/sdks/commit/fdecea50b4392860164b45a365181631ad98b1fc))
+
 # @triargos/procurat-node [1.1.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.0.0...@triargos/procurat-node@1.1.0) (2024-05-15)
 
 

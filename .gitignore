@@ -1,5 +1,4 @@
 .idea
+*/**/coverage
+*/**/dist
 *.iml
-node_modules
-coverage
-dist

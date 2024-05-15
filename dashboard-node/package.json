@@ -7,8 +7,8 @@
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/triargos/dashboard-node",
-  "author": "Tim Zolleis <tim@zolleis.net>",
+  "repository": "https://github.com/triargos/sdks",
+  "author": "Triargos GmbH <entwicklung@triargos.de>",
   "license": "MIT",
   "type": "module",
   "dependencies": {
@@ -21,7 +21,7 @@
     "build": "tsc",
     "test": "vitest",
     "coverage": "vitest --coverage",
-    "format": "prettier --write ."
+    "format": "prettier --write .."
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "^0.42.1",

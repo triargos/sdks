@@ -7,11 +7,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         name: "Checkout repository"
+      - name: "Enable corepack"
+        run: corepack enable
       - name: "Setup node"
         uses: actions/setup-node@v4
         with:
           node-version: "21"
           cache: "yarn"
+      - name: "Set yarn version"
+        run: yarn set version stable
       - name: "Install dependencies"
         working-directory: "dashboard-node"
         run: yarn install --frozen-lockfile

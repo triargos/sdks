@@ -17,8 +17,6 @@ jobs:
       - name: "Set yarn version"
         run: yarn set version stable
       - name: "Install dependencies"
-        working-directory: "dashboard-node"
         run: yarn install --frozen-lockfile
       - name: "Run tests"
-        working-directory: "dashboard-node"
         run: yarn test

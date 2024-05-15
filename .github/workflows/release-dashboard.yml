@@ -14,12 +14,16 @@ jobs:
           node-version: "21"
           cache: "yarn"
       - name: "Install dependencies"
+        working-directory: "dashboard-node"
         run: yarn install --frozen-lockfile
       - name: "Install semantic-release"
+        working-directory: "dashboard-node"
         run: yarn add -D @semantic-release/changelog @semantic-release/git
       - name: "Build package"
+        working-directory: "dashboard-node"
         run: yarn build
       - name: "Run semantic-release"
+        working-directory: "dashboard-node"
         run: npx semantic-release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

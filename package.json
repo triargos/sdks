@@ -5,7 +5,6 @@
   "repository": "https://github.com/triargos/sdks.git",
   "author": "Triargos GmbH <entwicklung@triargos.de>",
   "license": "MIT",
-  "private": true,
   "workspaces": [
     "packages/*"
   ],

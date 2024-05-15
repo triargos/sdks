@@ -20,8 +20,7 @@ jobs:
       - name: "Build package"
         run: yarn build
       - name: "Run semantic-release"
-        working-directory: "dashboard-node"
-        run: npx semantic-release
+        run: yarn release
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,6 +1,6 @@
 {
   "name": "@triargos/dashboard-node",
-  "version": "0.0.0-semantic-release",
+  "version": "1.0.0-semantic-release",
   "description": "A nodejs SDK for the dashboard api",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

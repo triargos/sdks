@@ -1,3 +1,15 @@
+# @triargos/procurat-node [1.3.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.2.1...@triargos/procurat-node@1.3.0) (2024-06-06)
+
+
+### Bug Fixes
+
+* **api:** fix bugs preventing builds ([a14d35c](https://github.com/triargos/sdks/commit/a14d35c0cf0ba464cfec89c36d1752b1874e30e0))
+
+
+### Features
+
+* **api:** add new endpoints ([fe2aa63](https://github.com/triargos/sdks/commit/fe2aa63e5d8b78ea290b492f14ef80a9416a08bf))
+
 ## @triargos/procurat-node [1.2.1](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.2.0...@triargos/procurat-node@1.2.1) (2024-05-15)
 
 

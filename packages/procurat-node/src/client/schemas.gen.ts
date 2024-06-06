@@ -25,8 +25,9 @@ export const $AddressDTO = {
         poZip: {
             type: 'string'
         },
-        district: {
-            type: 'string'
+        districtId: {
+            type: 'integer',
+            format: 'int32'
         },
         country: {
             type: 'string'
@@ -37,66 +38,948 @@ export const $AddressDTO = {
     }
 } as const;
 
-export const $PersonDTO = {
+export const $ContactPersonMappingDTO = {
     type: 'object',
     properties: {
         id: {
             type: 'integer',
             format: 'int32'
         },
-        firstName: {
-            type: 'string',
-            nullable: true
+        childId: {
+            type: 'integer',
+            format: 'int32'
         },
-        allFirstNames: {
-            type: 'string',
-            nullable: true
+        parentId: {
+            type: 'integer',
+            format: 'int32'
         },
-        lastName: {
+        isEmergency: {
+            type: 'boolean'
+        },
+        includeAddressOnList: {
+            type: 'boolean'
+        },
+        includeHomePhoneOnList: {
+            type: 'boolean'
+        }
+    }
+} as const;
+
+export const $ContactInformationDTO = {
+    required: ['content', 'medium', 'type'],
+    type: 'object',
+    properties: {
+        type: {
             type: 'string'
         },
-        academicTitle: {
-            type: 'string',
-            nullable: true
+        medium: {
+            type: 'string'
         },
-        birthDate: {
-            type: 'string',
-            nullable: true
+        personId: {
+            type: 'integer',
+            format: 'int32'
         },
         addressId: {
             type: 'integer',
             format: 'int32'
         },
-        familyId: {
+        externalName: {
+            type: 'string'
+        },
+        content: {
+            type: 'string'
+        },
+        comment: {
+            type: 'string'
+        },
+        secret: {
+            type: 'boolean'
+        },
+        id: {
             type: 'integer',
             format: 'int32'
         },
-        familyRole: {
+        order: {
+            type: 'integer',
+            format: 'int32'
+        }
+    }
+} as const;
+
+export const $ContentDisposition = {
+    type: 'object',
+    properties: {
+        type: {
             type: 'string'
         },
-        gender: {
+        name: {
             type: 'string'
         },
-        placeOfBirth: {
+        filename: {
             type: 'string'
         },
-        nationality: {
+        charset: {
+            type: 'object',
+            properties: {
+                registered: {
+                    type: 'boolean'
+                }
+            }
+        },
+        size: {
+            type: 'integer',
+            format: 'int64'
+        },
+        creationDate: {
+            type: 'string',
+            format: 'date-time'
+        },
+        modificationDate: {
+            type: 'string',
+            format: 'date-time'
+        },
+        readDate: {
+            type: 'string',
+            format: 'date-time'
+        },
+        inline: {
+            type: 'boolean'
+        },
+        attachment: {
+            type: 'boolean'
+        },
+        formData: {
+            type: 'boolean'
+        }
+    }
+} as const;
+
+export const $HttpHeaders = {
+    type: 'object',
+    properties: {
+        connection: {
+            type: 'array',
+            items: {
+                type: 'string'
+            }
+        },
+        date: {
+            type: 'integer',
+            format: 'int64'
+        },
+        contentLength: {
+            type: 'integer',
+            format: 'int64'
+        },
+        lastModified: {
+            type: 'integer',
+            format: 'int64'
+        },
+        host: {
+            type: 'object',
+            properties: {
+                hostString: {
+                    type: 'string'
+                },
+                address: {
+                    type: 'object',
+                    properties: {
+                        multicastAddress: {
+                            type: 'boolean'
+                        },
+                        anyLocalAddress: {
+                            type: 'boolean'
+                        },
+                        linkLocalAddress: {
+                            type: 'boolean'
+                        },
+                        siteLocalAddress: {
+                            type: 'boolean'
+                        },
+                        mcglobal: {
+                            type: 'boolean'
+                        },
+                        mcnodeLocal: {
+                            type: 'boolean'
+                        },
+                        mclinkLocal: {
+                            type: 'boolean'
+                        },
+                        mcsiteLocal: {
+                            type: 'boolean'
+                        },
+                        mcorgLocal: {
+                            type: 'boolean'
+                        },
+                        canonicalHostName: {
+                            type: 'string'
+                        },
+                        loopbackAddress: {
+                            type: 'boolean'
+                        },
+                        address: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                                format: 'byte'
+                            }
+                        },
+                        hostAddress: {
+                            type: 'string'
+                        },
+                        hostName: {
+                            type: 'string'
+                        }
+                    }
+                },
+                port: {
+                    type: 'integer',
+                    format: 'int32'
+                },
+                unresolved: {
+                    type: 'boolean'
+                },
+                hostName: {
+                    type: 'string'
+                }
+            }
+        },
+        origin: {
             type: 'string'
         },
-        countryOfOrigin: {
+        contentType: {
+            '$ref': '#/components/schemas/MediaType'
+        },
+        ifModifiedSince: {
+            type: 'integer',
+            format: 'int64'
+        },
+        empty: {
+            type: 'boolean'
+        },
+        location: {
+            type: 'string',
+            format: 'uri'
+        },
+        all: {
+            type: 'object',
+            additionalProperties: {
+                type: 'string'
+            },
+            writeOnly: true
+        },
+        etag: {
             type: 'string'
         },
-        religion: {
+        range: {
+            type: 'array',
+            items: {
+                '$ref': '#/components/schemas/HttpRange'
+            }
+        },
+        allow: {
+            uniqueItems: true,
+            type: 'array',
+            items: {
+                type: 'string',
+                enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
+            }
+        },
+        vary: {
+            type: 'array',
+            items: {
+                type: 'string'
+            }
+        },
+        contentLanguage: {
+            type: 'object',
+            properties: {
+                language: {
+                    type: 'string'
+                },
+                script: {
+                    type: 'string'
+                },
+                country: {
+                    type: 'string'
+                },
+                variant: {
+                    type: 'string'
+                },
+                extensionKeys: {
+                    uniqueItems: true,
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                },
+                unicodeLocaleAttributes: {
+                    uniqueItems: true,
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                },
+                unicodeLocaleKeys: {
+                    uniqueItems: true,
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                },
+                iso3Language: {
+                    type: 'string'
+                },
+                iso3Country: {
+                    type: 'string'
+                },
+                displayLanguage: {
+                    type: 'string'
+                },
+                displayScript: {
+                    type: 'string'
+                },
+                displayCountry: {
+                    type: 'string'
+                },
+                displayVariant: {
+                    type: 'string'
+                },
+                displayName: {
+                    type: 'string'
+                }
+            }
+        },
+        cacheControl: {
             type: 'string'
         },
-        email: {
+        expires: {
+            type: 'integer',
+            format: 'int64'
+        },
+        acceptPatch: {
+            type: 'array',
+            items: {
+                '$ref': '#/components/schemas/MediaType'
+            }
+        },
+        accept: {
+            type: 'array',
+            items: {
+                '$ref': '#/components/schemas/MediaType'
+            }
+        },
+        acceptLanguage: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    range: {
+                        type: 'string'
+                    },
+                    weight: {
+                        type: 'number',
+                        format: 'double'
+                    }
+                }
+            }
+        },
+        accessControlMaxAge: {
+            type: 'integer',
+            format: 'int64'
+        },
+        acceptCharset: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    registered: {
+                        type: 'boolean'
+                    }
+                }
+            }
+        },
+        basicAuth: {
+            type: 'string',
+            writeOnly: true
+        },
+        bearerAuth: {
+            type: 'string',
+            writeOnly: true
+        },
+        contentDisposition: {
+            '$ref': '#/components/schemas/ContentDisposition'
+        },
+        ifMatch: {
+            type: 'array',
+            items: {
+                type: 'string'
+            }
+        },
+        ifNoneMatch: {
+            type: 'array',
+            items: {
+                type: 'string'
+            }
+        },
+        ifUnmodifiedSince: {
+            type: 'integer',
+            format: 'int64'
+        },
+        pragma: {
             type: 'string'
         },
-        salutation: {
+        upgrade: {
             type: 'string'
         },
-        prefix: {
+        acceptLanguageAsLocales: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    language: {
+                        type: 'string'
+                    },
+                    script: {
+                        type: 'string'
+                    },
+                    country: {
+                        type: 'string'
+                    },
+                    variant: {
+                        type: 'string'
+                    },
+                    extensionKeys: {
+                        uniqueItems: true,
+                        type: 'array',
+                        items: {
+                            type: 'string'
+                        }
+                    },
+                    unicodeLocaleAttributes: {
+                        uniqueItems: true,
+                        type: 'array',
+                        items: {
+                            type: 'string'
+                        }
+                    },
+                    unicodeLocaleKeys: {
+                        uniqueItems: true,
+                        type: 'array',
+                        items: {
+                            type: 'string'
+                        }
+                    },
+                    iso3Language: {
+                        type: 'string'
+                    },
+                    iso3Country: {
+                        type: 'string'
+                    },
+                    displayLanguage: {
+                        type: 'string'
+                    },
+                    displayScript: {
+                        type: 'string'
+                    },
+                    displayCountry: {
+                        type: 'string'
+                    },
+                    displayVariant: {
+                        type: 'string'
+                    },
+                    displayName: {
+                        type: 'string'
+                    }
+                }
+            }
+        },
+        accessControlAllowOrigin: {
             type: 'string'
+        },
+        accessControlAllowMethods: {
+            type: 'array',
+            items: {
+                type: 'string',
+                enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
+            }
+        },
+        accessControlAllowHeaders: {
+            type: 'array',
+            items: {
+                type: 'string'
+            }
+        },
+        accessControlAllowCredentials: {
+            type: 'boolean'
+        },
+        accessControlRequestMethod: {
+            type: 'string',
+            enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
+        },
+        accessControlRequestHeaders: {
+            type: 'array',
+            items: {
+                type: 'string'
+            }
+        },
+        accessControlExposeHeaders: {
+            type: 'array',
+            items: {
+                type: 'string'
+            }
+        }
+    },
+    additionalProperties: {
+        type: 'array',
+        items: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const $HttpRange = {
+    type: 'object'
+} as const;
+
+export const $MediaType = {
+    type: 'object',
+    properties: {
+        type: {
+            type: 'string'
+        },
+        subtype: {
+            type: 'string'
+        },
+        parameters: {
+            type: 'object',
+            additionalProperties: {
+                type: 'string'
+            }
+        },
+        qualityValue: {
+            type: 'number',
+            format: 'double'
+        },
+        wildcardType: {
+            type: 'boolean'
+        },
+        wildcardSubtype: {
+            type: 'boolean'
+        },
+        subtypeSuffix: {
+            type: 'string'
+        },
+        charset: {
+            type: 'object',
+            properties: {
+                registered: {
+                    type: 'boolean'
+                }
+            }
+        },
+        concrete: {
+            type: 'boolean'
+        }
+    }
+} as const;
+
+export const $ResponseEntityObject = {
+    type: 'object',
+    properties: {
+        headers: {
+            type: 'object',
+            properties: {
+                connection: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                },
+                date: {
+                    type: 'integer',
+                    format: 'int64'
+                },
+                contentLength: {
+                    type: 'integer',
+                    format: 'int64'
+                },
+                lastModified: {
+                    type: 'integer',
+                    format: 'int64'
+                },
+                host: {
+                    type: 'object',
+                    properties: {
+                        hostString: {
+                            type: 'string'
+                        },
+                        address: {
+                            type: 'object',
+                            properties: {
+                                multicastAddress: {
+                                    type: 'boolean'
+                                },
+                                anyLocalAddress: {
+                                    type: 'boolean'
+                                },
+                                linkLocalAddress: {
+                                    type: 'boolean'
+                                },
+                                siteLocalAddress: {
+                                    type: 'boolean'
+                                },
+                                mcglobal: {
+                                    type: 'boolean'
+                                },
+                                mcnodeLocal: {
+                                    type: 'boolean'
+                                },
+                                mclinkLocal: {
+                                    type: 'boolean'
+                                },
+                                mcsiteLocal: {
+                                    type: 'boolean'
+                                },
+                                mcorgLocal: {
+                                    type: 'boolean'
+                                },
+                                canonicalHostName: {
+                                    type: 'string'
+                                },
+                                loopbackAddress: {
+                                    type: 'boolean'
+                                },
+                                address: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'string',
+                                        format: 'byte'
+                                    }
+                                },
+                                hostAddress: {
+                                    type: 'string'
+                                },
+                                hostName: {
+                                    type: 'string'
+                                }
+                            }
+                        },
+                        port: {
+                            type: 'integer',
+                            format: 'int32'
+                        },
+                        unresolved: {
+                            type: 'boolean'
+                        },
+                        hostName: {
+                            type: 'string'
+                        }
+                    }
+                },
+                origin: {
+                    type: 'string'
+                },
+                contentType: {
+                    '$ref': '#/components/schemas/MediaType'
+                },
+                ifModifiedSince: {
+                    type: 'integer',
+                    format: 'int64'
+                },
+                empty: {
+                    type: 'boolean'
+                },
+                location: {
+                    type: 'string',
+                    format: 'uri'
+                },
+                all: {
+                    type: 'object',
+                    additionalProperties: {
+                        type: 'string'
+                    },
+                    writeOnly: true
+                },
+                etag: {
+                    type: 'string'
+                },
+                range: {
+                    type: 'array',
+                    items: {
+                        '$ref': '#/components/schemas/HttpRange'
+                    }
+                },
+                allow: {
+                    uniqueItems: true,
+                    type: 'array',
+                    items: {
+                        type: 'string',
+                        enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
+                    }
+                },
+                vary: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                },
+                contentLanguage: {
+                    type: 'object',
+                    properties: {
+                        language: {
+                            type: 'string'
+                        },
+                        script: {
+                            type: 'string'
+                        },
+                        country: {
+                            type: 'string'
+                        },
+                        variant: {
+                            type: 'string'
+                        },
+                        extensionKeys: {
+                            uniqueItems: true,
+                            type: 'array',
+                            items: {
+                                type: 'string'
+                            }
+                        },
+                        unicodeLocaleAttributes: {
+                            uniqueItems: true,
+                            type: 'array',
+                            items: {
+                                type: 'string'
+                            }
+                        },
+                        unicodeLocaleKeys: {
+                            uniqueItems: true,
+                            type: 'array',
+                            items: {
+                                type: 'string'
+                            }
+                        },
+                        iso3Language: {
+                            type: 'string'
+                        },
+                        iso3Country: {
+                            type: 'string'
+                        },
+                        displayLanguage: {
+                            type: 'string'
+                        },
+                        displayScript: {
+                            type: 'string'
+                        },
+                        displayCountry: {
+                            type: 'string'
+                        },
+                        displayVariant: {
+                            type: 'string'
+                        },
+                        displayName: {
+                            type: 'string'
+                        }
+                    }
+                },
+                cacheControl: {
+                    type: 'string'
+                },
+                expires: {
+                    type: 'integer',
+                    format: 'int64'
+                },
+                acceptPatch: {
+                    type: 'array',
+                    items: {
+                        '$ref': '#/components/schemas/MediaType'
+                    }
+                },
+                accept: {
+                    type: 'array',
+                    items: {
+                        '$ref': '#/components/schemas/MediaType'
+                    }
+                },
+                acceptLanguage: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            range: {
+                                type: 'string'
+                            },
+                            weight: {
+                                type: 'number',
+                                format: 'double'
+                            }
+                        }
+                    }
+                },
+                accessControlMaxAge: {
+                    type: 'integer',
+                    format: 'int64'
+                },
+                acceptCharset: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            registered: {
+                                type: 'boolean'
+                            }
+                        }
+                    }
+                },
+                basicAuth: {
+                    type: 'string',
+                    writeOnly: true
+                },
+                bearerAuth: {
+                    type: 'string',
+                    writeOnly: true
+                },
+                contentDisposition: {
+                    '$ref': '#/components/schemas/ContentDisposition'
+                },
+                ifMatch: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                },
+                ifNoneMatch: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                },
+                ifUnmodifiedSince: {
+                    type: 'integer',
+                    format: 'int64'
+                },
+                pragma: {
+                    type: 'string'
+                },
+                upgrade: {
+                    type: 'string'
+                },
+                acceptLanguageAsLocales: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            language: {
+                                type: 'string'
+                            },
+                            script: {
+                                type: 'string'
+                            },
+                            country: {
+                                type: 'string'
+                            },
+                            variant: {
+                                type: 'string'
+                            },
+                            extensionKeys: {
+                                uniqueItems: true,
+                                type: 'array',
+                                items: {
+                                    type: 'string'
+                                }
+                            },
+                            unicodeLocaleAttributes: {
+                                uniqueItems: true,
+                                type: 'array',
+                                items: {
+                                    type: 'string'
+                                }
+                            },
+                            unicodeLocaleKeys: {
+                                uniqueItems: true,
+                                type: 'array',
+                                items: {
+                                    type: 'string'
+                                }
+                            },
+                            iso3Language: {
+                                type: 'string'
+                            },
+                            iso3Country: {
+                                type: 'string'
+                            },
+                            displayLanguage: {
+                                type: 'string'
+                            },
+                            displayScript: {
+                                type: 'string'
+                            },
+                            displayCountry: {
+                                type: 'string'
+                            },
+                            displayVariant: {
+                                type: 'string'
+                            },
+                            displayName: {
+                                type: 'string'
+                            }
+                        }
+                    }
+                },
+                accessControlAllowOrigin: {
+                    type: 'string'
+                },
+                accessControlAllowMethods: {
+                    type: 'array',
+                    items: {
+                        type: 'string',
+                        enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
+                    }
+                },
+                accessControlAllowHeaders: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                },
+                accessControlAllowCredentials: {
+                    type: 'boolean'
+                },
+                accessControlRequestMethod: {
+                    type: 'string',
+                    enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
+                },
+                accessControlRequestHeaders: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                },
+                accessControlExposeHeaders: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                }
+            },
+            additionalProperties: {
+                type: 'array',
+                items: {
+                    type: 'string'
+                }
+            }
+        },
+        body: {
+            type: 'object'
+        },
+        statusCode: {
+            type: 'string',
+            enum: ['100 CONTINUE', '101 SWITCHING_PROTOCOLS', '102 PROCESSING', '103 CHECKPOINT', '200 OK', '201 CREATED', '202 ACCEPTED', '203 NON_AUTHORITATIVE_INFORMATION', '204 NO_CONTENT', '205 RESET_CONTENT', '206 PARTIAL_CONTENT', '207 MULTI_STATUS', '208 ALREADY_REPORTED', '226 IM_USED', '300 MULTIPLE_CHOICES', '301 MOVED_PERMANENTLY', '302 FOUND', '302 MOVED_TEMPORARILY', '303 SEE_OTHER', '304 NOT_MODIFIED', '305 USE_PROXY', '307 TEMPORARY_REDIRECT', '308 PERMANENT_REDIRECT', '400 BAD_REQUEST', '401 UNAUTHORIZED', '402 PAYMENT_REQUIRED', '403 FORBIDDEN', '404 NOT_FOUND', '405 METHOD_NOT_ALLOWED', '406 NOT_ACCEPTABLE', '407 PROXY_AUTHENTICATION_REQUIRED', '408 REQUEST_TIMEOUT', '409 CONFLICT', '410 GONE', '411 LENGTH_REQUIRED', '412 PRECONDITION_FAILED', '413 PAYLOAD_TOO_LARGE', '413 REQUEST_ENTITY_TOO_LARGE', '414 URI_TOO_LONG', '414 REQUEST_URI_TOO_LONG', '415 UNSUPPORTED_MEDIA_TYPE', '416 REQUESTED_RANGE_NOT_SATISFIABLE', '417 EXPECTATION_FAILED', '418 I_AM_A_TEAPOT', '419 INSUFFICIENT_SPACE_ON_RESOURCE', '420 METHOD_FAILURE', '421 DESTINATION_LOCKED', '422 UNPROCESSABLE_ENTITY', '423 LOCKED', '424 FAILED_DEPENDENCY', '425 TOO_EARLY', '426 UPGRADE_REQUIRED', '428 PRECONDITION_REQUIRED', '429 TOO_MANY_REQUESTS', '431 REQUEST_HEADER_FIELDS_TOO_LARGE', '451 UNAVAILABLE_FOR_LEGAL_REASONS', '500 INTERNAL_SERVER_ERROR', '501 NOT_IMPLEMENTED', '502 BAD_GATEWAY', '503 SERVICE_UNAVAILABLE', '504 GATEWAY_TIMEOUT', '505 HTTP_VERSION_NOT_SUPPORTED', '506 VARIANT_ALSO_NEGOTIATES', '507 INSUFFICIENT_STORAGE', '508 LOOP_DETECTED', '509 BANDWIDTH_LIMIT_EXCEEDED', '510 NOT_EXTENDED', '511 NETWORK_AUTHENTICATION_REQUIRED']
+        },
+        statusCodeValue: {
+            type: 'integer',
+            format: 'int32'
         }
     }
 } as const;
@@ -199,6 +1082,31 @@ export const $SuccessResponse = {
     }
 } as const;
 
+export const $ContactInformationMappingDTO = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'integer',
+            format: 'int32'
+        },
+        childId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        contactInfoId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        emergencyPriority: {
+            type: 'integer',
+            format: 'int32'
+        },
+        isOnList: {
+            type: 'boolean'
+        }
+    }
+} as const;
+
 export const $ReligionDTO = {
     type: 'object',
     properties: {
@@ -208,45 +1116,65 @@ export const $ReligionDTO = {
     }
 } as const;
 
-export const $DistrictDTO = {
-    required: ['name'],
+export const $PersonDTO = {
     type: 'object',
     properties: {
-        name: {
-            type: 'string'
-        }
-    }
-} as const;
-
-export const $CreateAddressDTO = {
-    type: 'object',
-    properties: {
-        personId: {
+        id: {
             type: 'integer',
             format: 'int32'
         },
-        street: {
+        firstName: {
+            type: 'string',
+            nullable: true
+        },
+        allFirstNames: {
+            type: 'string',
+            nullable: true
+        },
+        lastName: {
             type: 'string'
         },
-        zip: {
+        academicTitle: {
+            type: 'string',
+            nullable: true
+        },
+        birthDate: {
+            type: 'string',
+            nullable: true
+        },
+        addressId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        familyId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        familyRole: {
             type: 'string'
         },
-        city: {
+        gender: {
             type: 'string'
         },
-        additional: {
+        placeOfBirth: {
             type: 'string'
         },
-        po: {
+        nationality: {
             type: 'string'
         },
-        poZip: {
+        countryOfOrigin: {
             type: 'string'
         },
-        district: {
+        religion: {
             type: 'string'
         },
-        country: {
+        email: {
+            type: 'string'
+        },
+        salutation: {
+            type: 'string'
+        },
+        prefix: {
             type: 'string'
         }
     }
@@ -278,14 +1206,82 @@ export const $GroupDTO = {
     }
 } as const;
 
+export const $DistrictDTO = {
+    required: ['id', 'name'],
+    type: 'object',
+    properties: {
+        id: {
+            type: 'integer',
+            format: 'int32'
+        },
+        name: {
+            type: 'string'
+        }
+    }
+} as const;
+
 export const $CountryDTO = {
     required: ['iso', 'name'],
     type: 'object',
     properties: {
+        idx: {
+            type: 'string'
+        },
         name: {
             type: 'string'
         },
         iso: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const $GroupMembershipDTO = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'integer',
+            format: 'int32'
+        },
+        entry: {
+            type: 'string'
+        },
+        exit: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const $CreateAddressDTO = {
+    type: 'object',
+    properties: {
+        personId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        street: {
+            type: 'string'
+        },
+        zip: {
+            type: 'string'
+        },
+        city: {
+            type: 'string'
+        },
+        additional: {
+            type: 'string'
+        },
+        po: {
+            type: 'string'
+        },
+        poZip: {
+            type: 'string'
+        },
+        districtId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        country: {
             type: 'string'
         }
     }
@@ -311,22 +1307,6 @@ export const $RelationshipDTO = {
             type: 'boolean'
         },
         notes: {
-            type: 'string'
-        }
-    }
-} as const;
-
-export const $GroupMembershipDTO = {
-    type: 'object',
-    properties: {
-        id: {
-            type: 'integer',
-            format: 'int32'
-        },
-        entry: {
-            type: 'string'
-        },
-        exit: {
             type: 'string'
         }
     }

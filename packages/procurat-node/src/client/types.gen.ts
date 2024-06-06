@@ -8,29 +8,276 @@ export type AddressDTO = {
     additional?: string;
     po?: string;
     poZip?: string;
-    district?: string;
+    districtId?: number;
     country?: string;
     locality?: string;
 };
 
-export type PersonDTO = {
+export type ContactPersonMappingDTO = {
     id?: number;
-    firstName?: string | null;
-    allFirstNames?: string | null;
-    lastName?: string;
-    academicTitle?: string | null;
-    birthDate?: string | null;
+    childId?: number;
+    parentId?: number;
+    isEmergency?: boolean;
+    includeAddressOnList?: boolean;
+    includeHomePhoneOnList?: boolean;
+};
+
+export type ContactInformationDTO = {
+    type: string;
+    medium: string;
+    personId?: number;
     addressId?: number;
-    familyId?: number;
-    familyRole?: string;
-    gender?: string;
-    placeOfBirth?: string;
-    nationality?: string;
-    countryOfOrigin?: string;
-    religion?: string;
-    email?: string;
-    salutation?: string;
-    prefix?: string;
+    externalName?: string;
+    content: string;
+    comment?: string;
+    secret?: boolean;
+    id?: number;
+    order?: number;
+};
+
+export type ContentDisposition = {
+    type?: string;
+    name?: string;
+    filename?: string;
+    charset?: {
+        registered?: boolean;
+    };
+    size?: number;
+    creationDate?: string;
+    modificationDate?: string;
+    readDate?: string;
+    inline?: boolean;
+    attachment?: boolean;
+    formData?: boolean;
+};
+
+export type HttpHeaders = {
+    connection?: Array<(string)>;
+    date?: number;
+    contentLength?: number;
+    lastModified?: number;
+    host?: {
+        hostString?: string;
+        address?: {
+            multicastAddress?: boolean;
+            anyLocalAddress?: boolean;
+            linkLocalAddress?: boolean;
+            siteLocalAddress?: boolean;
+            mcglobal?: boolean;
+            mcnodeLocal?: boolean;
+            mclinkLocal?: boolean;
+            mcsiteLocal?: boolean;
+            mcorgLocal?: boolean;
+            canonicalHostName?: string;
+            loopbackAddress?: boolean;
+            address?: Array<(string)>;
+            hostAddress?: string;
+            hostName?: string;
+        };
+        port?: number;
+        unresolved?: boolean;
+        hostName?: string;
+    };
+    origin?: string;
+    contentType?: MediaType;
+    ifModifiedSince?: number;
+    empty?: boolean;
+    location?: string;
+    all?: {
+        [key: string]: (string);
+    };
+    etag?: string;
+    range?: Array<HttpRange>;
+    allow?: Array<('GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE')>;
+    vary?: Array<(string)>;
+    contentLanguage?: {
+        language?: string;
+        script?: string;
+        country?: string;
+        variant?: string;
+        extensionKeys?: Array<(string)>;
+        unicodeLocaleAttributes?: Array<(string)>;
+        unicodeLocaleKeys?: Array<(string)>;
+        iso3Language?: string;
+        iso3Country?: string;
+        displayLanguage?: string;
+        displayScript?: string;
+        displayCountry?: string;
+        displayVariant?: string;
+        displayName?: string;
+    };
+    cacheControl?: string;
+    expires?: number;
+    acceptPatch?: Array<MediaType>;
+    accept?: Array<MediaType>;
+    acceptLanguage?: Array<{
+        range?: string;
+        weight?: number;
+    }>;
+    accessControlMaxAge?: number;
+    acceptCharset?: Array<{
+        registered?: boolean;
+    }>;
+    basicAuth?: string;
+    bearerAuth?: string;
+    contentDisposition?: ContentDisposition;
+    ifMatch?: Array<(string)>;
+    ifNoneMatch?: Array<(string)>;
+    ifUnmodifiedSince?: number;
+    pragma?: string;
+    upgrade?: string;
+    acceptLanguageAsLocales?: Array<{
+        language?: string;
+        script?: string;
+        country?: string;
+        variant?: string;
+        extensionKeys?: Array<(string)>;
+        unicodeLocaleAttributes?: Array<(string)>;
+        unicodeLocaleKeys?: Array<(string)>;
+        iso3Language?: string;
+        iso3Country?: string;
+        displayLanguage?: string;
+        displayScript?: string;
+        displayCountry?: string;
+        displayVariant?: string;
+        displayName?: string;
+    }>;
+    accessControlAllowOrigin?: string;
+    accessControlAllowMethods?: Array<('GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE')>;
+    accessControlAllowHeaders?: Array<(string)>;
+    accessControlAllowCredentials?: boolean;
+    accessControlRequestMethod?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE';
+    accessControlRequestHeaders?: Array<(string)>;
+    accessControlExposeHeaders?: Array<(string)>;
+    [key: string]: (string) | undefined;
+};
+
+export type HttpRange = {
+    [key: string]: unknown;
+};
+
+export type MediaType = {
+    type?: string;
+    subtype?: string;
+    parameters?: {
+        [key: string]: (string);
+    };
+    qualityValue?: number;
+    wildcardType?: boolean;
+    wildcardSubtype?: boolean;
+    subtypeSuffix?: string;
+    charset?: {
+        registered?: boolean;
+    };
+    concrete?: boolean;
+};
+
+export type ResponseEntityObject = {
+    headers?: {
+        connection?: Array<(string)>;
+        date?: number;
+        contentLength?: number;
+        lastModified?: number;
+        host?: {
+            hostString?: string;
+            address?: {
+                multicastAddress?: boolean;
+                anyLocalAddress?: boolean;
+                linkLocalAddress?: boolean;
+                siteLocalAddress?: boolean;
+                mcglobal?: boolean;
+                mcnodeLocal?: boolean;
+                mclinkLocal?: boolean;
+                mcsiteLocal?: boolean;
+                mcorgLocal?: boolean;
+                canonicalHostName?: string;
+                loopbackAddress?: boolean;
+                address?: Array<(string)>;
+                hostAddress?: string;
+                hostName?: string;
+            };
+            port?: number;
+            unresolved?: boolean;
+            hostName?: string;
+        };
+        origin?: string;
+        contentType?: MediaType;
+        ifModifiedSince?: number;
+        empty?: boolean;
+        location?: string;
+        all?: {
+            [key: string]: (string);
+        };
+        etag?: string;
+        range?: Array<HttpRange>;
+        allow?: Array<('GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE')>;
+        vary?: Array<(string)>;
+        contentLanguage?: {
+            language?: string;
+            script?: string;
+            country?: string;
+            variant?: string;
+            extensionKeys?: Array<(string)>;
+            unicodeLocaleAttributes?: Array<(string)>;
+            unicodeLocaleKeys?: Array<(string)>;
+            iso3Language?: string;
+            iso3Country?: string;
+            displayLanguage?: string;
+            displayScript?: string;
+            displayCountry?: string;
+            displayVariant?: string;
+            displayName?: string;
+        };
+        cacheControl?: string;
+        expires?: number;
+        acceptPatch?: Array<MediaType>;
+        accept?: Array<MediaType>;
+        acceptLanguage?: Array<{
+            range?: string;
+            weight?: number;
+        }>;
+        accessControlMaxAge?: number;
+        acceptCharset?: Array<{
+            registered?: boolean;
+        }>;
+        basicAuth?: string;
+        bearerAuth?: string;
+        contentDisposition?: ContentDisposition;
+        ifMatch?: Array<(string)>;
+        ifNoneMatch?: Array<(string)>;
+        ifUnmodifiedSince?: number;
+        pragma?: string;
+        upgrade?: string;
+        acceptLanguageAsLocales?: Array<{
+            language?: string;
+            script?: string;
+            country?: string;
+            variant?: string;
+            extensionKeys?: Array<(string)>;
+            unicodeLocaleAttributes?: Array<(string)>;
+            unicodeLocaleKeys?: Array<(string)>;
+            iso3Language?: string;
+            iso3Country?: string;
+            displayLanguage?: string;
+            displayScript?: string;
+            displayCountry?: string;
+            displayVariant?: string;
+            displayName?: string;
+        }>;
+        accessControlAllowOrigin?: string;
+        accessControlAllowMethods?: Array<('GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE')>;
+        accessControlAllowHeaders?: Array<(string)>;
+        accessControlAllowCredentials?: boolean;
+        accessControlRequestMethod?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE';
+        accessControlRequestHeaders?: Array<(string)>;
+        accessControlExposeHeaders?: Array<(string)>;
+        [key: string]: (string) | undefined;
+    };
+    body?: {
+        [key: string]: unknown;
+    };
+    statusCode?: '100 CONTINUE' | '101 SWITCHING_PROTOCOLS' | '102 PROCESSING' | '103 CHECKPOINT' | '200 OK' | '201 CREATED' | '202 ACCEPTED' | '203 NON_AUTHORITATIVE_INFORMATION' | '204 NO_CONTENT' | '205 RESET_CONTENT' | '206 PARTIAL_CONTENT' | '207 MULTI_STATUS' | '208 ALREADY_REPORTED' | '226 IM_USED' | '300 MULTIPLE_CHOICES' | '301 MOVED_PERMANENTLY' | '302 FOUND' | '302 MOVED_TEMPORARILY' | '303 SEE_OTHER' | '304 NOT_MODIFIED' | '305 USE_PROXY' | '307 TEMPORARY_REDIRECT' | '308 PERMANENT_REDIRECT' | '400 BAD_REQUEST' | '401 UNAUTHORIZED' | '402 PAYMENT_REQUIRED' | '403 FORBIDDEN' | '404 NOT_FOUND' | '405 METHOD_NOT_ALLOWED' | '406 NOT_ACCEPTABLE' | '407 PROXY_AUTHENTICATION_REQUIRED' | '408 REQUEST_TIMEOUT' | '409 CONFLICT' | '410 GONE' | '411 LENGTH_REQUIRED' | '412 PRECONDITION_FAILED' | '413 PAYLOAD_TOO_LARGE' | '413 REQUEST_ENTITY_TOO_LARGE' | '414 URI_TOO_LONG' | '414 REQUEST_URI_TOO_LONG' | '415 UNSUPPORTED_MEDIA_TYPE' | '416 REQUESTED_RANGE_NOT_SATISFIABLE' | '417 EXPECTATION_FAILED' | '418 I_AM_A_TEAPOT' | '419 INSUFFICIENT_SPACE_ON_RESOURCE' | '420 METHOD_FAILURE' | '421 DESTINATION_LOCKED' | '422 UNPROCESSABLE_ENTITY' | '423 LOCKED' | '424 FAILED_DEPENDENCY' | '425 TOO_EARLY' | '426 UPGRADE_REQUIRED' | '428 PRECONDITION_REQUIRED' | '429 TOO_MANY_REQUESTS' | '431 REQUEST_HEADER_FIELDS_TOO_LARGE' | '451 UNAVAILABLE_FOR_LEGAL_REASONS' | '500 INTERNAL_SERVER_ERROR' | '501 NOT_IMPLEMENTED' | '502 BAD_GATEWAY' | '503 SERVICE_UNAVAILABLE' | '504 GATEWAY_TIMEOUT' | '505 HTTP_VERSION_NOT_SUPPORTED' | '506 VARIANT_ALSO_NEGOTIATES' | '507 INSUFFICIENT_STORAGE' | '508 LOOP_DETECTED' | '509 BANDWIDTH_LIMIT_EXCEEDED' | '510 NOT_EXTENDED' | '511 NETWORK_AUTHENTICATION_REQUIRED';
+    statusCodeValue?: number;
 };
 
 export type CreatePersonDTO = {
@@ -65,24 +312,36 @@ export type SuccessResponse = {
     message?: string;
 };
 
+export type ContactInformationMappingDTO = {
+    id?: number;
+    childId?: number;
+    contactInfoId?: number;
+    emergencyPriority?: number;
+    isOnList?: boolean;
+};
+
 export type ReligionDTO = {
     name?: string;
 };
 
-export type DistrictDTO = {
-    name: string;
-};
-
-export type CreateAddressDTO = {
-    personId?: number;
-    street?: string;
-    zip?: string;
-    city?: string;
-    additional?: string;
-    po?: string;
-    poZip?: string;
-    district?: string;
-    country?: string;
+export type PersonDTO = {
+    id?: number;
+    firstName?: string | null;
+    allFirstNames?: string | null;
+    lastName?: string;
+    academicTitle?: string | null;
+    birthDate?: string | null;
+    addressId?: number;
+    familyId?: number;
+    familyRole?: string;
+    gender?: string;
+    placeOfBirth?: string;
+    nationality?: string;
+    countryOfOrigin?: string;
+    religion?: string;
+    email?: string;
+    salutation?: string;
+    prefix?: string;
 };
 
 export type GroupDTO = {
@@ -94,9 +353,33 @@ export type GroupDTO = {
     schoolYear?: string;
 };
 
+export type DistrictDTO = {
+    id: number;
+    name: string;
+};
+
 export type CountryDTO = {
+    idx?: string;
     name: string;
     iso: string;
+};
+
+export type GroupMembershipDTO = {
+    id?: number;
+    entry?: string;
+    exit?: string;
+};
+
+export type CreateAddressDTO = {
+    personId?: number;
+    street?: string;
+    zip?: string;
+    city?: string;
+    additional?: string;
+    po?: string;
+    poZip?: string;
+    districtId?: number;
+    country?: string;
 };
 
 export type RelationshipDTO = {
@@ -106,12 +389,6 @@ export type RelationshipDTO = {
     custody?: boolean;
     realParent?: boolean;
     notes?: string;
-};
-
-export type GroupMembershipDTO = {
-    id?: number;
-    entry?: string;
-    exit?: string;
 };
 
 export type $OpenApiTs = {
@@ -149,6 +426,180 @@ export type $OpenApiTs = {
             };
         };
     };
+    '/communication/child/{childId}/persons': {
+        get: {
+            req: {
+                childId: number;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: Array<ContactPersonMappingDTO>;
+            };
+        };
+        post: {
+            req: {
+                childId: number;
+                requestBody?: ContactPersonMappingDTO;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: ContactPersonMappingDTO;
+            };
+        };
+    };
+    '/communication/child/{childId}/information/{contactInformationMappingId}': {
+        delete: {
+            req: {
+                childId: number;
+                contactInformationMappingId: number;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: unknown;
+            };
+        };
+    };
+    '/communication/child/{childId}/information': {
+        get: {
+            req: {
+                childId: number;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: Array<ContactInformationMappingDTO>;
+            };
+        };
+        post: {
+            req: {
+                childId: number;
+                requestBody?: ContactInformationMappingDTO;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: ContactInformationMappingDTO;
+            };
+        };
+    };
+    '/communication/child/{childId}/persons/{contactPersonMappingId}': {
+        delete: {
+            req: {
+                childId: number;
+                contactPersonMappingId: number;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: unknown;
+            };
+        };
+    };
+    '/contactinformation': {
+        post: {
+            req: {
+                requestBody?: ContactInformationDTO;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: ResponseEntityObject;
+            };
+        };
+    };
+    '/contactinformation/{contactInformationId}': {
+        get: {
+            req: {
+                contactInformationId: number;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: ContactInformationDTO;
+            };
+        };
+        put: {
+            req: {
+                contactInformationId: number;
+                requestBody?: ContactInformationDTO;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: ContactInformationDTO;
+            };
+        };
+        delete: {
+            req: {
+                contactInformationId: number;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: ResponseEntityObject;
+            };
+        };
+    };
+    '/contactinformation/address/{addressId}': {
+        get: {
+            req: {
+                addressId: number;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: Array<ContactInformationDTO>;
+            };
+        };
+    };
+    '/contactinformation/person/{personId}': {
+        get: {
+            req: {
+                personId: number;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: Array<ContactInformationDTO>;
+            };
+        };
+    };
+    '/persons': {
+        get: {
+            res: {
+                /**
+                 * default response
+                 */
+                200: Array<PersonDTO>;
+            };
+        };
+        post: {
+            req: {
+                requestBody?: CreatePersonDTO;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: SuccessResponse;
+            };
+        };
+    };
     '/persons/{id}': {
         get: {
             req: {
@@ -174,27 +625,6 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/persons': {
-        get: {
-            res: {
-                /**
-                 * default response
-                 */
-                200: Array<PersonDTO>;
-            };
-        };
-        post: {
-            req: {
-                requestBody?: CreatePersonDTO;
-            };
-            res: {
-                /**
-                 * default response
-                 */
-                200: SuccessResponse;
-            };
-        };
-    };
     '/religions': {
         get: {
             res: {
@@ -202,29 +632,6 @@ export type $OpenApiTs = {
                  * default response
                  */
                 200: Array<ReligionDTO>;
-            };
-        };
-    };
-    '/districts': {
-        get: {
-            res: {
-                /**
-                 * default response
-                 */
-                200: Array<DistrictDTO>;
-            };
-        };
-    };
-    '/groups/{id}': {
-        get: {
-            req: {
-                id: number;
-            };
-            res: {
-                /**
-                 * default response
-                 */
-                200: GroupDTO;
             };
         };
     };
@@ -251,6 +658,42 @@ export type $OpenApiTs = {
             };
         };
     };
+    '/groups/{id}': {
+        get: {
+            req: {
+                id: number;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: GroupDTO;
+            };
+        };
+    };
+    '/districts/{id}': {
+        get: {
+            req: {
+                id: number;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: DistrictDTO;
+            };
+        };
+    };
+    '/districts': {
+        get: {
+            res: {
+                /**
+                 * default response
+                 */
+                200: Array<DistrictDTO>;
+            };
+        };
+    };
     '/countries': {
         get: {
             res: {
@@ -258,6 +701,19 @@ export type $OpenApiTs = {
                  * default response
                  */
                 200: Array<CountryDTO>;
+            };
+        };
+    };
+    '/countries/{idx}': {
+        get: {
+            req: {
+                idx: string;
+            };
+            res: {
+                /**
+                 * default response
+                 */
+                200: CountryDTO;
             };
         };
     };

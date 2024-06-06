@@ -149,8 +149,10 @@ export type HttpHeaders = {
     accessControlRequestMethod?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE';
     accessControlRequestHeaders?: Array<(string)>;
     accessControlExposeHeaders?: Array<(string)>;
-    [key: string]: (string) | undefined;
+    [key: string]: (Array<string> | string | number | unknown | MediaType | boolean | HttpRange | ContentDisposition) | undefined;
 };
+
+export type accessControlRequestMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE';
 
 export type HttpRange = {
     [key: string]: unknown;
@@ -271,7 +273,7 @@ export type ResponseEntityObject = {
         accessControlRequestMethod?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE';
         accessControlRequestHeaders?: Array<(string)>;
         accessControlExposeHeaders?: Array<(string)>;
-        [key: string]: (string) | undefined;
+        [key: string]: (Array<string> | string | number | unknown | MediaType | boolean | HttpRange | ContentDisposition) | undefined;
     };
     body?: {
         [key: string]: unknown;
@@ -279,6 +281,8 @@ export type ResponseEntityObject = {
     statusCode?: '100 CONTINUE' | '101 SWITCHING_PROTOCOLS' | '102 PROCESSING' | '103 CHECKPOINT' | '200 OK' | '201 CREATED' | '202 ACCEPTED' | '203 NON_AUTHORITATIVE_INFORMATION' | '204 NO_CONTENT' | '205 RESET_CONTENT' | '206 PARTIAL_CONTENT' | '207 MULTI_STATUS' | '208 ALREADY_REPORTED' | '226 IM_USED' | '300 MULTIPLE_CHOICES' | '301 MOVED_PERMANENTLY' | '302 FOUND' | '302 MOVED_TEMPORARILY' | '303 SEE_OTHER' | '304 NOT_MODIFIED' | '305 USE_PROXY' | '307 TEMPORARY_REDIRECT' | '308 PERMANENT_REDIRECT' | '400 BAD_REQUEST' | '401 UNAUTHORIZED' | '402 PAYMENT_REQUIRED' | '403 FORBIDDEN' | '404 NOT_FOUND' | '405 METHOD_NOT_ALLOWED' | '406 NOT_ACCEPTABLE' | '407 PROXY_AUTHENTICATION_REQUIRED' | '408 REQUEST_TIMEOUT' | '409 CONFLICT' | '410 GONE' | '411 LENGTH_REQUIRED' | '412 PRECONDITION_FAILED' | '413 PAYLOAD_TOO_LARGE' | '413 REQUEST_ENTITY_TOO_LARGE' | '414 URI_TOO_LONG' | '414 REQUEST_URI_TOO_LONG' | '415 UNSUPPORTED_MEDIA_TYPE' | '416 REQUESTED_RANGE_NOT_SATISFIABLE' | '417 EXPECTATION_FAILED' | '418 I_AM_A_TEAPOT' | '419 INSUFFICIENT_SPACE_ON_RESOURCE' | '420 METHOD_FAILURE' | '421 DESTINATION_LOCKED' | '422 UNPROCESSABLE_ENTITY' | '423 LOCKED' | '424 FAILED_DEPENDENCY' | '425 TOO_EARLY' | '426 UPGRADE_REQUIRED' | '428 PRECONDITION_REQUIRED' | '429 TOO_MANY_REQUESTS' | '431 REQUEST_HEADER_FIELDS_TOO_LARGE' | '451 UNAVAILABLE_FOR_LEGAL_REASONS' | '500 INTERNAL_SERVER_ERROR' | '501 NOT_IMPLEMENTED' | '502 BAD_GATEWAY' | '503 SERVICE_UNAVAILABLE' | '504 GATEWAY_TIMEOUT' | '505 HTTP_VERSION_NOT_SUPPORTED' | '506 VARIANT_ALSO_NEGOTIATES' | '507 INSUFFICIENT_STORAGE' | '508 LOOP_DETECTED' | '509 BANDWIDTH_LIMIT_EXCEEDED' | '510 NOT_EXTENDED' | '511 NETWORK_AUTHENTICATION_REQUIRED';
     statusCodeValue?: number;
 };
+
+export type statusCode = '100 CONTINUE' | '101 SWITCHING_PROTOCOLS' | '102 PROCESSING' | '103 CHECKPOINT' | '200 OK' | '201 CREATED' | '202 ACCEPTED' | '203 NON_AUTHORITATIVE_INFORMATION' | '204 NO_CONTENT' | '205 RESET_CONTENT' | '206 PARTIAL_CONTENT' | '207 MULTI_STATUS' | '208 ALREADY_REPORTED' | '226 IM_USED' | '300 MULTIPLE_CHOICES' | '301 MOVED_PERMANENTLY' | '302 FOUND' | '302 MOVED_TEMPORARILY' | '303 SEE_OTHER' | '304 NOT_MODIFIED' | '305 USE_PROXY' | '307 TEMPORARY_REDIRECT' | '308 PERMANENT_REDIRECT' | '400 BAD_REQUEST' | '401 UNAUTHORIZED' | '402 PAYMENT_REQUIRED' | '403 FORBIDDEN' | '404 NOT_FOUND' | '405 METHOD_NOT_ALLOWED' | '406 NOT_ACCEPTABLE' | '407 PROXY_AUTHENTICATION_REQUIRED' | '408 REQUEST_TIMEOUT' | '409 CONFLICT' | '410 GONE' | '411 LENGTH_REQUIRED' | '412 PRECONDITION_FAILED' | '413 PAYLOAD_TOO_LARGE' | '413 REQUEST_ENTITY_TOO_LARGE' | '414 URI_TOO_LONG' | '414 REQUEST_URI_TOO_LONG' | '415 UNSUPPORTED_MEDIA_TYPE' | '416 REQUESTED_RANGE_NOT_SATISFIABLE' | '417 EXPECTATION_FAILED' | '418 I_AM_A_TEAPOT' | '419 INSUFFICIENT_SPACE_ON_RESOURCE' | '420 METHOD_FAILURE' | '421 DESTINATION_LOCKED' | '422 UNPROCESSABLE_ENTITY' | '423 LOCKED' | '424 FAILED_DEPENDENCY' | '425 TOO_EARLY' | '426 UPGRADE_REQUIRED' | '428 PRECONDITION_REQUIRED' | '429 TOO_MANY_REQUESTS' | '431 REQUEST_HEADER_FIELDS_TOO_LARGE' | '451 UNAVAILABLE_FOR_LEGAL_REASONS' | '500 INTERNAL_SERVER_ERROR' | '501 NOT_IMPLEMENTED' | '502 BAD_GATEWAY' | '503 SERVICE_UNAVAILABLE' | '504 GATEWAY_TIMEOUT' | '505 HTTP_VERSION_NOT_SUPPORTED' | '506 VARIANT_ALSO_NEGOTIATES' | '507 INSUFFICIENT_STORAGE' | '508 LOOP_DETECTED' | '509 BANDWIDTH_LIMIT_EXCEEDED' | '510 NOT_EXTENDED' | '511 NETWORK_AUTHENTICATION_REQUIRED';
 
 export type CreatePersonDTO = {
     id?: number;
@@ -391,12 +395,160 @@ export type RelationshipDTO = {
     notes?: string;
 };
 
+export type FindAddressByIdData = {
+    id: number;
+};
+
+export type FindAddressByIdResponse = AddressDTO;
+
+export type FindAllAddressesResponse = Array<AddressDTO>;
+
+export type CreateAddressData = {
+    requestBody?: CreateAddressDTO;
+};
+
+export type CreateAddressResponse = AddressDTO;
+
+export type GetContactPersonMappingsData = {
+    childId: number;
+};
+
+export type GetContactPersonMappingsResponse = Array<ContactPersonMappingDTO>;
+
+export type CreateContactPersonMappingData = {
+    childId: number;
+    requestBody?: ContactPersonMappingDTO;
+};
+
+export type CreateContactPersonMappingResponse = ContactPersonMappingDTO;
+
+export type DeleteContactInformationMappingData = {
+    childId: number;
+    contactInformationMappingId: number;
+};
+
+export type DeleteContactInformationMappingResponse = unknown;
+
+export type GetContactInformationMappingsData = {
+    childId: number;
+};
+
+export type GetContactInformationMappingsResponse = Array<ContactInformationMappingDTO>;
+
+export type CreateContactInformationMappingData = {
+    childId: number;
+    requestBody?: ContactInformationMappingDTO;
+};
+
+export type CreateContactInformationMappingResponse = ContactInformationMappingDTO;
+
+export type DeleteContactPersonMappingData = {
+    childId: number;
+    contactPersonMappingId: number;
+};
+
+export type DeleteContactPersonMappingResponse = unknown;
+
+export type CreateContactInformationData = {
+    requestBody?: ContactInformationDTO;
+};
+
+export type CreateContactInformationResponse = ResponseEntityObject;
+
+export type FindByIdData = {
+    contactInformationId: number;
+};
+
+export type FindByIdResponse = ContactInformationDTO;
+
+export type UpdateContactInformationData = {
+    contactInformationId: number;
+    requestBody?: ContactInformationDTO;
+};
+
+export type UpdateContactInformationResponse = ContactInformationDTO;
+
+export type DeleteContactInformationData = {
+    contactInformationId: number;
+};
+
+export type DeleteContactInformationResponse = ResponseEntityObject;
+
+export type FindByAddressData = {
+    addressId: number;
+};
+
+export type FindByAddressResponse = Array<ContactInformationDTO>;
+
+export type FindByPersonData = {
+    personId: number;
+};
+
+export type FindByPersonResponse = Array<ContactInformationDTO>;
+
+export type FindAllPersonsResponse = Array<PersonDTO>;
+
+export type CreatePersonData = {
+    requestBody?: CreatePersonDTO;
+};
+
+export type CreatePersonResponse = SuccessResponse;
+
+export type FindPersonData = {
+    id: number;
+};
+
+export type FindPersonResponse = PersonDTO;
+
+export type UpdatePersonData = {
+    id: number;
+    requestBody?: PersonDTO;
+};
+
+export type UpdatePersonResponse = SuccessResponse;
+
+export type FindAllReligionsResponse = Array<ReligionDTO>;
+
+export type FindAllGroupsResponse = Array<GroupDTO>;
+
+export type FindGroupMembersByIdData = {
+    id: number;
+};
+
+export type FindGroupMembersByIdResponse = Array<GroupMembershipDTO>;
+
+export type FindGroupByIdData = {
+    id: number;
+};
+
+export type FindGroupByIdResponse = GroupDTO;
+
+export type FindDistrictByIdData = {
+    id: number;
+};
+
+export type FindDistrictByIdResponse = DistrictDTO;
+
+export type FindAllDistrictsResponse = Array<DistrictDTO>;
+
+export type FindAllCountriesResponse = Array<CountryDTO>;
+
+export type FindCountryByIdxData = {
+    idx: string;
+};
+
+export type FindCountryByIdxResponse = CountryDTO;
+
+export type FindRelationshipsForPersonData = {
+    personId: number;
+};
+
+export type FindRelationshipsForPersonResponse = Array<RelationshipDTO>;
+
 export type $OpenApiTs = {
     '/addresses/{id}': {
         get: {
-            req: {
-                id: number;
-            };
+            req: FindAddressByIdData;
             res: {
                 /**
                  * default response
@@ -415,9 +567,7 @@ export type $OpenApiTs = {
             };
         };
         post: {
-            req: {
-                requestBody?: CreateAddressDTO;
-            };
+            req: CreateAddressData;
             res: {
                 /**
                  * default response
@@ -428,9 +578,7 @@ export type $OpenApiTs = {
     };
     '/communication/child/{childId}/persons': {
         get: {
-            req: {
-                childId: number;
-            };
+            req: GetContactPersonMappingsData;
             res: {
                 /**
                  * default response
@@ -439,10 +587,7 @@ export type $OpenApiTs = {
             };
         };
         post: {
-            req: {
-                childId: number;
-                requestBody?: ContactPersonMappingDTO;
-            };
+            req: CreateContactPersonMappingData;
             res: {
                 /**
                  * default response
@@ -453,10 +598,7 @@ export type $OpenApiTs = {
     };
     '/communication/child/{childId}/information/{contactInformationMappingId}': {
         delete: {
-            req: {
-                childId: number;
-                contactInformationMappingId: number;
-            };
+            req: DeleteContactInformationMappingData;
             res: {
                 /**
                  * default response
@@ -467,9 +609,7 @@ export type $OpenApiTs = {
     };
     '/communication/child/{childId}/information': {
         get: {
-            req: {
-                childId: number;
-            };
+            req: GetContactInformationMappingsData;
             res: {
                 /**
                  * default response
@@ -478,10 +618,7 @@ export type $OpenApiTs = {
             };
         };
         post: {
-            req: {
-                childId: number;
-                requestBody?: ContactInformationMappingDTO;
-            };
+            req: CreateContactInformationMappingData;
             res: {
                 /**
                  * default response
@@ -492,10 +629,7 @@ export type $OpenApiTs = {
     };
     '/communication/child/{childId}/persons/{contactPersonMappingId}': {
         delete: {
-            req: {
-                childId: number;
-                contactPersonMappingId: number;
-            };
+            req: DeleteContactPersonMappingData;
             res: {
                 /**
                  * default response
@@ -506,9 +640,7 @@ export type $OpenApiTs = {
     };
     '/contactinformation': {
         post: {
-            req: {
-                requestBody?: ContactInformationDTO;
-            };
+            req: CreateContactInformationData;
             res: {
                 /**
                  * default response
@@ -519,9 +651,7 @@ export type $OpenApiTs = {
     };
     '/contactinformation/{contactInformationId}': {
         get: {
-            req: {
-                contactInformationId: number;
-            };
+            req: FindByIdData;
             res: {
                 /**
                  * default response
@@ -530,10 +660,7 @@ export type $OpenApiTs = {
             };
         };
         put: {
-            req: {
-                contactInformationId: number;
-                requestBody?: ContactInformationDTO;
-            };
+            req: UpdateContactInformationData;
             res: {
                 /**
                  * default response
@@ -542,9 +669,7 @@ export type $OpenApiTs = {
             };
         };
         delete: {
-            req: {
-                contactInformationId: number;
-            };
+            req: DeleteContactInformationData;
             res: {
                 /**
                  * default response
@@ -555,9 +680,7 @@ export type $OpenApiTs = {
     };
     '/contactinformation/address/{addressId}': {
         get: {
-            req: {
-                addressId: number;
-            };
+            req: FindByAddressData;
             res: {
                 /**
                  * default response
@@ -568,9 +691,7 @@ export type $OpenApiTs = {
     };
     '/contactinformation/person/{personId}': {
         get: {
-            req: {
-                personId: number;
-            };
+            req: FindByPersonData;
             res: {
                 /**
                  * default response
@@ -589,9 +710,7 @@ export type $OpenApiTs = {
             };
         };
         post: {
-            req: {
-                requestBody?: CreatePersonDTO;
-            };
+            req: CreatePersonData;
             res: {
                 /**
                  * default response
@@ -602,9 +721,7 @@ export type $OpenApiTs = {
     };
     '/persons/{id}': {
         get: {
-            req: {
-                id: number;
-            };
+            req: FindPersonData;
             res: {
                 /**
                  * default response
@@ -613,10 +730,7 @@ export type $OpenApiTs = {
             };
         };
         put: {
-            req: {
-                id: number;
-                requestBody?: PersonDTO;
-            };
+            req: UpdatePersonData;
             res: {
                 /**
                  * default response
@@ -647,9 +761,7 @@ export type $OpenApiTs = {
     };
     '/groups/{id}/members': {
         get: {
-            req: {
-                id: number;
-            };
+            req: FindGroupMembersByIdData;
             res: {
                 /**
                  * default response
@@ -660,9 +772,7 @@ export type $OpenApiTs = {
     };
     '/groups/{id}': {
         get: {
-            req: {
-                id: number;
-            };
+            req: FindGroupByIdData;
             res: {
                 /**
                  * default response
@@ -673,9 +783,7 @@ export type $OpenApiTs = {
     };
     '/districts/{id}': {
         get: {
-            req: {
-                id: number;
-            };
+            req: FindDistrictByIdData;
             res: {
                 /**
                  * default response
@@ -706,9 +814,7 @@ export type $OpenApiTs = {
     };
     '/countries/{idx}': {
         get: {
-            req: {
-                idx: string;
-            };
+            req: FindCountryByIdxData;
             res: {
                 /**
                  * default response
@@ -719,9 +825,7 @@ export type $OpenApiTs = {
     };
     '/relationships/person/{personId}': {
         get: {
-            req: {
-                personId: number;
-            };
+            req: FindRelationshipsForPersonData;
             res: {
                 /**
                  * default response

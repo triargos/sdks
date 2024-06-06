@@ -1,9 +1,9 @@
-import type { AxiosInstance, AxiosResponse } from "axios";
-import type { ApiRequestOptions } from "./ApiRequestOptions";
-import type { ApiResult } from "./ApiResult";
-import type { OnCancel } from "./CancelablePromise";
-import { CancelablePromise } from "./CancelablePromise";
-import type { OpenAPIConfig } from "./OpenAPI";
+import type { AxiosResponse, AxiosInstance } from 'axios';
+import type { ApiRequestOptions } from './ApiRequestOptions';
+import type { ApiResult } from './ApiResult';
+import { CancelablePromise } from './CancelablePromise';
+import type { OnCancel } from './CancelablePromise';
+import type { OpenAPIConfig } from './OpenAPI';
 export declare const isString: (value: unknown) => value is string;
 export declare const isStringWithValue: (value: unknown) => value is string;
 export declare const isBlob: (value: any) => value is Blob;

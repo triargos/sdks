@@ -1,7 +1,7 @@
-import type { ApiRequestOptions } from "./ApiRequestOptions";
-import { BaseHttpRequest } from "./BaseHttpRequest";
-import type { CancelablePromise } from "./CancelablePromise";
-import type { OpenAPIConfig } from "./OpenAPI";
+import type { ApiRequestOptions } from './ApiRequestOptions';
+import { BaseHttpRequest } from './BaseHttpRequest';
+import type { CancelablePromise } from './CancelablePromise';
+import type { OpenAPIConfig } from './OpenAPI';
 export declare class AxiosHttpRequest extends BaseHttpRequest {
     constructor(config: OpenAPIConfig);
     /**

@@ -17,11 +17,11 @@ const axios_1 = __importDefault(require("axios"));
 const ApiError_1 = require("./ApiError");
 const CancelablePromise_1 = require("./CancelablePromise");
 const isString = (value) => {
-    return typeof value === "string";
+    return typeof value === 'string';
 };
 exports.isString = isString;
 const isStringWithValue = (value) => {
-    return (0, exports.isString)(value) && value !== "";
+    return (0, exports.isString)(value) && value !== '';
 };
 exports.isStringWithValue = isStringWithValue;
 const isBlob = (value) => {
@@ -42,7 +42,7 @@ const base64 = (str) => {
     }
     catch (err) {
         // @ts-ignore
-        return Buffer.from(str).toString("base64");
+        return Buffer.from(str).toString('base64');
     }
 };
 exports.base64 = base64;
@@ -59,9 +59,9 @@ const getQueryString = (params) => {
             append(key, value.toISOString());
         }
         else if (Array.isArray(value)) {
-            value.forEach((v) => encodePair(key, v));
+            value.forEach(v => encodePair(key, v));
         }
-        else if (typeof value === "object") {
+        else if (typeof value === 'object') {
             Object.entries(value).forEach(([k, v]) => encodePair(`${key}[${k}]`, v));
         }
         else {
@@ -69,13 +69,13 @@ const getQueryString = (params) => {
         }
     };
     Object.entries(params).forEach(([key, value]) => encodePair(key, value));
-    return qs.length ? `?${qs.join("&")}` : "";
+    return qs.length ? `?${qs.join('&')}` : '';
 };
 exports.getQueryString = getQueryString;
 const getUrl = (config, options) => {
     const encoder = config.ENCODE_PATH || encodeURI;
     const path = options.url
-        .replace("{api-version}", config.VERSION)
+        .replace('{api-version}', config.VERSION)
         .replace(/{(.*?)}/g, (substring, group) => {
         var _a;
         if ((_a = options.path) === null || _a === void 0 ? void 0 : _a.hasOwnProperty(group)) {
@@ -101,7 +101,7 @@ const getFormData = (options) => {
             .filter(([, value]) => value !== undefined && value !== null)
             .forEach(([key, value]) => {
             if (Array.isArray(value)) {
-                value.forEach((v) => process(key, v));
+                value.forEach(v => process(key, v));
             }
             else {
                 process(key, value);
@@ -113,7 +113,7 @@ const getFormData = (options) => {
 };
 exports.getFormData = getFormData;
 const resolve = (options, resolver) => __awaiter(void 0, void 0, void 0, function* () {
-    if (typeof resolver === "function") {
+    if (typeof resolver === 'function') {
         return resolver(options);
     }
     return resolver;
@@ -126,33 +126,33 @@ const getHeaders = (config, options) => __awaiter(void 0, void 0, void 0, functi
         (0, exports.resolve)(options, config.PASSWORD),
         (0, exports.resolve)(options, config.HEADERS),
     ]);
-    const headers = Object.entries(Object.assign(Object.assign({ Accept: "application/json" }, additionalHeaders), options.headers))
+    const headers = Object.entries(Object.assign(Object.assign({ Accept: 'application/json' }, additionalHeaders), options.headers))
         .filter(([, value]) => value !== undefined && value !== null)
         .reduce((headers, [key, value]) => (Object.assign(Object.assign({}, headers), { [key]: String(value) })), {});
     if ((0, exports.isStringWithValue)(token)) {
-        headers["Authorization"] = `Bearer ${token}`;
+        headers['Authorization'] = `Bearer ${token}`;
     }
     if ((0, exports.isStringWithValue)(username) && (0, exports.isStringWithValue)(password)) {
         const credentials = (0, exports.base64)(`${username}:${password}`);
-        headers["Authorization"] = `Basic ${credentials}`;
+        headers['Authorization'] = `Basic ${credentials}`;
     }
     if (options.body !== undefined) {
         if (options.mediaType) {
-            headers["Content-Type"] = options.mediaType;
+            headers['Content-Type'] = options.mediaType;
         }
         else if ((0, exports.isBlob)(options.body)) {
-            headers["Content-Type"] = options.body.type || "application/octet-stream";
+            headers['Content-Type'] = options.body.type || 'application/octet-stream';
         }
         else if ((0, exports.isString)(options.body)) {
-            headers["Content-Type"] = "text/plain";
+            headers['Content-Type'] = 'text/plain';
         }
         else if (!(0, exports.isFormData)(options.body)) {
-            headers["Content-Type"] = "application/json";
+            headers['Content-Type'] = 'application/json';
         }
     }
     else if (options.formData !== undefined) {
         if (options.mediaType) {
-            headers["Content-Type"] = options.mediaType;
+            headers['Content-Type'] = options.mediaType;
         }
     }
     return headers;
@@ -210,14 +210,14 @@ const getResponseBody = (response) => {
 exports.getResponseBody = getResponseBody;
 const catchErrorCodes = (options, result) => {
     var _a, _b;
-    const errors = Object.assign({ 400: "Bad Request", 401: "Unauthorized", 402: "Payment Required", 403: "Forbidden", 404: "Not Found", 405: "Method Not Allowed", 406: "Not Acceptable", 407: "Proxy Authentication Required", 408: "Request Timeout", 409: "Conflict", 410: "Gone", 411: "Length Required", 412: "Precondition Failed", 413: "Payload Too Large", 414: "URI Too Long", 415: "Unsupported Media Type", 416: "Range Not Satisfiable", 417: "Expectation Failed", 418: "Im a teapot", 421: "Misdirected Request", 422: "Unprocessable Content", 423: "Locked", 424: "Failed Dependency", 425: "Too Early", 426: "Upgrade Required", 428: "Precondition Required", 429: "Too Many Requests", 431: "Request Header Fields Too Large", 451: "Unavailable For Legal Reasons", 500: "Internal Server Error", 501: "Not Implemented", 502: "Bad Gateway", 503: "Service Unavailable", 504: "Gateway Timeout", 505: "HTTP Version Not Supported", 506: "Variant Also Negotiates", 507: "Insufficient Storage", 508: "Loop Detected", 510: "Not Extended", 511: "Network Authentication Required" }, options.errors);
+    const errors = Object.assign({ 400: 'Bad Request', 401: 'Unauthorized', 402: 'Payment Required', 403: 'Forbidden', 404: 'Not Found', 405: 'Method Not Allowed', 406: 'Not Acceptable', 407: 'Proxy Authentication Required', 408: 'Request Timeout', 409: 'Conflict', 410: 'Gone', 411: 'Length Required', 412: 'Precondition Failed', 413: 'Payload Too Large', 414: 'URI Too Long', 415: 'Unsupported Media Type', 416: 'Range Not Satisfiable', 417: 'Expectation Failed', 418: 'Im a teapot', 421: 'Misdirected Request', 422: 'Unprocessable Content', 423: 'Locked', 424: 'Failed Dependency', 425: 'Too Early', 426: 'Upgrade Required', 428: 'Precondition Required', 429: 'Too Many Requests', 431: 'Request Header Fields Too Large', 451: 'Unavailable For Legal Reasons', 500: 'Internal Server Error', 501: 'Not Implemented', 502: 'Bad Gateway', 503: 'Service Unavailable', 504: 'Gateway Timeout', 505: 'HTTP Version Not Supported', 506: 'Variant Also Negotiates', 507: 'Insufficient Storage', 508: 'Loop Detected', 510: 'Not Extended', 511: 'Network Authentication Required' }, options.errors);
     const error = errors[result.status];
     if (error) {
         throw new ApiError_1.ApiError(options, result, error);
     }
     if (!result.ok) {
-        const errorStatus = (_a = result.status) !== null && _a !== void 0 ? _a : "unknown";
-        const errorStatusText = (_b = result.statusText) !== null && _b !== void 0 ? _b : "unknown";
+        const errorStatus = (_a = result.status) !== null && _a !== void 0 ? _a : 'unknown';
+        const errorStatusText = (_b = result.statusText) !== null && _b !== void 0 ? _b : 'unknown';
         const errorBody = (() => {
             try {
                 return JSON.stringify(result.body, null, 2);

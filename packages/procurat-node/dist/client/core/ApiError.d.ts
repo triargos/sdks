@@ -1,5 +1,5 @@
-import type { ApiRequestOptions } from "./ApiRequestOptions";
-import type { ApiResult } from "./ApiResult";
+import type { ApiRequestOptions } from './ApiRequestOptions';
+import type { ApiResult } from './ApiResult';
 export declare class ApiError extends Error {
     readonly url: string;
     readonly status: number;

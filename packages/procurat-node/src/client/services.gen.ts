@@ -2,7 +2,7 @@
 
 import type { CancelablePromise } from './core/CancelablePromise';
 import type { BaseHttpRequest } from './core/BaseHttpRequest';
-import type { $OpenApiTs } from './types.gen';
+import type { FindAddressByIdData, FindAddressByIdResponse, FindAllAddressesResponse, CreateAddressData, CreateAddressResponse, GetContactPersonMappingsData, GetContactPersonMappingsResponse, CreateContactPersonMappingData, CreateContactPersonMappingResponse, DeleteContactInformationMappingData, DeleteContactInformationMappingResponse, GetContactInformationMappingsData, GetContactInformationMappingsResponse, CreateContactInformationMappingData, CreateContactInformationMappingResponse, DeleteContactPersonMappingData, DeleteContactPersonMappingResponse, CreateContactInformationData, CreateContactInformationResponse, FindByIdData, FindByIdResponse, UpdateContactInformationData, UpdateContactInformationResponse, DeleteContactInformationData, DeleteContactInformationResponse, FindByAddressData, FindByAddressResponse, FindByPersonData, FindByPersonResponse, FindAllPersonsResponse, CreatePersonData, CreatePersonResponse, FindPersonData, FindPersonResponse, UpdatePersonData, UpdatePersonResponse, FindAllReligionsResponse, FindAllGroupsResponse, FindGroupMembersByIdData, FindGroupMembersByIdResponse, FindGroupByIdData, FindGroupByIdResponse, FindDistrictByIdData, FindDistrictByIdResponse, FindAllDistrictsResponse, FindAllCountriesResponse, FindCountryByIdxData, FindCountryByIdxResponse, FindRelationshipsForPersonData, FindRelationshipsForPersonResponse } from './types.gen';
 
 export class AddressService {
     constructor(public readonly httpRequest: BaseHttpRequest) { }
@@ -15,7 +15,7 @@ export class AddressService {
      * @returns AddressDTO default response
      * @throws ApiError
      */
-    public findAddressById(data: $OpenApiTs['/addresses/{id}']['get']['req']): CancelablePromise<$OpenApiTs['/addresses/{id}']['get']['res'][200]> {
+    public findAddressById(data: FindAddressByIdData): CancelablePromise<FindAddressByIdResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/addresses/{id}',
@@ -31,7 +31,7 @@ export class AddressService {
      * @returns AddressDTO default response
      * @throws ApiError
      */
-    public findAllAddresses(): CancelablePromise<$OpenApiTs['/addresses']['get']['res'][200]> {
+    public findAllAddresses(): CancelablePromise<FindAllAddressesResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/addresses'
@@ -46,7 +46,7 @@ export class AddressService {
      * @returns AddressDTO default response
      * @throws ApiError
      */
-    public createAddress(data: $OpenApiTs['/addresses']['post']['req'] = {}): CancelablePromise<$OpenApiTs['/addresses']['post']['res'][200]> {
+    public createAddress(data: CreateAddressData = {}): CancelablePromise<CreateAddressResponse> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/addresses',
@@ -68,7 +68,7 @@ export class CommunicationService {
      * @returns ContactPersonMappingDTO default response
      * @throws ApiError
      */
-    public getContactPersonMappings(data: $OpenApiTs['/communication/child/{childId}/persons']['get']['req']): CancelablePromise<$OpenApiTs['/communication/child/{childId}/persons']['get']['res'][200]> {
+    public getContactPersonMappings(data: GetContactPersonMappingsData): CancelablePromise<GetContactPersonMappingsResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/communication/child/{childId}/persons',
@@ -87,7 +87,7 @@ export class CommunicationService {
      * @returns ContactPersonMappingDTO default response
      * @throws ApiError
      */
-    public createContactPersonMapping(data: $OpenApiTs['/communication/child/{childId}/persons']['post']['req']): CancelablePromise<$OpenApiTs['/communication/child/{childId}/persons']['post']['res'][200]> {
+    public createContactPersonMapping(data: CreateContactPersonMappingData): CancelablePromise<CreateContactPersonMappingResponse> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/communication/child/{childId}/persons',
@@ -108,7 +108,7 @@ export class CommunicationService {
      * @returns unknown default response
      * @throws ApiError
      */
-    public deleteContactInformationMapping(data: $OpenApiTs['/communication/child/{childId}/information/{contactInformationMappingId}']['delete']['req']): CancelablePromise<$OpenApiTs['/communication/child/{childId}/information/{contactInformationMappingId}']['delete']['res'][200]> {
+    public deleteContactInformationMapping(data: DeleteContactInformationMappingData): CancelablePromise<DeleteContactInformationMappingResponse> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/communication/child/{childId}/information/{contactInformationMappingId}',
@@ -127,7 +127,7 @@ export class CommunicationService {
      * @returns ContactInformationMappingDTO default response
      * @throws ApiError
      */
-    public getContactInformationMappings(data: $OpenApiTs['/communication/child/{childId}/information']['get']['req']): CancelablePromise<$OpenApiTs['/communication/child/{childId}/information']['get']['res'][200]> {
+    public getContactInformationMappings(data: GetContactInformationMappingsData): CancelablePromise<GetContactInformationMappingsResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/communication/child/{childId}/information',
@@ -146,7 +146,7 @@ export class CommunicationService {
      * @returns ContactInformationMappingDTO default response
      * @throws ApiError
      */
-    public createContactInformationMapping(data: $OpenApiTs['/communication/child/{childId}/information']['post']['req']): CancelablePromise<$OpenApiTs['/communication/child/{childId}/information']['post']['res'][200]> {
+    public createContactInformationMapping(data: CreateContactInformationMappingData): CancelablePromise<CreateContactInformationMappingResponse> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/communication/child/{childId}/information',
@@ -167,7 +167,7 @@ export class CommunicationService {
      * @returns unknown default response
      * @throws ApiError
      */
-    public deleteContactPersonMapping(data: $OpenApiTs['/communication/child/{childId}/persons/{contactPersonMappingId}']['delete']['req']): CancelablePromise<$OpenApiTs['/communication/child/{childId}/persons/{contactPersonMappingId}']['delete']['res'][200]> {
+    public deleteContactPersonMapping(data: DeleteContactPersonMappingData): CancelablePromise<DeleteContactPersonMappingResponse> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/communication/child/{childId}/persons/{contactPersonMappingId}',
@@ -191,7 +191,7 @@ export class ContactInformationService {
      * @returns ResponseEntityObject default response
      * @throws ApiError
      */
-    public createContactInformation(data: $OpenApiTs['/contactinformation']['post']['req'] = {}): CancelablePromise<$OpenApiTs['/contactinformation']['post']['res'][200]> {
+    public createContactInformation(data: CreateContactInformationData = {}): CancelablePromise<CreateContactInformationResponse> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/contactinformation',
@@ -208,7 +208,7 @@ export class ContactInformationService {
      * @returns ContactInformationDTO default response
      * @throws ApiError
      */
-    public findById(data: $OpenApiTs['/contactinformation/{contactInformationId}']['get']['req']): CancelablePromise<$OpenApiTs['/contactinformation/{contactInformationId}']['get']['res'][200]> {
+    public findById(data: FindByIdData): CancelablePromise<FindByIdResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/contactinformation/{contactInformationId}',
@@ -227,7 +227,7 @@ export class ContactInformationService {
      * @returns ContactInformationDTO default response
      * @throws ApiError
      */
-    public updateContactInformation(data: $OpenApiTs['/contactinformation/{contactInformationId}']['put']['req']): CancelablePromise<$OpenApiTs['/contactinformation/{contactInformationId}']['put']['res'][200]> {
+    public updateContactInformation(data: UpdateContactInformationData): CancelablePromise<UpdateContactInformationResponse> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/contactinformation/{contactInformationId}',
@@ -247,7 +247,7 @@ export class ContactInformationService {
      * @returns ResponseEntityObject default response
      * @throws ApiError
      */
-    public deleteContactInformation(data: $OpenApiTs['/contactinformation/{contactInformationId}']['delete']['req']): CancelablePromise<$OpenApiTs['/contactinformation/{contactInformationId}']['delete']['res'][200]> {
+    public deleteContactInformation(data: DeleteContactInformationData): CancelablePromise<DeleteContactInformationResponse> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/contactinformation/{contactInformationId}',
@@ -265,7 +265,7 @@ export class ContactInformationService {
      * @returns ContactInformationDTO default response
      * @throws ApiError
      */
-    public findByAddress(data: $OpenApiTs['/contactinformation/address/{addressId}']['get']['req']): CancelablePromise<$OpenApiTs['/contactinformation/address/{addressId}']['get']['res'][200]> {
+    public findByAddress(data: FindByAddressData): CancelablePromise<FindByAddressResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/contactinformation/address/{addressId}',
@@ -283,7 +283,7 @@ export class ContactInformationService {
      * @returns ContactInformationDTO default response
      * @throws ApiError
      */
-    public findByPerson(data: $OpenApiTs['/contactinformation/person/{personId}']['get']['req']): CancelablePromise<$OpenApiTs['/contactinformation/person/{personId}']['get']['res'][200]> {
+    public findByPerson(data: FindByPersonData): CancelablePromise<FindByPersonResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/contactinformation/person/{personId}',
@@ -304,7 +304,7 @@ export class PersonService {
      * @returns PersonDTO default response
      * @throws ApiError
      */
-    public findAllPersons(): CancelablePromise<$OpenApiTs['/persons']['get']['res'][200]> {
+    public findAllPersons(): CancelablePromise<FindAllPersonsResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/persons'
@@ -319,7 +319,7 @@ export class PersonService {
      * @returns SuccessResponse default response
      * @throws ApiError
      */
-    public createPerson(data: $OpenApiTs['/persons']['post']['req'] = {}): CancelablePromise<$OpenApiTs['/persons']['post']['res'][200]> {
+    public createPerson(data: CreatePersonData = {}): CancelablePromise<CreatePersonResponse> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/persons',
@@ -336,7 +336,7 @@ export class PersonService {
      * @returns PersonDTO default response
      * @throws ApiError
      */
-    public findPerson(data: $OpenApiTs['/persons/{id}']['get']['req']): CancelablePromise<$OpenApiTs['/persons/{id}']['get']['res'][200]> {
+    public findPerson(data: FindPersonData): CancelablePromise<FindPersonResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/persons/{id}',
@@ -355,7 +355,7 @@ export class PersonService {
      * @returns SuccessResponse default response
      * @throws ApiError
      */
-    public updatePerson(data: $OpenApiTs['/persons/{id}']['put']['req']): CancelablePromise<$OpenApiTs['/persons/{id}']['put']['res'][200]> {
+    public updatePerson(data: UpdatePersonData): CancelablePromise<UpdatePersonResponse> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/persons/{id}',
@@ -378,7 +378,7 @@ export class ReligionsService {
      * @returns ReligionDTO default response
      * @throws ApiError
      */
-    public findAllReligions(): CancelablePromise<$OpenApiTs['/religions']['get']['res'][200]> {
+    public findAllReligions(): CancelablePromise<FindAllReligionsResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/religions'
@@ -396,7 +396,7 @@ export class GroupsService {
      * @returns GroupDTO default response
      * @throws ApiError
      */
-    public findAllGroups(): CancelablePromise<$OpenApiTs['/groups']['get']['res'][200]> {
+    public findAllGroups(): CancelablePromise<FindAllGroupsResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/groups'
@@ -411,7 +411,7 @@ export class GroupsService {
      * @returns GroupMembershipDTO default response
      * @throws ApiError
      */
-    public findGroupMembersById(data: $OpenApiTs['/groups/{id}/members']['get']['req']): CancelablePromise<$OpenApiTs['/groups/{id}/members']['get']['res'][200]> {
+    public findGroupMembersById(data: FindGroupMembersByIdData): CancelablePromise<FindGroupMembersByIdResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/groups/{id}/members',
@@ -429,7 +429,7 @@ export class GroupsService {
      * @returns GroupDTO default response
      * @throws ApiError
      */
-    public findGroupById(data: $OpenApiTs['/groups/{id}']['get']['req']): CancelablePromise<$OpenApiTs['/groups/{id}']['get']['res'][200]> {
+    public findGroupById(data: FindGroupByIdData): CancelablePromise<FindGroupByIdResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/groups/{id}',
@@ -452,7 +452,7 @@ export class DistrictsService {
      * @returns DistrictDTO default response
      * @throws ApiError
      */
-    public findDistrictById(data: $OpenApiTs['/districts/{id}']['get']['req']): CancelablePromise<$OpenApiTs['/districts/{id}']['get']['res'][200]> {
+    public findDistrictById(data: FindDistrictByIdData): CancelablePromise<FindDistrictByIdResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/districts/{id}',
@@ -468,7 +468,7 @@ export class DistrictsService {
      * @returns DistrictDTO default response
      * @throws ApiError
      */
-    public findAllDistricts(): CancelablePromise<$OpenApiTs['/districts']['get']['res'][200]> {
+    public findAllDistricts(): CancelablePromise<FindAllDistrictsResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/districts'
@@ -486,7 +486,7 @@ export class CountriesService {
      * @returns CountryDTO default response
      * @throws ApiError
      */
-    public findAllCountries(): CancelablePromise<$OpenApiTs['/countries']['get']['res'][200]> {
+    public findAllCountries(): CancelablePromise<FindAllCountriesResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/countries'
@@ -501,7 +501,7 @@ export class CountriesService {
      * @returns CountryDTO default response
      * @throws ApiError
      */
-    public findCountryByIdx(data: $OpenApiTs['/countries/{idx}']['get']['req']): CancelablePromise<$OpenApiTs['/countries/{idx}']['get']['res'][200]> {
+    public findCountryByIdx(data: FindCountryByIdxData): CancelablePromise<FindCountryByIdxResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/countries/{idx}',
@@ -524,7 +524,7 @@ export class RelationshipsService {
      * @returns RelationshipDTO default response
      * @throws ApiError
      */
-    public findRelationshipsForPerson(data: $OpenApiTs['/relationships/person/{personId}']['get']['req']): CancelablePromise<$OpenApiTs['/relationships/person/{personId}']['get']['res'][200]> {
+    public findRelationshipsForPerson(data: FindRelationshipsForPersonData): CancelablePromise<FindRelationshipsForPersonResponse> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/relationships/person/{personId}',

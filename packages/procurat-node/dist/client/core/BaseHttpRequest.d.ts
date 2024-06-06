@@ -1,6 +1,6 @@
-import type { ApiRequestOptions } from "./ApiRequestOptions";
-import type { CancelablePromise } from "./CancelablePromise";
-import type { OpenAPIConfig } from "./OpenAPI";
+import type { ApiRequestOptions } from './ApiRequestOptions';
+import type { CancelablePromise } from './CancelablePromise';
+import type { OpenAPIConfig } from './OpenAPI';
 export declare abstract class BaseHttpRequest {
     readonly config: OpenAPIConfig;
     constructor(config: OpenAPIConfig);

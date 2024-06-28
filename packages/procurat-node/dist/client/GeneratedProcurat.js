@@ -12,6 +12,7 @@ const services_gen_6 = require("./services.gen");
 const services_gen_7 = require("./services.gen");
 const services_gen_8 = require("./services.gen");
 const services_gen_9 = require("./services.gen");
+const services_gen_10 = require("./services.gen");
 class GeneratedProcurat {
     constructor(config, HttpRequest = AxiosHttpRequest_1.AxiosHttpRequest) {
         var _a, _b, _c, _d, _e, _f, _g, _h;
@@ -36,9 +37,10 @@ class GeneratedProcurat {
         this.countries = new services_gen_4.CountriesService(this.request);
         this.districts = new services_gen_5.DistrictsService(this.request);
         this.groups = new services_gen_6.GroupsService(this.request);
-        this.person = new services_gen_7.PersonService(this.request);
-        this.relationships = new services_gen_8.RelationshipsService(this.request);
-        this.religions = new services_gen_9.ReligionsService(this.request);
+        this.health = new services_gen_7.HealthService(this.request);
+        this.person = new services_gen_8.PersonService(this.request);
+        this.relationships = new services_gen_9.RelationshipsService(this.request);
+        this.religions = new services_gen_10.ReligionsService(this.request);
     }
 }
 exports.GeneratedProcurat = GeneratedProcurat;

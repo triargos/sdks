@@ -1,3 +1,10 @@
+# @triargos/procurat-node [1.4.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.3.0...@triargos/procurat-node@1.4.0) (2024-06-28)
+
+
+### Features
+
+* **api:** update definitions ([0cbaab1](https://github.com/triargos/sdks/commit/0cbaab1d6e052034368d86a14fbc068e4fbbdfcb))
+
 # @triargos/procurat-node [1.3.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.2.1...@triargos/procurat-node@1.3.0) (2024-06-06)
 
 

@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI definition",
+    "title": "procurat API definition",
     "version": "v0"
   },
   "servers": [
@@ -14,42 +14,13 @@
     {
       "name": "Groups",
       "description": "The group API"
+    },
+    {
+      "name": "Health",
+      "description": "Query the health of the application"
     }
   ],
   "paths": {
-    "/addresses/{id}": {
-      "get": {
-        "tags": [
-          "Address"
-        ],
-        "summary": "Get address by id",
-        "description": "Get address by id",
-        "operationId": "findAddressById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/AddressDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/communication/child/{childId}/persons": {
       "get": {
         "tags": [
@@ -126,108 +97,61 @@
         }
       }
     },
-    "/contactinformation": {
-      "post": {
-        "tags": [
-          "Contact Information"
-        ],
-        "summary": "Create",
-        "description": "Create contact information",
-        "operationId": "createContactInformation",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContactInformationDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseEntityObject"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/communication/child/{childId}/information/{contactInformationMappingId}": {
-      "delete": {
-        "tags": [
-          "Communication"
-        ],
-        "summary": "Delete contact information mapping for a child",
-        "description": "Delete contact information mapping for a child",
-        "operationId": "deleteContactInformationMapping",
-        "parameters": [
-          {
-            "name": "childId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "contactInformationMappingId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response"
-          }
-        }
-      }
-    },
-    "/persons": {
+    "/persons/{id}": {
       "get": {
         "tags": [
           "Person"
         ],
-        "summary": "Find all",
-        "description": "Find all persons.",
-        "operationId": "findAllPersons",
+        "summary": "Find by id",
+        "description": "Find a person by id.",
+        "operationId": "findPerson",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PersonDTO"
-                  }
+                  "$ref": "#/components/schemas/PersonDTO"
                 }
               }
             }
           }
         }
       },
-      "post": {
+      "put": {
         "tags": [
           "Person"
         ],
-        "summary": "Create",
-        "description": "Create a person.",
-        "operationId": "createPerson",
+        "summary": "Update",
+        "description": "Update a person.",
+        "operationId": "updatePerson",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePersonDTO"
+                "$ref": "#/components/schemas/PersonDTO"
               }
             }
           }
@@ -246,17 +170,26 @@
         }
       }
     },
-    "/communication/child/{childId}/information": {
-      "get": {
+    "/communication/child/{childId}/persons/{contactPersonMappingId}": {
+      "delete": {
         "tags": [
           "Communication"
         ],
-        "summary": "Get contact information mappings for a child",
-        "description": "Get contact information mappings for a child",
-        "operationId": "getContactInformationMappings",
+        "summary": "Delete contact person mapping for a child",
+        "description": "Delete contact person mapping for a child",
+        "operationId": "deleteContactPersonMapping",
         "parameters": [
           {
             "name": "childId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "contactPersonMappingId",
             "in": "path",
             "required": true,
             "schema": {
@@ -267,30 +200,22 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ContactInformationMappingDTO"
-                  }
-                }
-              }
-            }
+            "description": "default response"
           }
         }
-      },
-      "post": {
+      }
+    },
+    "/groups/{id}": {
+      "get": {
         "tags": [
-          "Communication"
+          "Groups"
         ],
-        "summary": "Create contact information mapping for a child",
-        "description": "Create contact information mapping for a child",
-        "operationId": "createContactInformationMapping",
+        "summary": "Find group by id",
+        "description": "Find group by id",
+        "operationId": "findGroupById",
         "parameters": [
           {
-            "name": "childId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -299,22 +224,13 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContactInformationMappingDTO"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContactInformationMappingDTO"
+                  "$ref": "#/components/schemas/GroupDTO"
                 }
               }
             }
@@ -426,17 +342,91 @@
         }
       }
     },
-    "/contactinformation/address/{addressId}": {
+    "/addresses": {
       "get": {
         "tags": [
-          "Contact Information"
+          "Address"
         ],
-        "summary": "Find by Address",
-        "description": "Find contact information by address",
-        "operationId": "findByAddress",
+        "summary": "Get all addresses",
+        "description": "Get all addresses",
+        "operationId": "findAllAddresses",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AddressDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Address"
+        ],
+        "summary": "Create address",
+        "description": "Create address",
+        "operationId": "createAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressCreationDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/groups/{id}/members": {
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Find group members by id",
+        "description": "Find group members by id",
+        "operationId": "findGroupMembersById",
         "parameters": [
           {
-            "name": "addressId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -453,8 +443,145 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ContactInformationDTO"
+                    "$ref": "#/components/schemas/GroupMemberDTO"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/relationships/person/{personId}": {
+      "get": {
+        "tags": [
+          "Relationships"
+        ],
+        "summary": "Get relationships for person",
+        "description": "Get relationships for person",
+        "operationId": "findRelationshipsForPerson",
+        "parameters": [
+          {
+            "name": "personId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RelationshipDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/countries": {
+      "get": {
+        "tags": [
+          "Countries"
+        ],
+        "summary": "Find all",
+        "description": "Find all available countries",
+        "operationId": "findAllCountries",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CountryDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/communication/child/{childId}/information": {
+      "get": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Get contact information mappings for a child",
+        "description": "Get contact information mappings for a child",
+        "operationId": "getContactInformationMappings",
+        "parameters": [
+          {
+            "name": "childId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContactInformationMappingDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Create contact information mapping for a child",
+        "description": "Create contact information mapping for a child",
+        "operationId": "createContactInformationMapping",
+        "parameters": [
+          {
+            "name": "childId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactInformationMappingDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactInformationMappingDTO"
                 }
               }
             }
@@ -479,66 +606,6 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ReligionDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/communication/child/{childId}/persons/{contactPersonMappingId}": {
-      "delete": {
-        "tags": [
-          "Communication"
-        ],
-        "summary": "Delete contact person mapping for a child",
-        "description": "Delete contact person mapping for a child",
-        "operationId": "deleteContactPersonMapping",
-        "parameters": [
-          {
-            "name": "childId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "contactPersonMappingId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response"
-          }
-        }
-      }
-    },
-    "/groups": {
-      "get": {
-        "tags": [
-          "Groups"
-        ],
-        "summary": "Find all groups",
-        "description": "Find all groups",
-        "operationId": "findAllGroups",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GroupDTO"
                   }
                 }
               }
@@ -583,14 +650,14 @@
         }
       }
     },
-    "/addresses": {
+    "/districts": {
       "get": {
         "tags": [
-          "Address"
+          "Districts"
         ],
-        "summary": "Get all addresses",
-        "description": "Get all addresses",
-        "operationId": "findAllAddresses",
+        "summary": "Get all districts",
+        "description": "Get all districts",
+        "operationId": "findAllDistricts",
         "responses": {
           "200": {
             "description": "default response",
@@ -599,37 +666,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AddressDTO"
+                    "$ref": "#/components/schemas/CountyDTO"
                   }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Address"
-        ],
-        "summary": "Create address",
-        "description": "Create address",
-        "operationId": "createAddress",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAddressDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/AddressDTO"
                 }
               }
             }
@@ -662,7 +700,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/DistrictDTO"
+                  "$ref": "#/components/schemas/CountyDTO"
                 }
               }
             }
@@ -670,64 +708,80 @@
         }
       }
     },
-    "/countries": {
+    "/contactinformation": {
+      "post": {
+        "tags": [
+          "Contact Information"
+        ],
+        "summary": "Create",
+        "description": "Create contact information",
+        "operationId": "createContactInformation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactInformationCreationDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/communication/child/{childId}/information/{contactInformationMappingId}": {
+      "delete": {
+        "tags": [
+          "Communication"
+        ],
+        "summary": "Delete contact information mapping for a child",
+        "description": "Delete contact information mapping for a child",
+        "operationId": "deleteContactInformationMapping",
+        "parameters": [
+          {
+            "name": "childId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "contactInformationMappingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response"
+          }
+        }
+      }
+    },
+    "/countries/{id}": {
       "get": {
         "tags": [
           "Countries"
         ],
-        "summary": "Find all",
-        "description": "Find all available countries",
-        "operationId": "findAllCountries",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CountryDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/districts": {
-      "get": {
-        "tags": [
-          "Districts"
-        ],
-        "summary": "Get all districts",
-        "description": "Get all districts",
-        "operationId": "findAllDistricts",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DistrictDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/groups/{id}/members": {
-      "get": {
-        "tags": [
-          "Groups"
-        ],
-        "summary": "Find group members by id",
-        "description": "Find group members by id",
-        "operationId": "findGroupMembersById",
+        "summary": "Find by ID",
+        "description": "Find a country by its ID",
+        "operationId": "findCountryByIdx",
         "parameters": [
           {
             "name": "id",
@@ -745,10 +799,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GroupMembershipDTO"
-                  }
+                  "$ref": "#/components/schemas/CountryDTO"
                 }
               }
             }
@@ -756,94 +807,42 @@
         }
       }
     },
-    "/groups/{id}": {
-      "get": {
-        "tags": [
-          "Groups"
-        ],
-        "summary": "Find group by id",
-        "description": "Find group by id",
-        "operationId": "findGroupById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GroupDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/persons/{id}": {
+    "/persons": {
       "get": {
         "tags": [
           "Person"
         ],
-        "summary": "Find by id",
-        "description": "Find a person by id.",
-        "operationId": "findPerson",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
+        "summary": "Find all",
+        "description": "Find all persons.",
+        "operationId": "findAllPersons",
         "responses": {
           "200": {
             "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PersonDTO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonDTO"
+                  }
                 }
               }
             }
           }
         }
       },
-      "put": {
+      "post": {
         "tags": [
           "Person"
         ],
-        "summary": "Update",
-        "description": "Update a person.",
-        "operationId": "updatePerson",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
+        "summary": "Create",
+        "description": "Create a person.",
+        "operationId": "createPerson",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PersonDTO"
+                "$ref": "#/components/schemas/PersonCreationDTO"
               }
             }
           }
@@ -862,21 +861,22 @@
         }
       }
     },
-    "/countries/{idx}": {
+    "/addresses/{id}": {
       "get": {
         "tags": [
-          "Countries"
+          "Address"
         ],
-        "summary": "Find by IDX",
-        "description": "Find a country by its IDX",
-        "operationId": "findCountryByIdx",
+        "summary": "Get address by id",
+        "description": "Get address by id",
+        "operationId": "findAddressById",
         "parameters": [
           {
-            "name": "idx",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -886,7 +886,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/CountryDTO"
+                  "$ref": "#/components/schemas/AddressDTO"
                 }
               }
             }
@@ -894,17 +894,17 @@
         }
       }
     },
-    "/relationships/person/{personId}": {
+    "/contactinformation/address/{addressId}": {
       "get": {
         "tags": [
-          "Relationships"
+          "Contact Information"
         ],
-        "summary": "Get relationships for person",
-        "description": "Get relationships for person",
-        "operationId": "findRelationshipsForPerson",
+        "summary": "Find by Address",
+        "description": "Find contact information by address",
+        "operationId": "findByAddress",
         "parameters": [
           {
-            "name": "personId",
+            "name": "addressId",
             "in": "path",
             "required": true,
             "schema": {
@@ -921,7 +921,32 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/RelationshipDTO"
+                    "$ref": "#/components/schemas/ContactInformationDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/groups": {
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Find all groups",
+        "description": "Find all groups",
+        "operationId": "findAllGroups",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GroupDTO"
                   }
                 }
               }
@@ -933,43 +958,6 @@
   },
   "components": {
     "schemas": {
-      "AddressDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "street": {
-            "type": "string"
-          },
-          "zip": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "additional": {
-            "type": "string"
-          },
-          "po": {
-            "type": "string"
-          },
-          "poZip": {
-            "type": "string"
-          },
-          "districtId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "country": {
-            "type": "string"
-          },
-          "locality": {
-            "type": "string"
-          }
-        }
-      },
       "ContactPersonMappingDTO": {
         "type": "object",
         "properties": {
@@ -996,7 +984,374 @@
           }
         }
       },
+      "PersonDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "addressId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "familyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "familyRole": {
+            "type": "string"
+          },
+          "birthDate": {
+            "type": "string"
+          },
+          "birthPlace": {
+            "type": "string"
+          },
+          "birthCountryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "languageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "religionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "allFirstNames": {
+            "type": "string"
+          },
+          "birthName": {
+            "type": "string"
+          },
+          "academicTitle": {
+            "type": "string"
+          },
+          "namePrefix": {
+            "type": "string"
+          },
+          "nobilityTitle": {
+            "type": "string"
+          },
+          "salutationA": {
+            "type": "string"
+          },
+          "salutationB": {
+            "type": "string"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "nationalityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maritalStatus": {
+            "type": "string"
+          },
+          "deathDate": {
+            "type": "string"
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "GroupDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "grade": {
+            "type": "string"
+          },
+          "character": {
+            "type": "string"
+          },
+          "schoolYear": {
+            "type": "string"
+          }
+        }
+      },
       "ContactInformationDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "medium": {
+            "type": "string"
+          },
+          "personId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "addressId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "externalName": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "secret": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AddressCreationDTO": {
+        "type": "object",
+        "properties": {
+          "personId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "street": {
+            "type": "string"
+          },
+          "countryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "nameline2": {
+            "type": "string"
+          },
+          "additional": {
+            "type": "string"
+          },
+          "district": {
+            "type": "string"
+          },
+          "poBoxZip": {
+            "type": "string"
+          },
+          "poBox": {
+            "type": "string"
+          },
+          "countyId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AddressDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "street": {
+            "type": "string"
+          },
+          "countryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "nameline2": {
+            "type": "string"
+          },
+          "additional": {
+            "type": "string"
+          },
+          "district": {
+            "type": "string"
+          },
+          "poBoxZip": {
+            "type": "string"
+          },
+          "poBox": {
+            "type": "string"
+          },
+          "countyId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "HealthDTO": {
+        "type": "object",
+        "properties": {
+          "databaseVersion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "build": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "databaseValid": {
+            "type": "boolean"
+          },
+          "databaseLocked": {
+            "type": "boolean"
+          },
+          "lastUpdateStart": {
+            "type": "string"
+          },
+          "lastUpdateEnd": {
+            "type": "string"
+          },
+          "lastUpdateFailed": {
+            "type": "string"
+          }
+        }
+      },
+      "GroupMemberDTO": {
+        "type": "object",
+        "properties": {
+          "personId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "entryDate": {
+            "type": "string"
+          },
+          "exitDate": {
+            "type": "string"
+          }
+        }
+      },
+      "RelationshipDTO": {
+        "type": "object",
+        "properties": {
+          "personId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "relationshipType": {
+            "type": "string"
+          },
+          "physical": {
+            "type": "boolean"
+          },
+          "custody": {
+            "type": "boolean"
+          },
+          "realParent": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      },
+      "CountryDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idx": {
+            "type": "string"
+          },
+          "iso": {
+            "type": "string"
+          }
+        }
+      },
+      "ContactInformationMappingDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "childId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "contactInfoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "emergencyPriority": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isOnList": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ReligionDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "CountyDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ContactInformationCreationDTO": {
         "required": [
           "content",
           "medium",
@@ -1029,14 +1384,6 @@
           },
           "secret": {
             "type": "boolean"
-          },
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "order": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
@@ -1090,12 +1437,6 @@
       "HttpHeaders": {
         "type": "object",
         "properties": {
-          "connection": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "date": {
             "type": "integer",
             "format": "int64"
@@ -1108,6 +1449,19 @@
             "type": "integer",
             "format": "int64"
           },
+          "connection": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contentType": {
+            "$ref": "#/components/schemas/MediaType"
+          },
+          "ifModifiedSince": {
+            "type": "integer",
+            "format": "int64"
+          },
           "host": {
             "type": "object",
             "properties": {
@@ -1117,6 +1471,9 @@
               "address": {
                 "type": "object",
                 "properties": {
+                  "loopbackAddress": {
+                    "type": "boolean"
+                  },
                   "multicastAddress": {
                     "type": "boolean"
                   },
@@ -1146,9 +1503,6 @@
                   },
                   "canonicalHostName": {
                     "type": "string"
-                  },
-                  "loopbackAddress": {
-                    "type": "boolean"
                   },
                   "address": {
                     "type": "array",
@@ -1180,13 +1534,6 @@
           "origin": {
             "type": "string"
           },
-          "contentType": {
-            "$ref": "#/components/schemas/MediaType"
-          },
-          "ifModifiedSince": {
-            "type": "integer",
-            "format": "int64"
-          },
           "empty": {
             "type": "boolean"
           },
@@ -1200,9 +1547,6 @@
               "type": "string"
             },
             "writeOnly": true
-          },
-          "etag": {
-            "type": "string"
           },
           "range": {
             "type": "array",
@@ -1227,11 +1571,21 @@
               ]
             }
           },
+          "etag": {
+            "type": "string"
+          },
           "vary": {
             "type": "array",
             "items": {
               "type": "string"
             }
+          },
+          "cacheControl": {
+            "type": "string"
+          },
+          "expires": {
+            "type": "integer",
+            "format": "int64"
           },
           "contentLanguage": {
             "type": "object",
@@ -1291,13 +1645,6 @@
                 "type": "string"
               }
             }
-          },
-          "cacheControl": {
-            "type": "string"
-          },
-          "expires": {
-            "type": "integer",
-            "format": "int64"
           },
           "acceptPatch": {
             "type": "array",
@@ -1436,8 +1783,14 @@
               }
             }
           },
-          "accessControlAllowOrigin": {
-            "type": "string"
+          "accessControlAllowCredentials": {
+            "type": "boolean"
+          },
+          "accessControlAllowHeaders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "accessControlAllowMethods": {
             "type": "array",
@@ -1455,14 +1808,20 @@
               ]
             }
           },
-          "accessControlAllowHeaders": {
+          "accessControlAllowOrigin": {
+            "type": "string"
+          },
+          "accessControlExposeHeaders": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "accessControlAllowCredentials": {
-            "type": "boolean"
+          "accessControlRequestHeaders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "accessControlRequestMethod": {
             "type": "string",
@@ -1476,18 +1835,6 @@
               "OPTIONS",
               "TRACE"
             ]
-          },
-          "accessControlRequestHeaders": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "accessControlExposeHeaders": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         },
         "additionalProperties": {
@@ -1519,14 +1866,8 @@
             "type": "number",
             "format": "double"
           },
-          "wildcardType": {
+          "concrete": {
             "type": "boolean"
-          },
-          "wildcardSubtype": {
-            "type": "boolean"
-          },
-          "subtypeSuffix": {
-            "type": "string"
           },
           "charset": {
             "type": "object",
@@ -1536,8 +1877,14 @@
               }
             }
           },
-          "concrete": {
+          "wildcardType": {
             "type": "boolean"
+          },
+          "wildcardSubtype": {
+            "type": "boolean"
+          },
+          "subtypeSuffix": {
+            "type": "string"
           }
         }
       },
@@ -1547,12 +1894,6 @@
           "headers": {
             "type": "object",
             "properties": {
-              "connection": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
               "date": {
                 "type": "integer",
                 "format": "int64"
@@ -1565,6 +1906,19 @@
                 "type": "integer",
                 "format": "int64"
               },
+              "connection": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "contentType": {
+                "$ref": "#/components/schemas/MediaType"
+              },
+              "ifModifiedSince": {
+                "type": "integer",
+                "format": "int64"
+              },
               "host": {
                 "type": "object",
                 "properties": {
@@ -1574,6 +1928,9 @@
                   "address": {
                     "type": "object",
                     "properties": {
+                      "loopbackAddress": {
+                        "type": "boolean"
+                      },
                       "multicastAddress": {
                         "type": "boolean"
                       },
@@ -1603,9 +1960,6 @@
                       },
                       "canonicalHostName": {
                         "type": "string"
-                      },
-                      "loopbackAddress": {
-                        "type": "boolean"
                       },
                       "address": {
                         "type": "array",
@@ -1637,13 +1991,6 @@
               "origin": {
                 "type": "string"
               },
-              "contentType": {
-                "$ref": "#/components/schemas/MediaType"
-              },
-              "ifModifiedSince": {
-                "type": "integer",
-                "format": "int64"
-              },
               "empty": {
                 "type": "boolean"
               },
@@ -1657,9 +2004,6 @@
                   "type": "string"
                 },
                 "writeOnly": true
-              },
-              "etag": {
-                "type": "string"
               },
               "range": {
                 "type": "array",
@@ -1684,11 +2028,21 @@
                   ]
                 }
               },
+              "etag": {
+                "type": "string"
+              },
               "vary": {
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
+              },
+              "cacheControl": {
+                "type": "string"
+              },
+              "expires": {
+                "type": "integer",
+                "format": "int64"
               },
               "contentLanguage": {
                 "type": "object",
@@ -1748,13 +2102,6 @@
                     "type": "string"
                   }
                 }
-              },
-              "cacheControl": {
-                "type": "string"
-              },
-              "expires": {
-                "type": "integer",
-                "format": "int64"
               },
               "acceptPatch": {
                 "type": "array",
@@ -1893,8 +2240,14 @@
                   }
                 }
               },
-              "accessControlAllowOrigin": {
-                "type": "string"
+              "accessControlAllowCredentials": {
+                "type": "boolean"
+              },
+              "accessControlAllowHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "accessControlAllowMethods": {
                 "type": "array",
@@ -1912,14 +2265,20 @@
                   ]
                 }
               },
-              "accessControlAllowHeaders": {
+              "accessControlAllowOrigin": {
+                "type": "string"
+              },
+              "accessControlExposeHeaders": {
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
               },
-              "accessControlAllowCredentials": {
-                "type": "boolean"
+              "accessControlRequestHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "accessControlRequestMethod": {
                 "type": "string",
@@ -1933,18 +2292,6 @@
                   "OPTIONS",
                   "TRACE"
                 ]
-              },
-              "accessControlRequestHeaders": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "accessControlExposeHeaders": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
               }
             },
             "additionalProperties": {
@@ -2036,31 +2383,17 @@
           }
         }
       },
-      "CreatePersonDTO": {
+      "PersonCreationDTO": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
           "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "allFirstNames": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "lastName": {
             "type": "string"
           },
-          "academicTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "birthDate": {
-            "type": "string",
-            "nullable": true
+          "gender": {
+            "type": "string"
           },
           "addressId": {
             "type": "integer",
@@ -2073,292 +2406,56 @@
           "familyRole": {
             "type": "string"
           },
-          "gender": {
+          "birthDate": {
             "type": "string"
           },
-          "placeOfBirth": {
+          "birthPlace": {
             "type": "string"
           },
-          "nationality": {
-            "type": "string"
-          },
-          "countryOfOrigin": {
-            "type": "string"
-          },
-          "religion": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "salutation": {
-            "type": "string"
-          },
-          "prefix": {
-            "type": "string"
-          },
-          "mobilePhone": {
-            "type": "string"
-          },
-          "householdPhone": {
-            "type": "string"
-          },
-          "businessPhone": {
-            "type": "string"
-          },
-          "street": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "zipCode": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          }
-        }
-      },
-      "SuccessResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
+          "birthCountryId": {
             "type": "integer",
             "format": "int32"
           },
-          "message": {
-            "type": "string"
-          }
-        }
-      },
-      "ContactInformationMappingDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
+          "languageId": {
             "type": "integer",
             "format": "int32"
           },
-          "childId": {
+          "religionId": {
             "type": "integer",
             "format": "int32"
-          },
-          "contactInfoId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "emergencyPriority": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "isOnList": {
-            "type": "boolean"
-          }
-        }
-      },
-      "ReligionDTO": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "PersonDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "firstName": {
-            "type": "string",
-            "nullable": true
           },
           "allFirstNames": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
-          "lastName": {
+          "birthName": {
             "type": "string"
           },
           "academicTitle": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
-          "birthDate": {
-            "type": "string",
-            "nullable": true
+          "namePrefix": {
+            "type": "string"
           },
-          "addressId": {
+          "nobilityTitle": {
+            "type": "string"
+          },
+          "salutationA": {
+            "type": "string"
+          },
+          "salutationB": {
+            "type": "string"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "nationalityId": {
             "type": "integer",
             "format": "int32"
           },
-          "familyId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "familyRole": {
+          "maritalStatus": {
             "type": "string"
           },
-          "gender": {
-            "type": "string"
-          },
-          "placeOfBirth": {
-            "type": "string"
-          },
-          "nationality": {
-            "type": "string"
-          },
-          "countryOfOrigin": {
-            "type": "string"
-          },
-          "religion": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "salutation": {
-            "type": "string"
-          },
-          "prefix": {
-            "type": "string"
-          }
-        }
-      },
-      "GroupDTO": {
-        "required": [
-          "id",
-          "name",
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "grade": {
-            "type": "string"
-          },
-          "character": {
-            "type": "string"
-          },
-          "schoolYear": {
-            "type": "string"
-          }
-        }
-      },
-      "DistrictDTO": {
-        "required": [
-          "id",
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "CountryDTO": {
-        "required": [
-          "iso",
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "idx": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "iso": {
-            "type": "string"
-          }
-        }
-      },
-      "GroupMembershipDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "entry": {
-            "type": "string"
-          },
-          "exit": {
-            "type": "string"
-          }
-        }
-      },
-      "CreateAddressDTO": {
-        "type": "object",
-        "properties": {
-          "personId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "street": {
-            "type": "string"
-          },
-          "zip": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "additional": {
-            "type": "string"
-          },
-          "po": {
-            "type": "string"
-          },
-          "poZip": {
-            "type": "string"
-          },
-          "districtId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "country": {
-            "type": "string"
-          }
-        }
-      },
-      "RelationshipDTO": {
-        "type": "object",
-        "properties": {
-          "personId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "relationshipType": {
-            "type": "string"
-          },
-          "physical": {
-            "type": "boolean"
-          },
-          "custody": {
-            "type": "boolean"
-          },
-          "realParent": {
-            "type": "boolean"
-          },
-          "notes": {
+          "deathDate": {
             "type": "string"
           }
         }

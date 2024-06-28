@@ -5,243 +5,251 @@ import type { BaseHttpRequest } from './core/BaseHttpRequest';
 import type { $OpenApiTs } from './types.gen';
 
 export class OrganizationsService {
-  constructor(public readonly httpRequest: BaseHttpRequest) {}
-
-  /**
-   * Get all organizations
-   * Get all organizations
-   * @returns unknown A list of organizations
-   * @throws ApiError
-   */
-  public getOrganizations(): CancelablePromise<
-    $OpenApiTs['/v1/organizations']['get']['res'][200]
-  > {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/v1/organizations',
-      errors: {
-        400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
-        401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
-        403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
-        404: 'The server cannot find the requested resource.',
-        409: 'This response is sent when a request conflicts with the current state of the server.',
-        410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
-        422: 'The request was well-formed but was unable to be followed due to semantic errors.',
-        429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
-        500: 'The server has encountered a situation it does not know how to handle.',
-      },
-    });
-  }
-
-  /**
-   * Get organization by ID
-   * Get an organization by ID
-   * @param data The data for the request.
-   * @param data.organizationId The organization's ID.
-   * @returns unknown An organization
-   * @throws ApiError
-   */
-  public getOrganization(
-    data: $OpenApiTs['/v1/organizations/{organizationId}']['get']['req'],
-  ): CancelablePromise<
-    $OpenApiTs['/v1/organizations/{organizationId}']['get']['res'][200]
-  > {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/v1/organizations/{organizationId}',
-      path: {
-        organizationId: data.organizationId,
-      },
-      errors: {
-        400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
-        401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
-        403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
-        404: 'The server cannot find the requested resource.',
-        409: 'This response is sent when a request conflicts with the current state of the server.',
-        410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
-        422: 'The request was well-formed but was unable to be followed due to semantic errors.',
-        429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
-        500: 'The server has encountered a situation it does not know how to handle.',
-      },
-    });
-  }
+    constructor(public readonly httpRequest: BaseHttpRequest) { }
+    
+    /**
+     * Get all organizations
+     * Get all organizations
+     * @returns unknown A list of organizations
+     * @throws ApiError
+     */
+    public getOrganizations(): CancelablePromise<$OpenApiTs['/v1/organizations']['get']['res'][200]> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/v1/organizations',
+            errors: {
+                400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
+                401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
+                403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
+                404: 'The server cannot find the requested resource.',
+                409: 'This response is sent when a request conflicts with the current state of the server.',
+                410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
+                422: 'The request was well-formed but was unable to be followed due to semantic errors.',
+                429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
+                500: 'The server has encountered a situation it does not know how to handle.'
+            }
+        });
+    }
+    
+    /**
+     * Get organization by ID
+     * Get an organization by ID
+     * @param data The data for the request.
+     * @param data.organizationId The organization's ID.
+     * @returns unknown An organization
+     * @throws ApiError
+     */
+    public getOrganization(data: $OpenApiTs['/v1/organizations/{organizationId}']['get']['req']): CancelablePromise<$OpenApiTs['/v1/organizations/{organizationId}']['get']['res'][200]> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/v1/organizations/{organizationId}',
+            path: {
+                organizationId: data.organizationId
+            },
+            errors: {
+                400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
+                401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
+                403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
+                404: 'The server cannot find the requested resource.',
+                409: 'This response is sent when a request conflicts with the current state of the server.',
+                410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
+                422: 'The request was well-formed but was unable to be followed due to semantic errors.',
+                429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
+                500: 'The server has encountered a situation it does not know how to handle.'
+            }
+        });
+    }
+    
 }
 
 export class PersonsService {
-  constructor(public readonly httpRequest: BaseHttpRequest) {}
-
-  /**
-   * Get persons
-   * Get all persons of an organization
-   * @param data The data for the request.
-   * @param data.organizationId The organization's ID.
-   * @returns unknown A list of persons
-   * @throws ApiError
-   */
-  public getPersons(
-    data: $OpenApiTs['/v1/organizations/{organizationId}/persons']['get']['req'],
-  ): CancelablePromise<
-    $OpenApiTs['/v1/organizations/{organizationId}/persons']['get']['res'][200]
-  > {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/v1/organizations/{organizationId}/persons',
-      path: {
-        organizationId: data.organizationId,
-      },
-      errors: {
-        400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
-        401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
-        403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
-        404: 'The server cannot find the requested resource.',
-        409: 'This response is sent when a request conflicts with the current state of the server.',
-        410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
-        422: 'The request was well-formed but was unable to be followed due to semantic errors.',
-        429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
-        500: 'The server has encountered a situation it does not know how to handle.',
-      },
-    });
-  }
-
-  /**
-   * Get a person
-   * Get a person within an organization by ID
-   * @param data The data for the request.
-   * @param data.organizationId The organization's ID.
-   * @param data.personId
-   * @returns unknown A person with address
-   * @throws ApiError
-   */
-  public getPerson(
-    data: $OpenApiTs['/v1/organizations/{organizationId}/persons/{personId}']['get']['req'],
-  ): CancelablePromise<
-    $OpenApiTs['/v1/organizations/{organizationId}/persons/{personId}']['get']['res'][200]
-  > {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/v1/organizations/{organizationId}/persons/{personId}',
-      path: {
-        organizationId: data.organizationId,
-        personId: data.personId,
-      },
-      errors: {
-        400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
-        401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
-        403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
-        404: 'The server cannot find the requested resource.',
-        409: 'This response is sent when a request conflicts with the current state of the server.',
-        410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
-        422: 'The request was well-formed but was unable to be followed due to semantic errors.',
-        429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
-        500: 'The server has encountered a situation it does not know how to handle.',
-      },
-    });
-  }
-
-  /**
-   * Get relationships
-   * Get all relationships for a person within an organization
-   * @param data The data for the request.
-   * @param data.organizationId The organization's ID.
-   * @param data.personId
-   * @returns unknown A list of relationships
-   * @throws ApiError
-   */
-  public getRelationships(
-    data: $OpenApiTs['/v1/organizations/{organizationId}/persons/{personId}/relationships']['get']['req'],
-  ): CancelablePromise<
-    $OpenApiTs['/v1/organizations/{organizationId}/persons/{personId}/relationships']['get']['res'][200]
-  > {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/v1/organizations/{organizationId}/persons/{personId}/relationships',
-      path: {
-        organizationId: data.organizationId,
-        personId: data.personId,
-      },
-      errors: {
-        400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
-        401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
-        403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
-        404: 'The server cannot find the requested resource.',
-        409: 'This response is sent when a request conflicts with the current state of the server.',
-        410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
-        422: 'The request was well-formed but was unable to be followed due to semantic errors.',
-        429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
-        500: 'The server has encountered a situation it does not know how to handle.',
-      },
-    });
-  }
+    constructor(public readonly httpRequest: BaseHttpRequest) { }
+    
+    /**
+     * Get persons
+     * Get all persons of an organization
+     * @param data The data for the request.
+     * @param data.organizationId The organization's ID.
+     * @returns unknown A list of persons
+     * @throws ApiError
+     */
+    public getPersons(data: $OpenApiTs['/v1/organizations/{organizationId}/persons']['get']['req']): CancelablePromise<$OpenApiTs['/v1/organizations/{organizationId}/persons']['get']['res'][200]> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/v1/organizations/{organizationId}/persons',
+            path: {
+                organizationId: data.organizationId
+            },
+            errors: {
+                400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
+                401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
+                403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
+                404: 'The server cannot find the requested resource.',
+                409: 'This response is sent when a request conflicts with the current state of the server.',
+                410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
+                422: 'The request was well-formed but was unable to be followed due to semantic errors.',
+                429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
+                500: 'The server has encountered a situation it does not know how to handle.'
+            }
+        });
+    }
+    
+    /**
+     * Get a person
+     * Get a person within an organization by ID
+     * @param data The data for the request.
+     * @param data.organizationId The organization's ID.
+     * @param data.personId
+     * @returns unknown A person with address
+     * @throws ApiError
+     */
+    public getPerson(data: $OpenApiTs['/v1/organizations/{organizationId}/persons/{personId}']['get']['req']): CancelablePromise<$OpenApiTs['/v1/organizations/{organizationId}/persons/{personId}']['get']['res'][200]> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/v1/organizations/{organizationId}/persons/{personId}',
+            path: {
+                organizationId: data.organizationId,
+                personId: data.personId
+            },
+            errors: {
+                400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
+                401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
+                403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
+                404: 'The server cannot find the requested resource.',
+                409: 'This response is sent when a request conflicts with the current state of the server.',
+                410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
+                422: 'The request was well-formed but was unable to be followed due to semantic errors.',
+                429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
+                500: 'The server has encountered a situation it does not know how to handle.'
+            }
+        });
+    }
+    
+    /**
+     * Get relationships
+     * Get all relationships for a person within an organization
+     * @param data The data for the request.
+     * @param data.organizationId The organization's ID.
+     * @param data.personId
+     * @returns unknown A list of relationships
+     * @throws ApiError
+     */
+    public getRelationships(data: $OpenApiTs['/v1/organizations/{organizationId}/persons/{personId}/relationships']['get']['req']): CancelablePromise<$OpenApiTs['/v1/organizations/{organizationId}/persons/{personId}/relationships']['get']['res'][200]> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/v1/organizations/{organizationId}/persons/{personId}/relationships',
+            path: {
+                organizationId: data.organizationId,
+                personId: data.personId
+            },
+            errors: {
+                400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
+                401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
+                403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
+                404: 'The server cannot find the requested resource.',
+                409: 'This response is sent when a request conflicts with the current state of the server.',
+                410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
+                422: 'The request was well-formed but was unable to be followed due to semantic errors.',
+                429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
+                500: 'The server has encountered a situation it does not know how to handle.'
+            }
+        });
+    }
+    
 }
 
 export class GroupsService {
-  constructor(public readonly httpRequest: BaseHttpRequest) {}
-
-  /**
-   * Get all groups
-   * Get all groups within an organization
-   * @param data The data for the request.
-   * @param data.organizationId The organization's ID.
-   * @returns unknown A group
-   * @throws ApiError
-   */
-  public getGroups(
-    data: $OpenApiTs['/v1/organizations/{organizationId}/groups']['get']['req'],
-  ): CancelablePromise<
-    $OpenApiTs['/v1/organizations/{organizationId}/groups']['get']['res'][200]
-  > {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/v1/organizations/{organizationId}/groups',
-      path: {
-        organizationId: data.organizationId,
-      },
-      errors: {
-        400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
-        401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
-        403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
-        404: 'The server cannot find the requested resource.',
-        409: 'This response is sent when a request conflicts with the current state of the server.',
-        410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
-        422: 'The request was well-formed but was unable to be followed due to semantic errors.',
-        429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
-        500: 'The server has encountered a situation it does not know how to handle.',
-      },
-    });
-  }
-
-  /**
-   * Get group by ID
-   * Get a group within an organization by ID
-   * @param data The data for the request.
-   * @param data.organizationId The organization's ID.
-   * @param data.groupId The group's ID.
-   * @returns unknown A group
-   * @throws ApiError
-   */
-  public getGroup(
-    data: $OpenApiTs['/v1/organizations/{organizationId}/groups/{groupId}']['get']['req'],
-  ): CancelablePromise<
-    $OpenApiTs['/v1/organizations/{organizationId}/groups/{groupId}']['get']['res'][200]
-  > {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/v1/organizations/{organizationId}/groups/{groupId}',
-      path: {
-        organizationId: data.organizationId,
-        groupId: data.groupId,
-      },
-      errors: {
-        400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
-        401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
-        403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
-        404: 'The server cannot find the requested resource.',
-        409: 'This response is sent when a request conflicts with the current state of the server.',
-        410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
-        422: 'The request was well-formed but was unable to be followed due to semantic errors.',
-        429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
-        500: 'The server has encountered a situation it does not know how to handle.',
-      },
-    });
-  }
+    constructor(public readonly httpRequest: BaseHttpRequest) { }
+    
+    /**
+     * Get all groups
+     * Get all groups within an organization
+     * @param data The data for the request.
+     * @param data.organizationId The organization's ID.
+     * @returns unknown A group
+     * @throws ApiError
+     */
+    public getGroups(data: $OpenApiTs['/v1/organizations/{organizationId}/groups']['get']['req']): CancelablePromise<$OpenApiTs['/v1/organizations/{organizationId}/groups']['get']['res'][200]> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/v1/organizations/{organizationId}/groups',
+            path: {
+                organizationId: data.organizationId
+            },
+            errors: {
+                400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
+                401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
+                403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
+                404: 'The server cannot find the requested resource.',
+                409: 'This response is sent when a request conflicts with the current state of the server.',
+                410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
+                422: 'The request was well-formed but was unable to be followed due to semantic errors.',
+                429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
+                500: 'The server has encountered a situation it does not know how to handle.'
+            }
+        });
+    }
+    
+    /**
+     * Get group by ID
+     * Get a group within an organization by ID
+     * @param data The data for the request.
+     * @param data.organizationId The organization's ID.
+     * @param data.groupId
+     * @returns unknown A group
+     * @throws ApiError
+     */
+    public getGroup(data: $OpenApiTs['/v1/organizations/{organizationId}/groups/{groupId}']['get']['req']): CancelablePromise<$OpenApiTs['/v1/organizations/{organizationId}/groups/{groupId}']['get']['res'][200]> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/v1/organizations/{organizationId}/groups/{groupId}',
+            path: {
+                organizationId: data.organizationId,
+                groupId: data.groupId
+            },
+            errors: {
+                400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
+                401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
+                403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
+                404: 'The server cannot find the requested resource.',
+                409: 'This response is sent when a request conflicts with the current state of the server.',
+                410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
+                422: 'The request was well-formed but was unable to be followed due to semantic errors.',
+                429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
+                500: 'The server has encountered a situation it does not know how to handle.'
+            }
+        });
+    }
+    
+    /**
+     * Get group members by ID
+     * Get a groups members within an organization by ID
+     * @param data The data for the request.
+     * @param data.organizationId The organization's ID.
+     * @param data.groupId
+     * @returns unknown All group members
+     * @throws ApiError
+     */
+    public getGroupMembers(data: $OpenApiTs['/v1/organizations/{organizationId}/groups/{groupId}/members']['get']['req']): CancelablePromise<$OpenApiTs['/v1/organizations/{organizationId}/groups/{groupId}/members']['get']['res'][200]> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/v1/organizations/{organizationId}/groups/{groupId}/members',
+            path: {
+                organizationId: data.organizationId,
+                groupId: data.groupId
+            },
+            errors: {
+                400: 'The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).',
+                401: 'Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.',
+                403: "The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401 Unauthorized, the client's identity is known to the server.",
+                404: 'The server cannot find the requested resource.',
+                409: 'This response is sent when a request conflicts with the current state of the server.',
+                410: 'This response is sent when the requested content has been permanently deleted from server, with no forwarding address.',
+                422: 'The request was well-formed but was unable to be followed due to semantic errors.',
+                429: 'The user has sent too many requests in a given amount of time ("rate limiting")',
+                500: 'The server has encountered a situation it does not know how to handle.'
+            }
+        });
+    }
+    
 }

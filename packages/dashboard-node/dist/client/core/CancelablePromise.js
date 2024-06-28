@@ -55,7 +55,7 @@ class CancelablePromise {
         });
     }
     get [Symbol.toStringTag]() {
-        return 'Cancellable Promise';
+        return "Cancellable Promise";
     }
     then(onFulfilled, onRejected) {
         return this.promise.then(onFulfilled, onRejected);

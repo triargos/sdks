@@ -59,7 +59,7 @@ const getQueryString = (params) => {
             append(key, value.toISOString());
         }
         else if (Array.isArray(value)) {
-            value.forEach((v) => encodePair(key, v));
+            value.forEach(v => encodePair(key, v));
         }
         else if (typeof value === 'object') {
             Object.entries(value).forEach(([k, v]) => encodePair(`${key}[${k}]`, v));
@@ -101,7 +101,7 @@ const getFormData = (options) => {
             .filter(([, value]) => value !== undefined && value !== null)
             .forEach(([key, value]) => {
             if (Array.isArray(value)) {
-                value.forEach((v) => process(key, v));
+                value.forEach(v => process(key, v));
             }
             else {
                 process(key, value);

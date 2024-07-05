@@ -5,6 +5,7 @@ import { CommunicationService } from './services.gen';
 import { ContactInformationService } from './services.gen';
 import { CountriesService } from './services.gen';
 import { DistrictsService } from './services.gen';
+import { FamilyService } from './services.gen';
 import { GroupsService } from './services.gen';
 import { HealthService } from './services.gen';
 import { PersonService } from './services.gen';
@@ -17,6 +18,7 @@ export declare class GeneratedProcurat {
     readonly contactInformation: ContactInformationService;
     readonly countries: CountriesService;
     readonly districts: DistrictsService;
+    readonly family: FamilyService;
     readonly groups: GroupsService;
     readonly health: HealthService;
     readonly person: PersonService;

@@ -71,9 +71,19 @@ export declare class GroupsService {
      * Get a group within an organization by ID
      * @param data The data for the request.
      * @param data.organizationId The organization's ID.
-     * @param data.groupId The group's ID.
+     * @param data.groupId
      * @returns unknown A group
      * @throws ApiError
      */
     getGroup(data: $OpenApiTs['/v1/organizations/{organizationId}/groups/{groupId}']['get']['req']): CancelablePromise<$OpenApiTs['/v1/organizations/{organizationId}/groups/{groupId}']['get']['res'][200]>;
+    /**
+     * Get group members by ID
+     * Get a groups members within an organization by ID
+     * @param data The data for the request.
+     * @param data.organizationId The organization's ID.
+     * @param data.groupId
+     * @returns unknown All group members
+     * @throws ApiError
+     */
+    getGroupMembers(data: $OpenApiTs['/v1/organizations/{organizationId}/groups/{groupId}/members']['get']['req']): CancelablePromise<$OpenApiTs['/v1/organizations/{organizationId}/groups/{groupId}/members']['get']['res'][200]>;
 }

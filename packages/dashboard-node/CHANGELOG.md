@@ -1,3 +1,10 @@
+# @triargos/dashboard-node [1.1.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@1.0.1...@triargos/dashboard-node@1.1.0) (2024-06-28)
+
+
+### Features
+
+* **api:** update definitions ([0cbaab1](https://github.com/triargos/sdks/commit/0cbaab1d6e052034368d86a14fbc068e4fbbdfcb))
+
 ## @triargos/dashboard-node [1.0.1](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@1.0.0...@triargos/dashboard-node@1.0.1) (2024-05-17)
 
 

@@ -17,6 +17,7 @@
   "scripts": {
     "generate": "openapi-ts",
     "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "coverage": "vitest --coverage",
     "format": "prettier --write .."
   },

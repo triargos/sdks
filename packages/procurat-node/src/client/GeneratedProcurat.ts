@@ -8,6 +8,7 @@ import { CommunicationService } from './services.gen';
 import { ContactInformationService } from './services.gen';
 import { CountriesService } from './services.gen';
 import { DistrictsService } from './services.gen';
+import { FamilyService } from './services.gen';
 import { GroupsService } from './services.gen';
 import { HealthService } from './services.gen';
 import { PersonService } from './services.gen';
@@ -23,6 +24,7 @@ export class GeneratedProcurat {
 	public readonly contactInformation: ContactInformationService;
 	public readonly countries: CountriesService;
 	public readonly districts: DistrictsService;
+	public readonly family: FamilyService;
 	public readonly groups: GroupsService;
 	public readonly health: HealthService;
 	public readonly person: PersonService;
@@ -53,6 +55,7 @@ export class GeneratedProcurat {
 		this.contactInformation = new ContactInformationService(this.request);
 		this.countries = new CountriesService(this.request);
 		this.districts = new DistrictsService(this.request);
+		this.family = new FamilyService(this.request);
 		this.groups = new GroupsService(this.request);
 		this.health = new HealthService(this.request);
 		this.person = new PersonService(this.request);

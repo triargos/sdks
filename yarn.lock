@@ -1671,7 +1671,6 @@ __metadata:
     prettier: "npm:^3.2.5"
     typescript: "npm:^5.4.3"
     vitest: "npm:^1.4.0"
-    zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
 

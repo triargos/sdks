@@ -1,26 +1,15 @@
-export declare const $ContactPersonMappingDTO: {
+export declare const $GroupMemberDTO: {
     readonly type: "object";
     readonly properties: {
-        readonly id: {
+        readonly personId: {
             readonly type: "integer";
             readonly format: "int32";
         };
-        readonly childId: {
-            readonly type: "integer";
-            readonly format: "int32";
+        readonly entryDate: {
+            readonly type: "string";
         };
-        readonly parentId: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly isEmergency: {
-            readonly type: "boolean";
-        };
-        readonly includeAddressOnList: {
-            readonly type: "boolean";
-        };
-        readonly includeHomePhoneOnList: {
-            readonly type: "boolean";
+        readonly exitDate: {
+            readonly type: "string";
         };
     };
 };
@@ -108,6 +97,83 @@ export declare const $PersonDTO: {
         };
     };
 };
+export declare const $PersonCreationDTO: {
+    readonly type: "object";
+    readonly properties: {
+        readonly firstName: {
+            readonly type: "string";
+        };
+        readonly lastName: {
+            readonly type: "string";
+        };
+        readonly gender: {
+            readonly type: "string";
+        };
+        readonly addressId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly familyId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly familyRole: {
+            readonly type: "string";
+        };
+        readonly birthDate: {
+            readonly type: "string";
+        };
+        readonly birthPlace: {
+            readonly type: "string";
+        };
+        readonly birthCountryId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly languageId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly religionId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly allFirstNames: {
+            readonly type: "string";
+        };
+        readonly birthName: {
+            readonly type: "string";
+        };
+        readonly academicTitle: {
+            readonly type: "string";
+        };
+        readonly namePrefix: {
+            readonly type: "string";
+        };
+        readonly nobilityTitle: {
+            readonly type: "string";
+        };
+        readonly salutationA: {
+            readonly type: "string";
+        };
+        readonly salutationB: {
+            readonly type: "string";
+        };
+        readonly jobTitle: {
+            readonly type: "string";
+        };
+        readonly nationalityId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly maritalStatus: {
+            readonly type: "string";
+        };
+        readonly deathDate: {
+            readonly type: "string";
+        };
+    };
+};
 export declare const $SuccessResponse: {
     readonly type: "object";
     readonly properties: {
@@ -116,218 +182,6 @@ export declare const $SuccessResponse: {
             readonly format: "int32";
         };
         readonly message: {
-            readonly type: "string";
-        };
-    };
-};
-export declare const $GroupDTO: {
-    readonly type: "object";
-    readonly properties: {
-        readonly id: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly name: {
-            readonly type: "string";
-        };
-        readonly type: {
-            readonly type: "string";
-        };
-        readonly grade: {
-            readonly type: "string";
-        };
-        readonly character: {
-            readonly type: "string";
-        };
-        readonly schoolYear: {
-            readonly type: "string";
-        };
-    };
-};
-export declare const $ContactInformationDTO: {
-    readonly type: "object";
-    readonly properties: {
-        readonly id: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly order: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly type: {
-            readonly type: "string";
-        };
-        readonly medium: {
-            readonly type: "string";
-        };
-        readonly personId: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly addressId: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly externalName: {
-            readonly type: "string";
-        };
-        readonly content: {
-            readonly type: "string";
-        };
-        readonly comment: {
-            readonly type: "string";
-        };
-        readonly secret: {
-            readonly type: "boolean";
-        };
-    };
-};
-export declare const $AddressCreationDTO: {
-    readonly type: "object";
-    readonly properties: {
-        readonly personId: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly street: {
-            readonly type: "string";
-        };
-        readonly countryId: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly zip: {
-            readonly type: "string";
-        };
-        readonly city: {
-            readonly type: "string";
-        };
-        readonly nameline2: {
-            readonly type: "string";
-        };
-        readonly additional: {
-            readonly type: "string";
-        };
-        readonly district: {
-            readonly type: "string";
-        };
-        readonly poBoxZip: {
-            readonly type: "string";
-        };
-        readonly poBox: {
-            readonly type: "string";
-        };
-        readonly countyId: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-    };
-};
-export declare const $AddressDTO: {
-    readonly type: "object";
-    readonly properties: {
-        readonly id: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly street: {
-            readonly type: "string";
-        };
-        readonly countryId: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly zip: {
-            readonly type: "string";
-        };
-        readonly city: {
-            readonly type: "string";
-        };
-        readonly nameline2: {
-            readonly type: "string";
-        };
-        readonly additional: {
-            readonly type: "string";
-        };
-        readonly district: {
-            readonly type: "string";
-        };
-        readonly poBoxZip: {
-            readonly type: "string";
-        };
-        readonly poBox: {
-            readonly type: "string";
-        };
-        readonly countyId: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-    };
-};
-export declare const $HealthDTO: {
-    readonly type: "object";
-    readonly properties: {
-        readonly databaseVersion: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly build: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly databaseValid: {
-            readonly type: "boolean";
-        };
-        readonly databaseLocked: {
-            readonly type: "boolean";
-        };
-        readonly lastUpdateStart: {
-            readonly type: "string";
-        };
-        readonly lastUpdateEnd: {
-            readonly type: "string";
-        };
-        readonly lastUpdateFailed: {
-            readonly type: "string";
-        };
-    };
-};
-export declare const $GroupMemberDTO: {
-    readonly type: "object";
-    readonly properties: {
-        readonly personId: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly entryDate: {
-            readonly type: "string";
-        };
-        readonly exitDate: {
-            readonly type: "string";
-        };
-    };
-};
-export declare const $RelationshipDTO: {
-    readonly type: "object";
-    readonly properties: {
-        readonly personId: {
-            readonly type: "integer";
-            readonly format: "int32";
-        };
-        readonly relationshipType: {
-            readonly type: "string";
-        };
-        readonly physical: {
-            readonly type: "boolean";
-        };
-        readonly custody: {
-            readonly type: "boolean";
-        };
-        readonly realParent: {
-            readonly type: "boolean";
-        };
-        readonly notes: {
             readonly type: "string";
         };
     };
@@ -374,20 +228,51 @@ export declare const $ContactInformationMappingDTO: {
 export declare const $ReligionDTO: {
     readonly type: "object";
     readonly properties: {
-        readonly name: {
-            readonly type: "string";
-        };
-    };
-};
-export declare const $CountyDTO: {
-    readonly type: "object";
-    readonly properties: {
         readonly id: {
             readonly type: "integer";
             readonly format: "int32";
         };
         readonly name: {
             readonly type: "string";
+        };
+    };
+};
+export declare const $ContactInformationDTO: {
+    readonly type: "object";
+    readonly properties: {
+        readonly id: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly order: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly type: {
+            readonly type: "string";
+        };
+        readonly medium: {
+            readonly type: "string";
+        };
+        readonly personId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly addressId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly externalName: {
+            readonly type: "string";
+        };
+        readonly content: {
+            readonly type: "string";
+        };
+        readonly comment: {
+            readonly type: "string";
+        };
+        readonly secret: {
+            readonly type: "boolean";
         };
     };
 };
@@ -473,6 +358,9 @@ export declare const $ContentDisposition: {
 export declare const $HttpHeaders: {
     readonly type: "object";
     readonly properties: {
+        readonly origin: {
+            readonly type: "string";
+        };
         readonly date: {
             readonly type: "integer";
             readonly format: "int64";
@@ -485,18 +373,19 @@ export declare const $HttpHeaders: {
             readonly type: "integer";
             readonly format: "int64";
         };
-        readonly connection: {
-            readonly type: "array";
-            readonly items: {
-                readonly type: "string";
-            };
-        };
         readonly contentType: {
             readonly $ref: "#/components/schemas/MediaType";
         };
         readonly ifModifiedSince: {
             readonly type: "integer";
             readonly format: "int64";
+        };
+        readonly empty: {
+            readonly type: "boolean";
+        };
+        readonly location: {
+            readonly type: "string";
+            readonly format: "uri";
         };
         readonly host: {
             readonly type: "object";
@@ -507,9 +396,6 @@ export declare const $HttpHeaders: {
                 readonly address: {
                     readonly type: "object";
                     readonly properties: {
-                        readonly loopbackAddress: {
-                            readonly type: "boolean";
-                        };
                         readonly multicastAddress: {
                             readonly type: "boolean";
                         };
@@ -540,6 +426,9 @@ export declare const $HttpHeaders: {
                         readonly canonicalHostName: {
                             readonly type: "string";
                         };
+                        readonly loopbackAddress: {
+                            readonly type: "boolean";
+                        };
                         readonly address: {
                             readonly type: "array";
                             readonly items: {
@@ -567,16 +456,6 @@ export declare const $HttpHeaders: {
                 };
             };
         };
-        readonly origin: {
-            readonly type: "string";
-        };
-        readonly empty: {
-            readonly type: "boolean";
-        };
-        readonly location: {
-            readonly type: "string";
-            readonly format: "uri";
-        };
         readonly all: {
             readonly type: "object";
             readonly additionalProperties: {
@@ -584,11 +463,108 @@ export declare const $HttpHeaders: {
             };
             readonly writeOnly: true;
         };
-        readonly range: {
+        readonly connection: {
             readonly type: "array";
             readonly items: {
-                readonly $ref: "#/components/schemas/HttpRange";
+                readonly type: "string";
             };
+        };
+        readonly acceptLanguageAsLocales: {
+            readonly type: "array";
+            readonly items: {
+                readonly type: "object";
+                readonly properties: {
+                    readonly language: {
+                        readonly type: "string";
+                    };
+                    readonly script: {
+                        readonly type: "string";
+                    };
+                    readonly country: {
+                        readonly type: "string";
+                    };
+                    readonly variant: {
+                        readonly type: "string";
+                    };
+                    readonly extensionKeys: {
+                        readonly uniqueItems: true;
+                        readonly type: "array";
+                        readonly items: {
+                            readonly type: "string";
+                        };
+                    };
+                    readonly unicodeLocaleAttributes: {
+                        readonly uniqueItems: true;
+                        readonly type: "array";
+                        readonly items: {
+                            readonly type: "string";
+                        };
+                    };
+                    readonly unicodeLocaleKeys: {
+                        readonly uniqueItems: true;
+                        readonly type: "array";
+                        readonly items: {
+                            readonly type: "string";
+                        };
+                    };
+                    readonly iso3Language: {
+                        readonly type: "string";
+                    };
+                    readonly iso3Country: {
+                        readonly type: "string";
+                    };
+                    readonly displayLanguage: {
+                        readonly type: "string";
+                    };
+                    readonly displayScript: {
+                        readonly type: "string";
+                    };
+                    readonly displayCountry: {
+                        readonly type: "string";
+                    };
+                    readonly displayVariant: {
+                        readonly type: "string";
+                    };
+                    readonly displayName: {
+                        readonly type: "string";
+                    };
+                };
+            };
+        };
+        readonly accessControlAllowCredentials: {
+            readonly type: "boolean";
+        };
+        readonly accessControlAllowHeaders: {
+            readonly type: "array";
+            readonly items: {
+                readonly type: "string";
+            };
+        };
+        readonly accessControlAllowMethods: {
+            readonly type: "array";
+            readonly items: {
+                readonly type: "string";
+                readonly enum: readonly ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
+            };
+        };
+        readonly accessControlAllowOrigin: {
+            readonly type: "string";
+        };
+        readonly accessControlExposeHeaders: {
+            readonly type: "array";
+            readonly items: {
+                readonly type: "string";
+            };
+        };
+        readonly accessControlRequestHeaders: {
+            readonly type: "array";
+            readonly items: {
+                readonly type: "string";
+            };
+        };
+        readonly accessControlRequestMethod: {
+            readonly type: "string";
+            readonly enum: readonly ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
         };
         readonly allow: {
             readonly uniqueItems: true;
@@ -600,6 +576,12 @@ export declare const $HttpHeaders: {
         };
         readonly etag: {
             readonly type: "string";
+        };
+        readonly range: {
+            readonly type: "array";
+            readonly items: {
+                readonly $ref: "#/components/schemas/HttpRange";
+            };
         };
         readonly vary: {
             readonly type: "array";
@@ -748,103 +730,6 @@ export declare const $HttpHeaders: {
         readonly upgrade: {
             readonly type: "string";
         };
-        readonly acceptLanguageAsLocales: {
-            readonly type: "array";
-            readonly items: {
-                readonly type: "object";
-                readonly properties: {
-                    readonly language: {
-                        readonly type: "string";
-                    };
-                    readonly script: {
-                        readonly type: "string";
-                    };
-                    readonly country: {
-                        readonly type: "string";
-                    };
-                    readonly variant: {
-                        readonly type: "string";
-                    };
-                    readonly extensionKeys: {
-                        readonly uniqueItems: true;
-                        readonly type: "array";
-                        readonly items: {
-                            readonly type: "string";
-                        };
-                    };
-                    readonly unicodeLocaleAttributes: {
-                        readonly uniqueItems: true;
-                        readonly type: "array";
-                        readonly items: {
-                            readonly type: "string";
-                        };
-                    };
-                    readonly unicodeLocaleKeys: {
-                        readonly uniqueItems: true;
-                        readonly type: "array";
-                        readonly items: {
-                            readonly type: "string";
-                        };
-                    };
-                    readonly iso3Language: {
-                        readonly type: "string";
-                    };
-                    readonly iso3Country: {
-                        readonly type: "string";
-                    };
-                    readonly displayLanguage: {
-                        readonly type: "string";
-                    };
-                    readonly displayScript: {
-                        readonly type: "string";
-                    };
-                    readonly displayCountry: {
-                        readonly type: "string";
-                    };
-                    readonly displayVariant: {
-                        readonly type: "string";
-                    };
-                    readonly displayName: {
-                        readonly type: "string";
-                    };
-                };
-            };
-        };
-        readonly accessControlAllowCredentials: {
-            readonly type: "boolean";
-        };
-        readonly accessControlAllowHeaders: {
-            readonly type: "array";
-            readonly items: {
-                readonly type: "string";
-            };
-        };
-        readonly accessControlAllowMethods: {
-            readonly type: "array";
-            readonly items: {
-                readonly type: "string";
-                readonly enum: readonly ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
-            };
-        };
-        readonly accessControlAllowOrigin: {
-            readonly type: "string";
-        };
-        readonly accessControlExposeHeaders: {
-            readonly type: "array";
-            readonly items: {
-                readonly type: "string";
-            };
-        };
-        readonly accessControlRequestHeaders: {
-            readonly type: "array";
-            readonly items: {
-                readonly type: "string";
-            };
-        };
-        readonly accessControlRequestMethod: {
-            readonly type: "string";
-            readonly enum: readonly ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
-        };
     };
     readonly additionalProperties: {
         readonly type: "array";
@@ -875,6 +760,15 @@ export declare const $MediaType: {
             readonly type: "number";
             readonly format: "double";
         };
+        readonly wildcardType: {
+            readonly type: "boolean";
+        };
+        readonly wildcardSubtype: {
+            readonly type: "boolean";
+        };
+        readonly subtypeSuffix: {
+            readonly type: "string";
+        };
         readonly concrete: {
             readonly type: "boolean";
         };
@@ -886,15 +780,6 @@ export declare const $MediaType: {
                 };
             };
         };
-        readonly wildcardType: {
-            readonly type: "boolean";
-        };
-        readonly wildcardSubtype: {
-            readonly type: "boolean";
-        };
-        readonly subtypeSuffix: {
-            readonly type: "string";
-        };
     };
 };
 export declare const $ResponseEntityObject: {
@@ -903,6 +788,9 @@ export declare const $ResponseEntityObject: {
         readonly headers: {
             readonly type: "object";
             readonly properties: {
+                readonly origin: {
+                    readonly type: "string";
+                };
                 readonly date: {
                     readonly type: "integer";
                     readonly format: "int64";
@@ -915,18 +803,19 @@ export declare const $ResponseEntityObject: {
                     readonly type: "integer";
                     readonly format: "int64";
                 };
-                readonly connection: {
-                    readonly type: "array";
-                    readonly items: {
-                        readonly type: "string";
-                    };
-                };
                 readonly contentType: {
                     readonly $ref: "#/components/schemas/MediaType";
                 };
                 readonly ifModifiedSince: {
                     readonly type: "integer";
                     readonly format: "int64";
+                };
+                readonly empty: {
+                    readonly type: "boolean";
+                };
+                readonly location: {
+                    readonly type: "string";
+                    readonly format: "uri";
                 };
                 readonly host: {
                     readonly type: "object";
@@ -937,9 +826,6 @@ export declare const $ResponseEntityObject: {
                         readonly address: {
                             readonly type: "object";
                             readonly properties: {
-                                readonly loopbackAddress: {
-                                    readonly type: "boolean";
-                                };
                                 readonly multicastAddress: {
                                     readonly type: "boolean";
                                 };
@@ -970,6 +856,9 @@ export declare const $ResponseEntityObject: {
                                 readonly canonicalHostName: {
                                     readonly type: "string";
                                 };
+                                readonly loopbackAddress: {
+                                    readonly type: "boolean";
+                                };
                                 readonly address: {
                                     readonly type: "array";
                                     readonly items: {
@@ -997,16 +886,6 @@ export declare const $ResponseEntityObject: {
                         };
                     };
                 };
-                readonly origin: {
-                    readonly type: "string";
-                };
-                readonly empty: {
-                    readonly type: "boolean";
-                };
-                readonly location: {
-                    readonly type: "string";
-                    readonly format: "uri";
-                };
                 readonly all: {
                     readonly type: "object";
                     readonly additionalProperties: {
@@ -1014,11 +893,108 @@ export declare const $ResponseEntityObject: {
                     };
                     readonly writeOnly: true;
                 };
-                readonly range: {
+                readonly connection: {
                     readonly type: "array";
                     readonly items: {
-                        readonly $ref: "#/components/schemas/HttpRange";
+                        readonly type: "string";
                     };
+                };
+                readonly acceptLanguageAsLocales: {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly type: "object";
+                        readonly properties: {
+                            readonly language: {
+                                readonly type: "string";
+                            };
+                            readonly script: {
+                                readonly type: "string";
+                            };
+                            readonly country: {
+                                readonly type: "string";
+                            };
+                            readonly variant: {
+                                readonly type: "string";
+                            };
+                            readonly extensionKeys: {
+                                readonly uniqueItems: true;
+                                readonly type: "array";
+                                readonly items: {
+                                    readonly type: "string";
+                                };
+                            };
+                            readonly unicodeLocaleAttributes: {
+                                readonly uniqueItems: true;
+                                readonly type: "array";
+                                readonly items: {
+                                    readonly type: "string";
+                                };
+                            };
+                            readonly unicodeLocaleKeys: {
+                                readonly uniqueItems: true;
+                                readonly type: "array";
+                                readonly items: {
+                                    readonly type: "string";
+                                };
+                            };
+                            readonly iso3Language: {
+                                readonly type: "string";
+                            };
+                            readonly iso3Country: {
+                                readonly type: "string";
+                            };
+                            readonly displayLanguage: {
+                                readonly type: "string";
+                            };
+                            readonly displayScript: {
+                                readonly type: "string";
+                            };
+                            readonly displayCountry: {
+                                readonly type: "string";
+                            };
+                            readonly displayVariant: {
+                                readonly type: "string";
+                            };
+                            readonly displayName: {
+                                readonly type: "string";
+                            };
+                        };
+                    };
+                };
+                readonly accessControlAllowCredentials: {
+                    readonly type: "boolean";
+                };
+                readonly accessControlAllowHeaders: {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly type: "string";
+                    };
+                };
+                readonly accessControlAllowMethods: {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly type: "string";
+                        readonly enum: readonly ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
+                    };
+                };
+                readonly accessControlAllowOrigin: {
+                    readonly type: "string";
+                };
+                readonly accessControlExposeHeaders: {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly type: "string";
+                    };
+                };
+                readonly accessControlRequestHeaders: {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly type: "string";
+                    };
+                };
+                readonly accessControlRequestMethod: {
+                    readonly type: "string";
+                    readonly enum: readonly ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
                 };
                 readonly allow: {
                     readonly uniqueItems: true;
@@ -1030,6 +1006,12 @@ export declare const $ResponseEntityObject: {
                 };
                 readonly etag: {
                     readonly type: "string";
+                };
+                readonly range: {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly $ref: "#/components/schemas/HttpRange";
+                    };
                 };
                 readonly vary: {
                     readonly type: "array";
@@ -1178,103 +1160,6 @@ export declare const $ResponseEntityObject: {
                 readonly upgrade: {
                     readonly type: "string";
                 };
-                readonly acceptLanguageAsLocales: {
-                    readonly type: "array";
-                    readonly items: {
-                        readonly type: "object";
-                        readonly properties: {
-                            readonly language: {
-                                readonly type: "string";
-                            };
-                            readonly script: {
-                                readonly type: "string";
-                            };
-                            readonly country: {
-                                readonly type: "string";
-                            };
-                            readonly variant: {
-                                readonly type: "string";
-                            };
-                            readonly extensionKeys: {
-                                readonly uniqueItems: true;
-                                readonly type: "array";
-                                readonly items: {
-                                    readonly type: "string";
-                                };
-                            };
-                            readonly unicodeLocaleAttributes: {
-                                readonly uniqueItems: true;
-                                readonly type: "array";
-                                readonly items: {
-                                    readonly type: "string";
-                                };
-                            };
-                            readonly unicodeLocaleKeys: {
-                                readonly uniqueItems: true;
-                                readonly type: "array";
-                                readonly items: {
-                                    readonly type: "string";
-                                };
-                            };
-                            readonly iso3Language: {
-                                readonly type: "string";
-                            };
-                            readonly iso3Country: {
-                                readonly type: "string";
-                            };
-                            readonly displayLanguage: {
-                                readonly type: "string";
-                            };
-                            readonly displayScript: {
-                                readonly type: "string";
-                            };
-                            readonly displayCountry: {
-                                readonly type: "string";
-                            };
-                            readonly displayVariant: {
-                                readonly type: "string";
-                            };
-                            readonly displayName: {
-                                readonly type: "string";
-                            };
-                        };
-                    };
-                };
-                readonly accessControlAllowCredentials: {
-                    readonly type: "boolean";
-                };
-                readonly accessControlAllowHeaders: {
-                    readonly type: "array";
-                    readonly items: {
-                        readonly type: "string";
-                    };
-                };
-                readonly accessControlAllowMethods: {
-                    readonly type: "array";
-                    readonly items: {
-                        readonly type: "string";
-                        readonly enum: readonly ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
-                    };
-                };
-                readonly accessControlAllowOrigin: {
-                    readonly type: "string";
-                };
-                readonly accessControlExposeHeaders: {
-                    readonly type: "array";
-                    readonly items: {
-                        readonly type: "string";
-                    };
-                };
-                readonly accessControlRequestHeaders: {
-                    readonly type: "array";
-                    readonly items: {
-                        readonly type: "string";
-                    };
-                };
-                readonly accessControlRequestMethod: {
-                    readonly type: "string";
-                    readonly enum: readonly ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
-                };
             };
             readonly additionalProperties: {
                 readonly type: "array";
@@ -1296,80 +1181,215 @@ export declare const $ResponseEntityObject: {
         };
     };
 };
-export declare const $PersonCreationDTO: {
+export declare const $FamilyDTO: {
     readonly type: "object";
     readonly properties: {
-        readonly firstName: {
-            readonly type: "string";
-        };
-        readonly lastName: {
-            readonly type: "string";
-        };
-        readonly gender: {
-            readonly type: "string";
-        };
-        readonly addressId: {
+        readonly id: {
             readonly type: "integer";
             readonly format: "int32";
         };
-        readonly familyId: {
+        readonly members: {
+            readonly type: "array";
+            readonly items: {
+                readonly type: "integer";
+                readonly format: "int32";
+            };
+        };
+    };
+};
+export declare const $CountyDTO: {
+    readonly type: "object";
+    readonly properties: {
+        readonly id: {
             readonly type: "integer";
             readonly format: "int32";
         };
-        readonly familyRole: {
+        readonly name: {
             readonly type: "string";
         };
-        readonly birthDate: {
-            readonly type: "string";
-        };
-        readonly birthPlace: {
-            readonly type: "string";
-        };
-        readonly birthCountryId: {
+    };
+};
+export declare const $GroupDTO: {
+    readonly type: "object";
+    readonly properties: {
+        readonly id: {
             readonly type: "integer";
             readonly format: "int32";
         };
-        readonly languageId: {
+        readonly name: {
+            readonly type: "string";
+        };
+        readonly type: {
+            readonly type: "string";
+        };
+        readonly grade: {
+            readonly type: "string";
+        };
+        readonly character: {
+            readonly type: "string";
+        };
+        readonly schoolYear: {
+            readonly type: "string";
+        };
+    };
+};
+export declare const $HealthDTO: {
+    readonly type: "object";
+    readonly properties: {
+        readonly databaseVersion: {
             readonly type: "integer";
             readonly format: "int32";
         };
-        readonly religionId: {
+        readonly build: {
             readonly type: "integer";
             readonly format: "int32";
         };
-        readonly allFirstNames: {
+        readonly databaseValid: {
+            readonly type: "boolean";
+        };
+        readonly databaseLocked: {
+            readonly type: "boolean";
+        };
+        readonly lastUpdateStart: {
             readonly type: "string";
         };
-        readonly birthName: {
+        readonly lastUpdateEnd: {
             readonly type: "string";
         };
-        readonly academicTitle: {
+        readonly lastUpdateFailed: {
             readonly type: "string";
         };
-        readonly namePrefix: {
-            readonly type: "string";
-        };
-        readonly nobilityTitle: {
-            readonly type: "string";
-        };
-        readonly salutationA: {
-            readonly type: "string";
-        };
-        readonly salutationB: {
-            readonly type: "string";
-        };
-        readonly jobTitle: {
-            readonly type: "string";
-        };
-        readonly nationalityId: {
+    };
+};
+export declare const $AddressCreationDTO: {
+    readonly type: "object";
+    readonly properties: {
+        readonly personId: {
             readonly type: "integer";
             readonly format: "int32";
         };
-        readonly maritalStatus: {
+        readonly street: {
             readonly type: "string";
         };
-        readonly deathDate: {
+        readonly countryId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly zip: {
             readonly type: "string";
+        };
+        readonly city: {
+            readonly type: "string";
+        };
+        readonly nameline2: {
+            readonly type: "string";
+        };
+        readonly additional: {
+            readonly type: "string";
+        };
+        readonly district: {
+            readonly type: "string";
+        };
+        readonly poBoxZip: {
+            readonly type: "string";
+        };
+        readonly poBox: {
+            readonly type: "string";
+        };
+        readonly countyId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+    };
+};
+export declare const $AddressDTO: {
+    readonly type: "object";
+    readonly properties: {
+        readonly id: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly street: {
+            readonly type: "string";
+        };
+        readonly countryId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly zip: {
+            readonly type: "string";
+        };
+        readonly city: {
+            readonly type: "string";
+        };
+        readonly nameline2: {
+            readonly type: "string";
+        };
+        readonly additional: {
+            readonly type: "string";
+        };
+        readonly district: {
+            readonly type: "string";
+        };
+        readonly poBoxZip: {
+            readonly type: "string";
+        };
+        readonly poBox: {
+            readonly type: "string";
+        };
+        readonly countyId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+    };
+};
+export declare const $RelationshipDTO: {
+    readonly type: "object";
+    readonly properties: {
+        readonly personId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly relationshipType: {
+            readonly type: "string";
+        };
+        readonly physical: {
+            readonly type: "boolean";
+        };
+        readonly custody: {
+            readonly type: "boolean";
+        };
+        readonly realParent: {
+            readonly type: "boolean";
+        };
+        readonly notes: {
+            readonly type: "string";
+        };
+    };
+};
+export declare const $ContactPersonMappingDTO: {
+    readonly type: "object";
+    readonly properties: {
+        readonly id: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly childId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly parentId: {
+            readonly type: "integer";
+            readonly format: "int32";
+        };
+        readonly isEmergency: {
+            readonly type: "boolean";
+        };
+        readonly includeAddressOnList: {
+            readonly type: "boolean";
+        };
+        readonly includeHomePhoneOnList: {
+            readonly type: "boolean";
         };
     };
 };

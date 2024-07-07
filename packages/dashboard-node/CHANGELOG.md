@@ -1,3 +1,10 @@
+## @triargos/dashboard-node [1.1.1](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@1.1.0...@triargos/dashboard-node@1.1.1) (2024-07-07)
+
+
+### Bug Fixes
+
+* **dashboard:** use correct header ([c65a398](https://github.com/triargos/sdks/commit/c65a3981328ad708cb7bb690d75d58db565ba680))
+
 # @triargos/dashboard-node [1.1.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@1.0.1...@triargos/dashboard-node@1.1.0) (2024-06-28)
 
 

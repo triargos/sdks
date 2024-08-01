@@ -21,7 +21,7 @@
     "format": "prettier --write .."
   },
   "devDependencies": {
-    "@hey-api/openapi-ts": "^0.42.1",
+    "@hey-api/openapi-ts": "^0.51.0",
     "@types/node": "^20.12.4",
     "@vitest/coverage-v8": "^1.4.0",
     "msw": "^2.2.13",

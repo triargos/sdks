@@ -244,6 +244,7 @@ export declare class AddressService {
     findAddressById(data: FindAddressByIdData): CancelablePromise<FindAddressByIdResponse>;
     /**
      * Update address
+     * Update address
      * @param data The data for the request.
      * @param data.id
      * @param data.requestBody

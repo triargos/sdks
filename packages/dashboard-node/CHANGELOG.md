@@ -1,3 +1,10 @@
+# @triargos/dashboard-node [1.2.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@1.1.2...@triargos/dashboard-node@1.2.0) (2024-08-01)
+
+
+### Features
+
+* **build:** update dependencies ([abac9a3](https://github.com/triargos/sdks/commit/abac9a3782c0485deb3ae3945751b7647a66650f))
+
 ## @triargos/dashboard-node [1.1.2](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@1.1.1...@triargos/dashboard-node@1.1.2) (2024-07-07)
 
 

@@ -1,3 +1,10 @@
+# @triargos/procurat-node [1.7.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.6.0...@triargos/procurat-node@1.7.0) (2024-08-01)
+
+
+### Features
+
+* **build:** update dependencies ([abac9a3](https://github.com/triargos/sdks/commit/abac9a3782c0485deb3ae3945751b7647a66650f))
+
 # @triargos/procurat-node [1.6.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.5.0...@triargos/procurat-node@1.6.0) (2024-08-01)
 
 

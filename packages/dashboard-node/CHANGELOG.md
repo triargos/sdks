@@ -1,3 +1,10 @@
+## @triargos/dashboard-node [1.1.2](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@1.1.1...@triargos/dashboard-node@1.1.2) (2024-07-07)
+
+
+### Bug Fixes
+
+* **dashboard:** remove unused dependency ([0a713f9](https://github.com/triargos/sdks/commit/0a713f956ecfa71e92f082ca2cbf05b0781e151c))
+
 ## @triargos/dashboard-node [1.1.1](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@1.1.0...@triargos/dashboard-node@1.1.1) (2024-07-07)
 
 

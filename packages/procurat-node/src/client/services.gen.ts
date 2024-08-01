@@ -2,7 +2,7 @@
 
 import type { CancelablePromise } from './core/CancelablePromise';
 import type { BaseHttpRequest } from './core/BaseHttpRequest';
-import type { FindGroupMembersByIdData, FindGroupMembersByIdResponse, FindGroupByIdData, FindGroupByIdResponse, FindAllGroupsResponse, FindAllPersonsResponse, CreatePersonData, CreatePersonResponse, FindPersonData, FindPersonResponse, UpdatePersonData, UpdatePersonResponse, FindCountryByIdxData, FindCountryByIdxResponse, FindAllCountriesResponse, GetContactInformationMappingsData, GetContactInformationMappingsResponse, CreateContactInformationMappingData, CreateContactInformationMappingResponse, DeleteContactPersonMappingData, DeleteContactPersonMappingResponse, GetContactPersonMappingsData, GetContactPersonMappingsResponse, CreateContactPersonMappingData, CreateContactPersonMappingResponse, DeleteContactInformationMappingData, DeleteContactInformationMappingResponse, FindAllReligionsResponse, FindByIdData, FindByIdResponse, UpdateContactInformationData, UpdateContactInformationResponse, DeleteContactInformationData, DeleteContactInformationResponse, CreateContactInformationData, CreateContactInformationResponse, FindByPersonData, FindByPersonResponse, FindByAddressData, FindByAddressResponse, FindAllFamiliesResponse, FindFamilyByIdData, FindFamilyByIdResponse, FindAllDistrictsResponse, FindDistrictByIdData, FindDistrictByIdResponse, GetHealthResponse, FindAllAddressesResponse, CreateAddressData, CreateAddressResponse, FindAddressByIdData, FindAddressByIdResponse, FindRelationshipsForPersonData, FindRelationshipsForPersonResponse } from './types.gen';
+import type { FindGroupMembersByIdData, FindGroupMembersByIdResponse, FindGroupByIdData, FindGroupByIdResponse, FindAllGroupsResponse, FindCountryByIdxData, FindCountryByIdxResponse, FindAllCountriesResponse, FindAllDistrictsResponse, FindDistrictByIdData, FindDistrictByIdResponse, FindByIdData, FindByIdResponse, UpdateContactInformationData, UpdateContactInformationResponse, DeleteContactInformationData, DeleteContactInformationResponse, FindByAddressData, FindByAddressResponse, FindByPersonData, FindByPersonResponse, CreateContactInformationData, CreateContactInformationResponse, FindAllPersonsResponse, CreatePersonData, CreatePersonResponse, FindPersonData, FindPersonResponse, UpdatePersonData, UpdatePersonResponse, DeleteContactPersonMappingData, DeleteContactPersonMappingResponse, GetContactInformationMappingsData, GetContactInformationMappingsResponse, CreateContactInformationMappingData, CreateContactInformationMappingResponse, GetContactPersonMappingsData, GetContactPersonMappingsResponse, CreateContactPersonMappingData, CreateContactPersonMappingResponse, DeleteContactInformationMappingData, DeleteContactInformationMappingResponse, FindAddressByIdData, FindAddressByIdResponse, UpdateAddressData, UpdateAddressResponse, FindAllAddressesResponse, CreateAddressData, CreateAddressResponse, FindAllFamiliesResponse, FindFamilyByIdData, FindFamilyByIdResponse, GetHealthResponse, FindRelationshipsForPersonData, FindRelationshipsForPersonResponse, FindAllReligionsResponse } from './types.gen';
 
 export class GroupsService {
     constructor(public readonly httpRequest: BaseHttpRequest) { }
@@ -53,6 +53,193 @@ export class GroupsService {
         return this.httpRequest.request({
             method: 'GET',
             url: '/groups'
+        });
+    }
+    
+}
+
+export class CountriesService {
+    constructor(public readonly httpRequest: BaseHttpRequest) { }
+    
+    /**
+     * Find by ID
+     * Find a country by its ID
+     * @param data The data for the request.
+     * @param data.id
+     * @returns CountryDTO default response
+     * @throws ApiError
+     */
+    public findCountryByIdx(data: FindCountryByIdxData): CancelablePromise<FindCountryByIdxResponse> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/countries/{id}',
+            path: {
+                id: data.id
+            }
+        });
+    }
+    
+    /**
+     * Find all
+     * Find all available countries
+     * @returns CountryDTO default response
+     * @throws ApiError
+     */
+    public findAllCountries(): CancelablePromise<FindAllCountriesResponse> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/countries'
+        });
+    }
+    
+}
+
+export class DistrictsService {
+    constructor(public readonly httpRequest: BaseHttpRequest) { }
+    
+    /**
+     * Get all districts
+     * Get all districts
+     * @returns CountyDTO default response
+     * @throws ApiError
+     */
+    public findAllDistricts(): CancelablePromise<FindAllDistrictsResponse> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/districts'
+        });
+    }
+    
+    /**
+     * Get a district by ID
+     * Find a specific district by ID
+     * @param data The data for the request.
+     * @param data.id
+     * @returns CountyDTO default response
+     * @throws ApiError
+     */
+    public findDistrictById(data: FindDistrictByIdData): CancelablePromise<FindDistrictByIdResponse> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/districts/{id}',
+            path: {
+                id: data.id
+            }
+        });
+    }
+    
+}
+
+export class ContactInformationService {
+    constructor(public readonly httpRequest: BaseHttpRequest) { }
+    
+    /**
+     * Find by ID
+     * Find contact information by id
+     * @param data The data for the request.
+     * @param data.contactInformationId
+     * @returns ContactInformationDTO default response
+     * @throws ApiError
+     */
+    public findById(data: FindByIdData): CancelablePromise<FindByIdResponse> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/contactinformation/{contactInformationId}',
+            path: {
+                contactInformationId: data.contactInformationId
+            }
+        });
+    }
+    
+    /**
+     * Update
+     * Update contact information
+     * @param data The data for the request.
+     * @param data.contactInformationId
+     * @param data.requestBody
+     * @returns ContactInformationDTO default response
+     * @throws ApiError
+     */
+    public updateContactInformation(data: UpdateContactInformationData): CancelablePromise<UpdateContactInformationResponse> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/contactinformation/{contactInformationId}',
+            path: {
+                contactInformationId: data.contactInformationId
+            },
+            body: data.requestBody,
+            mediaType: 'application/json'
+        });
+    }
+    
+    /**
+     * Delete
+     * Delete contact information
+     * @param data The data for the request.
+     * @param data.contactInformationId
+     * @returns ResponseEntityObject default response
+     * @throws ApiError
+     */
+    public deleteContactInformation(data: DeleteContactInformationData): CancelablePromise<DeleteContactInformationResponse> {
+        return this.httpRequest.request({
+            method: 'DELETE',
+            url: '/contactinformation/{contactInformationId}',
+            path: {
+                contactInformationId: data.contactInformationId
+            }
+        });
+    }
+    
+    /**
+     * Find by Address
+     * Find contact information by address
+     * @param data The data for the request.
+     * @param data.addressId
+     * @returns ContactInformationDTO default response
+     * @throws ApiError
+     */
+    public findByAddress(data: FindByAddressData): CancelablePromise<FindByAddressResponse> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/contactinformation/address/{addressId}',
+            path: {
+                addressId: data.addressId
+            }
+        });
+    }
+    
+    /**
+     * Find by Person
+     * Find contact information by person
+     * @param data The data for the request.
+     * @param data.personId
+     * @returns ContactInformationDTO default response
+     * @throws ApiError
+     */
+    public findByPerson(data: FindByPersonData): CancelablePromise<FindByPersonResponse> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/contactinformation/person/{personId}',
+            path: {
+                personId: data.personId
+            }
+        });
+    }
+    
+    /**
+     * Create
+     * Create contact information
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseEntityObject default response
+     * @throws ApiError
+     */
+    public createContactInformation(data: CreateContactInformationData = {}): CancelablePromise<CreateContactInformationResponse> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/contactinformation',
+            body: data.requestBody,
+            mediaType: 'application/json'
         });
     }
     
@@ -132,44 +319,28 @@ export class PersonService {
     
 }
 
-export class CountriesService {
+export class CommunicationService {
     constructor(public readonly httpRequest: BaseHttpRequest) { }
     
     /**
-     * Find by ID
-     * Find a country by its ID
+     * Delete contact person mapping for a child
+     * Delete contact person mapping for a child
      * @param data The data for the request.
-     * @param data.id
-     * @returns CountryDTO default response
+     * @param data.childId
+     * @param data.contactPersonMappingId
+     * @returns unknown default response
      * @throws ApiError
      */
-    public findCountryByIdx(data: FindCountryByIdxData): CancelablePromise<FindCountryByIdxResponse> {
+    public deleteContactPersonMapping(data: DeleteContactPersonMappingData): CancelablePromise<DeleteContactPersonMappingResponse> {
         return this.httpRequest.request({
-            method: 'GET',
-            url: '/countries/{id}',
+            method: 'DELETE',
+            url: '/communication/child/{childId}/persons/{contactPersonMappingId}',
             path: {
-                id: data.id
+                childId: data.childId,
+                contactPersonMappingId: data.contactPersonMappingId
             }
         });
     }
-    
-    /**
-     * Find all
-     * Find all available countries
-     * @returns CountryDTO default response
-     * @throws ApiError
-     */
-    public findAllCountries(): CancelablePromise<FindAllCountriesResponse> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/countries'
-        });
-    }
-    
-}
-
-export class CommunicationService {
-    constructor(public readonly httpRequest: BaseHttpRequest) { }
     
     /**
      * Get contact information mappings for a child
@@ -207,26 +378,6 @@ export class CommunicationService {
             },
             body: data.requestBody,
             mediaType: 'application/json'
-        });
-    }
-    
-    /**
-     * Delete contact person mapping for a child
-     * Delete contact person mapping for a child
-     * @param data The data for the request.
-     * @param data.childId
-     * @param data.contactPersonMappingId
-     * @returns unknown default response
-     * @throws ApiError
-     */
-    public deleteContactPersonMapping(data: DeleteContactPersonMappingData): CancelablePromise<DeleteContactPersonMappingResponse> {
-        return this.httpRequest.request({
-            method: 'DELETE',
-            url: '/communication/child/{childId}/persons/{contactPersonMappingId}',
-            path: {
-                childId: data.childId,
-                contactPersonMappingId: data.contactPersonMappingId
-            }
         });
     }
     
@@ -291,60 +442,42 @@ export class CommunicationService {
     
 }
 
-export class ReligionsService {
+export class AddressService {
     constructor(public readonly httpRequest: BaseHttpRequest) { }
     
     /**
-     * Find all
-     * Find all available religions
-     * @returns ReligionDTO default response
-     * @throws ApiError
-     */
-    public findAllReligions(): CancelablePromise<FindAllReligionsResponse> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/religions'
-        });
-    }
-    
-}
-
-export class ContactInformationService {
-    constructor(public readonly httpRequest: BaseHttpRequest) { }
-    
-    /**
-     * Find by ID
-     * Find contact information by id
+     * Get address by id
+     * Get address by id
      * @param data The data for the request.
-     * @param data.contactInformationId
-     * @returns ContactInformationDTO default response
+     * @param data.id
+     * @returns AddressDTO default response
      * @throws ApiError
      */
-    public findById(data: FindByIdData): CancelablePromise<FindByIdResponse> {
+    public findAddressById(data: FindAddressByIdData): CancelablePromise<FindAddressByIdResponse> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/contactinformation/{contactInformationId}',
+            url: '/addresses/{id}',
             path: {
-                contactInformationId: data.contactInformationId
+                id: data.id
             }
         });
     }
     
     /**
-     * Update
-     * Update contact information
+     * Update address
+     * Update address
      * @param data The data for the request.
-     * @param data.contactInformationId
+     * @param data.id
      * @param data.requestBody
-     * @returns ContactInformationDTO default response
+     * @returns AddressDTO default response
      * @throws ApiError
      */
-    public updateContactInformation(data: UpdateContactInformationData): CancelablePromise<UpdateContactInformationResponse> {
+    public updateAddress(data: UpdateAddressData): CancelablePromise<UpdateAddressResponse> {
         return this.httpRequest.request({
             method: 'PUT',
-            url: '/contactinformation/{contactInformationId}',
+            url: '/addresses/{id}',
             path: {
-                contactInformationId: data.contactInformationId
+                id: data.id
             },
             body: data.requestBody,
             mediaType: 'application/json'
@@ -352,73 +485,32 @@ export class ContactInformationService {
     }
     
     /**
-     * Delete
-     * Delete contact information
-     * @param data The data for the request.
-     * @param data.contactInformationId
-     * @returns ResponseEntityObject default response
+     * Get all addresses
+     * Get all addresses
+     * @returns AddressDTO default response
      * @throws ApiError
      */
-    public deleteContactInformation(data: DeleteContactInformationData): CancelablePromise<DeleteContactInformationResponse> {
+    public findAllAddresses(): CancelablePromise<FindAllAddressesResponse> {
         return this.httpRequest.request({
-            method: 'DELETE',
-            url: '/contactinformation/{contactInformationId}',
-            path: {
-                contactInformationId: data.contactInformationId
-            }
+            method: 'GET',
+            url: '/addresses'
         });
     }
     
     /**
-     * Create
-     * Create contact information
+     * Create address
+     * Create address
      * @param data The data for the request.
      * @param data.requestBody
-     * @returns ResponseEntityObject default response
+     * @returns AddressDTO default response
      * @throws ApiError
      */
-    public createContactInformation(data: CreateContactInformationData = {}): CancelablePromise<CreateContactInformationResponse> {
+    public createAddress(data: CreateAddressData = {}): CancelablePromise<CreateAddressResponse> {
         return this.httpRequest.request({
             method: 'POST',
-            url: '/contactinformation',
+            url: '/addresses',
             body: data.requestBody,
             mediaType: 'application/json'
-        });
-    }
-    
-    /**
-     * Find by Person
-     * Find contact information by person
-     * @param data The data for the request.
-     * @param data.personId
-     * @returns ContactInformationDTO default response
-     * @throws ApiError
-     */
-    public findByPerson(data: FindByPersonData): CancelablePromise<FindByPersonResponse> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/contactinformation/person/{personId}',
-            path: {
-                personId: data.personId
-            }
-        });
-    }
-    
-    /**
-     * Find by Address
-     * Find contact information by address
-     * @param data The data for the request.
-     * @param data.addressId
-     * @returns ContactInformationDTO default response
-     * @throws ApiError
-     */
-    public findByAddress(data: FindByAddressData): CancelablePromise<FindByAddressResponse> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/contactinformation/address/{addressId}',
-            path: {
-                addressId: data.addressId
-            }
         });
     }
     
@@ -458,42 +550,6 @@ export class FamilyService {
     
 }
 
-export class DistrictsService {
-    constructor(public readonly httpRequest: BaseHttpRequest) { }
-    
-    /**
-     * Get all districts
-     * Get all districts
-     * @returns CountyDTO default response
-     * @throws ApiError
-     */
-    public findAllDistricts(): CancelablePromise<FindAllDistrictsResponse> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/districts'
-        });
-    }
-    
-    /**
-     * Get a district by ID
-     * Find a specific district by ID
-     * @param data The data for the request.
-     * @param data.id
-     * @returns CountyDTO default response
-     * @throws ApiError
-     */
-    public findDistrictById(data: FindDistrictByIdData): CancelablePromise<FindDistrictByIdResponse> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/districts/{id}',
-            path: {
-                id: data.id
-            }
-        });
-    }
-    
-}
-
 export class HealthService {
     constructor(public readonly httpRequest: BaseHttpRequest) { }
     
@@ -505,59 +561,6 @@ export class HealthService {
         return this.httpRequest.request({
             method: 'GET',
             url: '/health'
-        });
-    }
-    
-}
-
-export class AddressService {
-    constructor(public readonly httpRequest: BaseHttpRequest) { }
-    
-    /**
-     * Get all addresses
-     * Get all addresses
-     * @returns AddressDTO default response
-     * @throws ApiError
-     */
-    public findAllAddresses(): CancelablePromise<FindAllAddressesResponse> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/addresses'
-        });
-    }
-    
-    /**
-     * Create address
-     * Create address
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns AddressDTO default response
-     * @throws ApiError
-     */
-    public createAddress(data: CreateAddressData = {}): CancelablePromise<CreateAddressResponse> {
-        return this.httpRequest.request({
-            method: 'POST',
-            url: '/addresses',
-            body: data.requestBody,
-            mediaType: 'application/json'
-        });
-    }
-    
-    /**
-     * Get address by id
-     * Get address by id
-     * @param data The data for the request.
-     * @param data.id
-     * @returns AddressDTO default response
-     * @throws ApiError
-     */
-    public findAddressById(data: FindAddressByIdData): CancelablePromise<FindAddressByIdResponse> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/addresses/{id}',
-            path: {
-                id: data.id
-            }
         });
     }
     
@@ -581,6 +584,24 @@ export class RelationshipsService {
             path: {
                 personId: data.personId
             }
+        });
+    }
+    
+}
+
+export class ReligionsService {
+    constructor(public readonly httpRequest: BaseHttpRequest) { }
+    
+    /**
+     * Find all
+     * Find all available religions
+     * @returns ReligionDTO default response
+     * @throws ApiError
+     */
+    public findAllReligions(): CancelablePromise<FindAllReligionsResponse> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/religions'
         });
     }
     

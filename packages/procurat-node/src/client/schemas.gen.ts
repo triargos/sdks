@@ -16,87 +16,71 @@ export const $GroupMemberDTO = {
     }
 } as const;
 
-export const $PersonDTO = {
+export const $CountryDTO = {
     type: 'object',
     properties: {
         id: {
             type: 'integer',
             format: 'int32'
         },
-        firstName: {
+        idx: {
             type: 'string'
         },
-        lastName: {
+        iso: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const $CountyDTO = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'integer',
+            format: 'int32'
+        },
+        name: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const $ContactInformationDTO = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'integer',
+            format: 'int32'
+        },
+        order: {
+            type: 'integer',
+            format: 'int32'
+        },
+        type: {
             type: 'string'
         },
-        gender: {
+        medium: {
             type: 'string'
+        },
+        personId: {
+            type: 'integer',
+            format: 'int32'
         },
         addressId: {
             type: 'integer',
             format: 'int32'
         },
-        familyId: {
-            type: 'integer',
-            format: 'int32'
-        },
-        familyRole: {
+        externalName: {
             type: 'string'
         },
-        birthDate: {
-            type: 'string'
-        },
-        birthPlace: {
-            type: 'string'
-        },
-        birthCountryId: {
-            type: 'integer',
-            format: 'int32'
-        },
-        languageId: {
-            type: 'integer',
-            format: 'int32'
-        },
-        religionId: {
-            type: 'integer',
-            format: 'int32'
-        },
-        allFirstNames: {
-            type: 'string'
-        },
-        birthName: {
-            type: 'string'
-        },
-        academicTitle: {
-            type: 'string'
-        },
-        namePrefix: {
-            type: 'string'
-        },
-        nobilityTitle: {
-            type: 'string'
-        },
-        salutationA: {
-            type: 'string'
-        },
-        salutationB: {
-            type: 'string'
-        },
-        jobTitle: {
+        content: {
             type: 'string'
         },
         comment: {
             type: 'string'
         },
-        nationalityId: {
-            type: 'integer',
-            format: 'int32'
-        },
-        maritalStatus: {
-            type: 'string'
-        },
-        deathDate: {
-            type: 'string'
+        secret: {
+            type: 'boolean'
         }
     }
 } as const;
@@ -192,18 +176,61 @@ export const $SuccessResponse = {
     }
 } as const;
 
-export const $CountryDTO = {
+export const $AddressDTO = {
     type: 'object',
     properties: {
         id: {
             type: 'integer',
             format: 'int32'
         },
-        idx: {
+        street: {
             type: 'string'
         },
-        iso: {
+        countryId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        zip: {
             type: 'string'
+        },
+        city: {
+            type: 'string'
+        },
+        nameline2: {
+            type: 'string'
+        },
+        additional: {
+            type: 'string'
+        },
+        district: {
+            type: 'string'
+        },
+        poBoxZip: {
+            type: 'string'
+        },
+        poBox: {
+            type: 'string'
+        },
+        countyId: {
+            type: 'integer',
+            format: 'int32'
+        }
+    }
+} as const;
+
+export const $FamilyDTO = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'integer',
+            format: 'int32'
+        },
+        members: {
+            type: 'array',
+            items: {
+                type: 'integer',
+                format: 'int32'
+            }
         }
     }
 } as const;
@@ -233,7 +260,105 @@ export const $ContactInformationMappingDTO = {
     }
 } as const;
 
-export const $ReligionDTO = {
+export const $PersonUpdateDTO = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'integer',
+            format: 'int32'
+        },
+        firstName: {
+            type: 'string'
+        },
+        lastName: {
+            type: 'string'
+        },
+        gender: {
+            type: 'string'
+        },
+        birthDate: {
+            type: 'string'
+        },
+        birthPlace: {
+            type: 'string'
+        },
+        birthCountryId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        languageId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        religionId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        allFirstNames: {
+            type: 'string'
+        },
+        birthName: {
+            type: 'string'
+        },
+        academicTitle: {
+            type: 'string'
+        },
+        namePrefix: {
+            type: 'string'
+        },
+        nobilityTitle: {
+            type: 'string'
+        },
+        salutationA: {
+            type: 'string'
+        },
+        salutationB: {
+            type: 'string'
+        },
+        jobTitle: {
+            type: 'string'
+        },
+        comment: {
+            type: 'string'
+        },
+        nationalityId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        maritalStatus: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const $ContactPersonMappingDTO = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'integer',
+            format: 'int32'
+        },
+        childId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        parentId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        isEmergency: {
+            type: 'boolean'
+        },
+        includeAddressOnList: {
+            type: 'boolean'
+        },
+        includeHomePhoneOnList: {
+            type: 'boolean'
+        }
+    }
+} as const;
+
+export const $GroupDTO = {
     type: 'object',
     properties: {
         id: {
@@ -242,79 +367,199 @@ export const $ReligionDTO = {
         },
         name: {
             type: 'string'
+        },
+        type: {
+            type: 'string'
+        },
+        grade: {
+            type: 'string'
+        },
+        character: {
+            type: 'string'
+        },
+        schoolYear: {
+            type: 'string'
         }
     }
 } as const;
 
-export const $ContactInformationDTO = {
+export const $AddressCreationDTO = {
+    type: 'object',
+    properties: {
+        personId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        street: {
+            type: 'string'
+        },
+        countryId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        zip: {
+            type: 'string'
+        },
+        city: {
+            type: 'string'
+        },
+        nameline2: {
+            type: 'string'
+        },
+        additional: {
+            type: 'string'
+        },
+        district: {
+            type: 'string'
+        },
+        poBoxZip: {
+            type: 'string'
+        },
+        poBox: {
+            type: 'string'
+        },
+        countyId: {
+            type: 'integer',
+            format: 'int32'
+        }
+    }
+} as const;
+
+export const $HealthDTO = {
+    type: 'object',
+    properties: {
+        databaseVersion: {
+            type: 'integer',
+            format: 'int32'
+        },
+        build: {
+            type: 'integer',
+            format: 'int32'
+        },
+        databaseValid: {
+            type: 'boolean'
+        },
+        databaseLocked: {
+            type: 'boolean'
+        },
+        lastUpdateStart: {
+            type: 'string'
+        },
+        lastUpdateEnd: {
+            type: 'string'
+        },
+        lastUpdateFailed: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const $RelationshipDTO = {
+    type: 'object',
+    properties: {
+        personId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        relationshipType: {
+            type: 'string'
+        },
+        physical: {
+            type: 'boolean'
+        },
+        custody: {
+            type: 'boolean'
+        },
+        realParent: {
+            type: 'boolean'
+        },
+        notes: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const $PersonDTO = {
     type: 'object',
     properties: {
         id: {
             type: 'integer',
             format: 'int32'
         },
-        order: {
-            type: 'integer',
-            format: 'int32'
-        },
-        type: {
+        firstName: {
             type: 'string'
         },
-        medium: {
+        lastName: {
             type: 'string'
         },
-        personId: {
-            type: 'integer',
-            format: 'int32'
+        gender: {
+            type: 'string'
         },
         addressId: {
             type: 'integer',
             format: 'int32'
         },
-        externalName: {
+        familyId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        familyRole: {
             type: 'string'
         },
-        content: {
+        birthDate: {
+            type: 'string'
+        },
+        birthPlace: {
+            type: 'string'
+        },
+        birthCountryId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        languageId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        religionId: {
+            type: 'integer',
+            format: 'int32'
+        },
+        allFirstNames: {
+            type: 'string'
+        },
+        birthName: {
+            type: 'string'
+        },
+        academicTitle: {
+            type: 'string'
+        },
+        namePrefix: {
+            type: 'string'
+        },
+        nobilityTitle: {
+            type: 'string'
+        },
+        salutationA: {
+            type: 'string'
+        },
+        salutationB: {
+            type: 'string'
+        },
+        jobTitle: {
             type: 'string'
         },
         comment: {
             type: 'string'
         },
-        secret: {
-            type: 'boolean'
-        }
-    }
-} as const;
-
-export const $ContactInformationCreationDTO = {
-    required: ['content', 'medium', 'type'],
-    type: 'object',
-    properties: {
-        type: {
-            type: 'string'
-        },
-        medium: {
-            type: 'string'
-        },
-        personId: {
+        nationalityId: {
             type: 'integer',
             format: 'int32'
         },
-        addressId: {
-            type: 'integer',
-            format: 'int32'
-        },
-        externalName: {
+        maritalStatus: {
             type: 'string'
         },
-        content: {
+        deathDate: {
             type: 'string'
-        },
-        comment: {
-            type: 'string'
-        },
-        secret: {
-            type: 'boolean'
         }
     }
 } as const;
@@ -370,14 +615,18 @@ export const $ContentDisposition = {
 export const $HttpHeaders = {
     type: 'object',
     properties: {
-        origin: {
-            type: 'string'
-        },
         date: {
             type: 'integer',
             format: 'int64'
         },
+        contentType: {
+            '$ref': '#/components/schemas/MediaType'
+        },
         contentLength: {
+            type: 'integer',
+            format: 'int64'
+        },
+        ifModifiedSince: {
             type: 'integer',
             format: 'int64'
         },
@@ -385,12 +634,11 @@ export const $HttpHeaders = {
             type: 'integer',
             format: 'int64'
         },
-        contentType: {
-            '$ref': '#/components/schemas/MediaType'
-        },
-        ifModifiedSince: {
-            type: 'integer',
-            format: 'int64'
+        connection: {
+            type: 'array',
+            items: {
+                type: 'string'
+            }
         },
         empty: {
             type: 'boolean'
@@ -408,6 +656,19 @@ export const $HttpHeaders = {
                 address: {
                     type: 'object',
                     properties: {
+                        address: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                                format: 'byte'
+                            }
+                        },
+                        hostAddress: {
+                            type: 'string'
+                        },
+                        hostName: {
+                            type: 'string'
+                        },
                         multicastAddress: {
                             type: 'boolean'
                         },
@@ -440,19 +701,6 @@ export const $HttpHeaders = {
                         },
                         loopbackAddress: {
                             type: 'boolean'
-                        },
-                        address: {
-                            type: 'array',
-                            items: {
-                                type: 'string',
-                                format: 'byte'
-                            }
-                        },
-                        hostAddress: {
-                            type: 'string'
-                        },
-                        hostName: {
-                            type: 'string'
                         }
                     }
                 },
@@ -475,11 +723,8 @@ export const $HttpHeaders = {
             },
             writeOnly: true
         },
-        connection: {
-            type: 'array',
-            items: {
-                type: 'string'
-            }
+        origin: {
+            type: 'string'
         },
         acceptLanguageAsLocales: {
             type: 'array',
@@ -578,29 +823,6 @@ export const $HttpHeaders = {
             type: 'string',
             enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
         },
-        allow: {
-            uniqueItems: true,
-            type: 'array',
-            items: {
-                type: 'string',
-                enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
-            }
-        },
-        etag: {
-            type: 'string'
-        },
-        range: {
-            type: 'array',
-            items: {
-                '$ref': '#/components/schemas/HttpRange'
-            }
-        },
-        vary: {
-            type: 'array',
-            items: {
-                type: 'string'
-            }
-        },
         cacheControl: {
             type: 'string'
         },
@@ -665,6 +887,29 @@ export const $HttpHeaders = {
                 displayName: {
                     type: 'string'
                 }
+            }
+        },
+        allow: {
+            uniqueItems: true,
+            type: 'array',
+            items: {
+                type: 'string',
+                enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
+            }
+        },
+        etag: {
+            type: 'string'
+        },
+        range: {
+            type: 'array',
+            items: {
+                '$ref': '#/components/schemas/HttpRange'
+            }
+        },
+        vary: {
+            type: 'array',
+            items: {
+                type: 'string'
             }
         },
         acceptPatch: {
@@ -774,15 +1019,6 @@ export const $MediaType = {
             type: 'number',
             format: 'double'
         },
-        wildcardType: {
-            type: 'boolean'
-        },
-        wildcardSubtype: {
-            type: 'boolean'
-        },
-        subtypeSuffix: {
-            type: 'string'
-        },
         concrete: {
             type: 'boolean'
         },
@@ -793,6 +1029,15 @@ export const $MediaType = {
                     type: 'boolean'
                 }
             }
+        },
+        wildcardType: {
+            type: 'boolean'
+        },
+        wildcardSubtype: {
+            type: 'boolean'
+        },
+        subtypeSuffix: {
+            type: 'string'
         }
     }
 } as const;
@@ -803,14 +1048,18 @@ export const $ResponseEntityObject = {
         headers: {
             type: 'object',
             properties: {
-                origin: {
-                    type: 'string'
-                },
                 date: {
                     type: 'integer',
                     format: 'int64'
                 },
+                contentType: {
+                    '$ref': '#/components/schemas/MediaType'
+                },
                 contentLength: {
+                    type: 'integer',
+                    format: 'int64'
+                },
+                ifModifiedSince: {
                     type: 'integer',
                     format: 'int64'
                 },
@@ -818,12 +1067,11 @@ export const $ResponseEntityObject = {
                     type: 'integer',
                     format: 'int64'
                 },
-                contentType: {
-                    '$ref': '#/components/schemas/MediaType'
-                },
-                ifModifiedSince: {
-                    type: 'integer',
-                    format: 'int64'
+                connection: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
                 },
                 empty: {
                     type: 'boolean'
@@ -841,6 +1089,19 @@ export const $ResponseEntityObject = {
                         address: {
                             type: 'object',
                             properties: {
+                                address: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'string',
+                                        format: 'byte'
+                                    }
+                                },
+                                hostAddress: {
+                                    type: 'string'
+                                },
+                                hostName: {
+                                    type: 'string'
+                                },
                                 multicastAddress: {
                                     type: 'boolean'
                                 },
@@ -873,19 +1134,6 @@ export const $ResponseEntityObject = {
                                 },
                                 loopbackAddress: {
                                     type: 'boolean'
-                                },
-                                address: {
-                                    type: 'array',
-                                    items: {
-                                        type: 'string',
-                                        format: 'byte'
-                                    }
-                                },
-                                hostAddress: {
-                                    type: 'string'
-                                },
-                                hostName: {
-                                    type: 'string'
                                 }
                             }
                         },
@@ -908,11 +1156,8 @@ export const $ResponseEntityObject = {
                     },
                     writeOnly: true
                 },
-                connection: {
-                    type: 'array',
-                    items: {
-                        type: 'string'
-                    }
+                origin: {
+                    type: 'string'
                 },
                 acceptLanguageAsLocales: {
                     type: 'array',
@@ -1011,29 +1256,6 @@ export const $ResponseEntityObject = {
                     type: 'string',
                     enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
                 },
-                allow: {
-                    uniqueItems: true,
-                    type: 'array',
-                    items: {
-                        type: 'string',
-                        enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
-                    }
-                },
-                etag: {
-                    type: 'string'
-                },
-                range: {
-                    type: 'array',
-                    items: {
-                        '$ref': '#/components/schemas/HttpRange'
-                    }
-                },
-                vary: {
-                    type: 'array',
-                    items: {
-                        type: 'string'
-                    }
-                },
                 cacheControl: {
                     type: 'string'
                 },
@@ -1098,6 +1320,29 @@ export const $ResponseEntityObject = {
                         displayName: {
                             type: 'string'
                         }
+                    }
+                },
+                allow: {
+                    uniqueItems: true,
+                    type: 'array',
+                    items: {
+                        type: 'string',
+                        enum: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE']
+                    }
+                },
+                etag: {
+                    type: 'string'
+                },
+                range: {
+                    type: 'array',
+                    items: {
+                        '$ref': '#/components/schemas/HttpRange'
+                    }
+                },
+                vary: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
                     }
                 },
                 acceptPatch: {
@@ -1197,24 +1442,7 @@ export const $ResponseEntityObject = {
     }
 } as const;
 
-export const $FamilyDTO = {
-    type: 'object',
-    properties: {
-        id: {
-            type: 'integer',
-            format: 'int32'
-        },
-        members: {
-            type: 'array',
-            items: {
-                type: 'integer',
-                format: 'int32'
-            }
-        }
-    }
-} as const;
-
-export const $CountyDTO = {
+export const $ReligionDTO = {
     type: 'object',
     properties: {
         id: {
@@ -1227,191 +1455,34 @@ export const $CountyDTO = {
     }
 } as const;
 
-export const $GroupDTO = {
+export const $ContactInformationCreationDTO = {
+    required: ['content', 'medium', 'type'],
     type: 'object',
     properties: {
-        id: {
-            type: 'integer',
-            format: 'int32'
-        },
-        name: {
-            type: 'string'
-        },
         type: {
             type: 'string'
         },
-        grade: {
+        medium: {
             type: 'string'
         },
-        character: {
-            type: 'string'
-        },
-        schoolYear: {
-            type: 'string'
-        }
-    }
-} as const;
-
-export const $HealthDTO = {
-    type: 'object',
-    properties: {
-        databaseVersion: {
-            type: 'integer',
-            format: 'int32'
-        },
-        build: {
-            type: 'integer',
-            format: 'int32'
-        },
-        databaseValid: {
-            type: 'boolean'
-        },
-        databaseLocked: {
-            type: 'boolean'
-        },
-        lastUpdateStart: {
-            type: 'string'
-        },
-        lastUpdateEnd: {
-            type: 'string'
-        },
-        lastUpdateFailed: {
-            type: 'string'
-        }
-    }
-} as const;
-
-export const $AddressCreationDTO = {
-    type: 'object',
-    properties: {
         personId: {
             type: 'integer',
             format: 'int32'
         },
-        street: {
-            type: 'string'
-        },
-        countryId: {
+        addressId: {
             type: 'integer',
             format: 'int32'
         },
-        zip: {
+        externalName: {
             type: 'string'
         },
-        city: {
+        content: {
             type: 'string'
         },
-        nameline2: {
+        comment: {
             type: 'string'
         },
-        additional: {
-            type: 'string'
-        },
-        district: {
-            type: 'string'
-        },
-        poBoxZip: {
-            type: 'string'
-        },
-        poBox: {
-            type: 'string'
-        },
-        countyId: {
-            type: 'integer',
-            format: 'int32'
-        }
-    }
-} as const;
-
-export const $AddressDTO = {
-    type: 'object',
-    properties: {
-        id: {
-            type: 'integer',
-            format: 'int32'
-        },
-        street: {
-            type: 'string'
-        },
-        countryId: {
-            type: 'integer',
-            format: 'int32'
-        },
-        zip: {
-            type: 'string'
-        },
-        city: {
-            type: 'string'
-        },
-        nameline2: {
-            type: 'string'
-        },
-        additional: {
-            type: 'string'
-        },
-        district: {
-            type: 'string'
-        },
-        poBoxZip: {
-            type: 'string'
-        },
-        poBox: {
-            type: 'string'
-        },
-        countyId: {
-            type: 'integer',
-            format: 'int32'
-        }
-    }
-} as const;
-
-export const $RelationshipDTO = {
-    type: 'object',
-    properties: {
-        personId: {
-            type: 'integer',
-            format: 'int32'
-        },
-        relationshipType: {
-            type: 'string'
-        },
-        physical: {
-            type: 'boolean'
-        },
-        custody: {
-            type: 'boolean'
-        },
-        realParent: {
-            type: 'boolean'
-        },
-        notes: {
-            type: 'string'
-        }
-    }
-} as const;
-
-export const $ContactPersonMappingDTO = {
-    type: 'object',
-    properties: {
-        id: {
-            type: 'integer',
-            format: 'int32'
-        },
-        childId: {
-            type: 'integer',
-            format: 'int32'
-        },
-        parentId: {
-            type: 'integer',
-            format: 'int32'
-        },
-        isEmergency: {
-            type: 'boolean'
-        },
-        includeAddressOnList: {
-            type: 'boolean'
-        },
-        includeHomePhoneOnList: {
+        secret: {
             type: 'boolean'
         }
     }

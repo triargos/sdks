@@ -35,7 +35,7 @@ export class GeneratedProcurat {
 
 	constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = AxiosHttpRequest) {
 		this.request = new HttpRequest({
-			BASE: config?.BASE ?? 'http://localhost:8080/procurat_server_war_exploded/spring',
+			BASE: config?.BASE ?? 'http://localhost:8080/procurat/spring',
 			VERSION: config?.VERSION ?? '0',
 			WITH_CREDENTIALS: config?.WITH_CREDENTIALS ?? false,
 			CREDENTIALS: config?.CREDENTIALS ?? 'include',

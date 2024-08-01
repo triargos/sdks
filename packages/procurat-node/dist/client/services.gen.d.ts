@@ -1,6 +1,6 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import type { BaseHttpRequest } from './core/BaseHttpRequest';
-import type { FindGroupMembersByIdData, FindGroupMembersByIdResponse, FindGroupByIdData, FindGroupByIdResponse, FindAllGroupsResponse, FindAllPersonsResponse, CreatePersonData, CreatePersonResponse, FindPersonData, FindPersonResponse, UpdatePersonData, UpdatePersonResponse, FindCountryByIdxData, FindCountryByIdxResponse, FindAllCountriesResponse, GetContactInformationMappingsData, GetContactInformationMappingsResponse, CreateContactInformationMappingData, CreateContactInformationMappingResponse, DeleteContactPersonMappingData, DeleteContactPersonMappingResponse, GetContactPersonMappingsData, GetContactPersonMappingsResponse, CreateContactPersonMappingData, CreateContactPersonMappingResponse, DeleteContactInformationMappingData, DeleteContactInformationMappingResponse, FindAllReligionsResponse, FindByIdData, FindByIdResponse, UpdateContactInformationData, UpdateContactInformationResponse, DeleteContactInformationData, DeleteContactInformationResponse, CreateContactInformationData, CreateContactInformationResponse, FindByPersonData, FindByPersonResponse, FindByAddressData, FindByAddressResponse, FindAllFamiliesResponse, FindFamilyByIdData, FindFamilyByIdResponse, FindAllDistrictsResponse, FindDistrictByIdData, FindDistrictByIdResponse, GetHealthResponse, FindAllAddressesResponse, CreateAddressData, CreateAddressResponse, FindAddressByIdData, FindAddressByIdResponse, FindRelationshipsForPersonData, FindRelationshipsForPersonResponse } from './types.gen';
+import type { FindGroupMembersByIdData, FindGroupMembersByIdResponse, FindGroupByIdData, FindGroupByIdResponse, FindAllGroupsResponse, FindCountryByIdxData, FindCountryByIdxResponse, FindAllCountriesResponse, FindAllDistrictsResponse, FindDistrictByIdData, FindDistrictByIdResponse, FindByIdData, FindByIdResponse, UpdateContactInformationData, UpdateContactInformationResponse, DeleteContactInformationData, DeleteContactInformationResponse, FindByAddressData, FindByAddressResponse, FindByPersonData, FindByPersonResponse, CreateContactInformationData, CreateContactInformationResponse, FindAllPersonsResponse, CreatePersonData, CreatePersonResponse, FindPersonData, FindPersonResponse, UpdatePersonData, UpdatePersonResponse, DeleteContactPersonMappingData, DeleteContactPersonMappingResponse, GetContactInformationMappingsData, GetContactInformationMappingsResponse, CreateContactInformationMappingData, CreateContactInformationMappingResponse, GetContactPersonMappingsData, GetContactPersonMappingsResponse, CreateContactPersonMappingData, CreateContactPersonMappingResponse, DeleteContactInformationMappingData, DeleteContactInformationMappingResponse, FindAddressByIdData, FindAddressByIdResponse, UpdateAddressData, UpdateAddressResponse, FindAllAddressesResponse, CreateAddressData, CreateAddressResponse, FindAllFamiliesResponse, FindFamilyByIdData, FindFamilyByIdResponse, GetHealthResponse, FindRelationshipsForPersonData, FindRelationshipsForPersonResponse, FindAllReligionsResponse } from './types.gen';
 export declare class GroupsService {
     readonly httpRequest: BaseHttpRequest;
     constructor(httpRequest: BaseHttpRequest);
@@ -29,6 +29,105 @@ export declare class GroupsService {
      * @throws ApiError
      */
     findAllGroups(): CancelablePromise<FindAllGroupsResponse>;
+}
+export declare class CountriesService {
+    readonly httpRequest: BaseHttpRequest;
+    constructor(httpRequest: BaseHttpRequest);
+    /**
+     * Find by ID
+     * Find a country by its ID
+     * @param data The data for the request.
+     * @param data.id
+     * @returns CountryDTO default response
+     * @throws ApiError
+     */
+    findCountryByIdx(data: FindCountryByIdxData): CancelablePromise<FindCountryByIdxResponse>;
+    /**
+     * Find all
+     * Find all available countries
+     * @returns CountryDTO default response
+     * @throws ApiError
+     */
+    findAllCountries(): CancelablePromise<FindAllCountriesResponse>;
+}
+export declare class DistrictsService {
+    readonly httpRequest: BaseHttpRequest;
+    constructor(httpRequest: BaseHttpRequest);
+    /**
+     * Get all districts
+     * Get all districts
+     * @returns CountyDTO default response
+     * @throws ApiError
+     */
+    findAllDistricts(): CancelablePromise<FindAllDistrictsResponse>;
+    /**
+     * Get a district by ID
+     * Find a specific district by ID
+     * @param data The data for the request.
+     * @param data.id
+     * @returns CountyDTO default response
+     * @throws ApiError
+     */
+    findDistrictById(data: FindDistrictByIdData): CancelablePromise<FindDistrictByIdResponse>;
+}
+export declare class ContactInformationService {
+    readonly httpRequest: BaseHttpRequest;
+    constructor(httpRequest: BaseHttpRequest);
+    /**
+     * Find by ID
+     * Find contact information by id
+     * @param data The data for the request.
+     * @param data.contactInformationId
+     * @returns ContactInformationDTO default response
+     * @throws ApiError
+     */
+    findById(data: FindByIdData): CancelablePromise<FindByIdResponse>;
+    /**
+     * Update
+     * Update contact information
+     * @param data The data for the request.
+     * @param data.contactInformationId
+     * @param data.requestBody
+     * @returns ContactInformationDTO default response
+     * @throws ApiError
+     */
+    updateContactInformation(data: UpdateContactInformationData): CancelablePromise<UpdateContactInformationResponse>;
+    /**
+     * Delete
+     * Delete contact information
+     * @param data The data for the request.
+     * @param data.contactInformationId
+     * @returns ResponseEntityObject default response
+     * @throws ApiError
+     */
+    deleteContactInformation(data: DeleteContactInformationData): CancelablePromise<DeleteContactInformationResponse>;
+    /**
+     * Find by Address
+     * Find contact information by address
+     * @param data The data for the request.
+     * @param data.addressId
+     * @returns ContactInformationDTO default response
+     * @throws ApiError
+     */
+    findByAddress(data: FindByAddressData): CancelablePromise<FindByAddressResponse>;
+    /**
+     * Find by Person
+     * Find contact information by person
+     * @param data The data for the request.
+     * @param data.personId
+     * @returns ContactInformationDTO default response
+     * @throws ApiError
+     */
+    findByPerson(data: FindByPersonData): CancelablePromise<FindByPersonResponse>;
+    /**
+     * Create
+     * Create contact information
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseEntityObject default response
+     * @throws ApiError
+     */
+    createContactInformation(data?: CreateContactInformationData): CancelablePromise<CreateContactInformationResponse>;
 }
 export declare class PersonService {
     readonly httpRequest: BaseHttpRequest;
@@ -69,29 +168,19 @@ export declare class PersonService {
      */
     updatePerson(data: UpdatePersonData): CancelablePromise<UpdatePersonResponse>;
 }
-export declare class CountriesService {
-    readonly httpRequest: BaseHttpRequest;
-    constructor(httpRequest: BaseHttpRequest);
-    /**
-     * Find by ID
-     * Find a country by its ID
-     * @param data The data for the request.
-     * @param data.id
-     * @returns CountryDTO default response
-     * @throws ApiError
-     */
-    findCountryByIdx(data: FindCountryByIdxData): CancelablePromise<FindCountryByIdxResponse>;
-    /**
-     * Find all
-     * Find all available countries
-     * @returns CountryDTO default response
-     * @throws ApiError
-     */
-    findAllCountries(): CancelablePromise<FindAllCountriesResponse>;
-}
 export declare class CommunicationService {
     readonly httpRequest: BaseHttpRequest;
     constructor(httpRequest: BaseHttpRequest);
+    /**
+     * Delete contact person mapping for a child
+     * Delete contact person mapping for a child
+     * @param data The data for the request.
+     * @param data.childId
+     * @param data.contactPersonMappingId
+     * @returns unknown default response
+     * @throws ApiError
+     */
+    deleteContactPersonMapping(data: DeleteContactPersonMappingData): CancelablePromise<DeleteContactPersonMappingResponse>;
     /**
      * Get contact information mappings for a child
      * Get contact information mappings for a child
@@ -111,16 +200,6 @@ export declare class CommunicationService {
      * @throws ApiError
      */
     createContactInformationMapping(data: CreateContactInformationMappingData): CancelablePromise<CreateContactInformationMappingResponse>;
-    /**
-     * Delete contact person mapping for a child
-     * Delete contact person mapping for a child
-     * @param data The data for the request.
-     * @param data.childId
-     * @param data.contactPersonMappingId
-     * @returns unknown default response
-     * @throws ApiError
-     */
-    deleteContactPersonMapping(data: DeleteContactPersonMappingData): CancelablePromise<DeleteContactPersonMappingResponse>;
     /**
      * Get contact person mappings for a child
      * Get contact person mappings for a child
@@ -151,75 +230,43 @@ export declare class CommunicationService {
      */
     deleteContactInformationMapping(data: DeleteContactInformationMappingData): CancelablePromise<DeleteContactInformationMappingResponse>;
 }
-export declare class ReligionsService {
+export declare class AddressService {
     readonly httpRequest: BaseHttpRequest;
     constructor(httpRequest: BaseHttpRequest);
     /**
-     * Find all
-     * Find all available religions
-     * @returns ReligionDTO default response
+     * Get address by id
+     * Get address by id
+     * @param data The data for the request.
+     * @param data.id
+     * @returns AddressDTO default response
      * @throws ApiError
      */
-    findAllReligions(): CancelablePromise<FindAllReligionsResponse>;
-}
-export declare class ContactInformationService {
-    readonly httpRequest: BaseHttpRequest;
-    constructor(httpRequest: BaseHttpRequest);
+    findAddressById(data: FindAddressByIdData): CancelablePromise<FindAddressByIdResponse>;
     /**
-     * Find by ID
-     * Find contact information by id
+     * Update address
      * @param data The data for the request.
-     * @param data.contactInformationId
-     * @returns ContactInformationDTO default response
-     * @throws ApiError
-     */
-    findById(data: FindByIdData): CancelablePromise<FindByIdResponse>;
-    /**
-     * Update
-     * Update contact information
-     * @param data The data for the request.
-     * @param data.contactInformationId
+     * @param data.id
      * @param data.requestBody
-     * @returns ContactInformationDTO default response
+     * @returns AddressDTO default response
      * @throws ApiError
      */
-    updateContactInformation(data: UpdateContactInformationData): CancelablePromise<UpdateContactInformationResponse>;
+    updateAddress(data: UpdateAddressData): CancelablePromise<UpdateAddressResponse>;
     /**
-     * Delete
-     * Delete contact information
-     * @param data The data for the request.
-     * @param data.contactInformationId
-     * @returns ResponseEntityObject default response
+     * Get all addresses
+     * Get all addresses
+     * @returns AddressDTO default response
      * @throws ApiError
      */
-    deleteContactInformation(data: DeleteContactInformationData): CancelablePromise<DeleteContactInformationResponse>;
+    findAllAddresses(): CancelablePromise<FindAllAddressesResponse>;
     /**
-     * Create
-     * Create contact information
+     * Create address
+     * Create address
      * @param data The data for the request.
      * @param data.requestBody
-     * @returns ResponseEntityObject default response
+     * @returns AddressDTO default response
      * @throws ApiError
      */
-    createContactInformation(data?: CreateContactInformationData): CancelablePromise<CreateContactInformationResponse>;
-    /**
-     * Find by Person
-     * Find contact information by person
-     * @param data The data for the request.
-     * @param data.personId
-     * @returns ContactInformationDTO default response
-     * @throws ApiError
-     */
-    findByPerson(data: FindByPersonData): CancelablePromise<FindByPersonResponse>;
-    /**
-     * Find by Address
-     * Find contact information by address
-     * @param data The data for the request.
-     * @param data.addressId
-     * @returns ContactInformationDTO default response
-     * @throws ApiError
-     */
-    findByAddress(data: FindByAddressData): CancelablePromise<FindByAddressResponse>;
+    createAddress(data?: CreateAddressData): CancelablePromise<CreateAddressResponse>;
 }
 export declare class FamilyService {
     readonly httpRequest: BaseHttpRequest;
@@ -239,26 +286,6 @@ export declare class FamilyService {
      */
     findFamilyById(data: FindFamilyByIdData): CancelablePromise<FindFamilyByIdResponse>;
 }
-export declare class DistrictsService {
-    readonly httpRequest: BaseHttpRequest;
-    constructor(httpRequest: BaseHttpRequest);
-    /**
-     * Get all districts
-     * Get all districts
-     * @returns CountyDTO default response
-     * @throws ApiError
-     */
-    findAllDistricts(): CancelablePromise<FindAllDistrictsResponse>;
-    /**
-     * Get a district by ID
-     * Find a specific district by ID
-     * @param data The data for the request.
-     * @param data.id
-     * @returns CountyDTO default response
-     * @throws ApiError
-     */
-    findDistrictById(data: FindDistrictByIdData): CancelablePromise<FindDistrictByIdResponse>;
-}
 export declare class HealthService {
     readonly httpRequest: BaseHttpRequest;
     constructor(httpRequest: BaseHttpRequest);
@@ -267,35 +294,6 @@ export declare class HealthService {
      * @throws ApiError
      */
     getHealth(): CancelablePromise<GetHealthResponse>;
-}
-export declare class AddressService {
-    readonly httpRequest: BaseHttpRequest;
-    constructor(httpRequest: BaseHttpRequest);
-    /**
-     * Get all addresses
-     * Get all addresses
-     * @returns AddressDTO default response
-     * @throws ApiError
-     */
-    findAllAddresses(): CancelablePromise<FindAllAddressesResponse>;
-    /**
-     * Create address
-     * Create address
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns AddressDTO default response
-     * @throws ApiError
-     */
-    createAddress(data?: CreateAddressData): CancelablePromise<CreateAddressResponse>;
-    /**
-     * Get address by id
-     * Get address by id
-     * @param data The data for the request.
-     * @param data.id
-     * @returns AddressDTO default response
-     * @throws ApiError
-     */
-    findAddressById(data: FindAddressByIdData): CancelablePromise<FindAddressByIdResponse>;
 }
 export declare class RelationshipsService {
     readonly httpRequest: BaseHttpRequest;
@@ -309,4 +307,15 @@ export declare class RelationshipsService {
      * @throws ApiError
      */
     findRelationshipsForPerson(data: FindRelationshipsForPersonData): CancelablePromise<FindRelationshipsForPersonResponse>;
+}
+export declare class ReligionsService {
+    readonly httpRequest: BaseHttpRequest;
+    constructor(httpRequest: BaseHttpRequest);
+    /**
+     * Find all
+     * Find all available religions
+     * @returns ReligionDTO default response
+     * @throws ApiError
+     */
+    findAllReligions(): CancelablePromise<FindAllReligionsResponse>;
 }

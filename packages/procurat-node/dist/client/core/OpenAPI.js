@@ -17,7 +17,7 @@ class Interceptors {
 }
 exports.Interceptors = Interceptors;
 exports.OpenAPI = {
-    BASE: 'http://localhost:8080/procurat_server_war_exploded/spring',
+    BASE: 'http://localhost:8080/procurat/spring',
     CREDENTIALS: 'include',
     ENCODE_PATH: undefined,
     HEADERS: undefined,

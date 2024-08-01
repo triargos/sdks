@@ -1,3 +1,10 @@
+# @triargos/procurat-node [1.6.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.5.0...@triargos/procurat-node@1.6.0) (2024-08-01)
+
+
+### Features
+
+* **build:** trigger build ([3b0b9ca](https://github.com/triargos/sdks/commit/3b0b9caa278ac82217f57b05a1809a7c86ba6fb7))
+
 # @triargos/procurat-node [1.5.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.4.0...@triargos/procurat-node@1.5.0) (2024-07-05)
 
 

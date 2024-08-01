@@ -18,7 +18,7 @@ class GeneratedProcurat {
     constructor(config, HttpRequest = AxiosHttpRequest_1.AxiosHttpRequest) {
         var _a, _b, _c, _d, _e, _f, _g, _h;
         this.request = new HttpRequest({
-            BASE: (_a = config === null || config === void 0 ? void 0 : config.BASE) !== null && _a !== void 0 ? _a : 'http://localhost:8080/procurat_server_war_exploded/spring',
+            BASE: (_a = config === null || config === void 0 ? void 0 : config.BASE) !== null && _a !== void 0 ? _a : 'http://localhost:8080/procurat/spring',
             VERSION: (_b = config === null || config === void 0 ? void 0 : config.VERSION) !== null && _b !== void 0 ? _b : '0',
             WITH_CREDENTIALS: (_c = config === null || config === void 0 ? void 0 : config.WITH_CREDENTIALS) !== null && _c !== void 0 ? _c : false,
             CREDENTIALS: (_d = config === null || config === void 0 ? void 0 : config.CREDENTIALS) !== null && _d !== void 0 ? _d : 'include',

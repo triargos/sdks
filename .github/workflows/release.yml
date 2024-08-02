@@ -20,7 +20,7 @@ jobs:
       - name: "Set yarn version"
         run: yarn set version stable
       - name: "Install dependencies"
-        run: yarn install --frozen-lockfile
+        run: yarn install
       - name: "Build package"
         run: yarn build
       - name: "Run semantic-release"

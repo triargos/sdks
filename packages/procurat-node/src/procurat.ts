@@ -1,12 +1,14 @@
-import { GeneratedProcurat } from "./client";
+import createClient, {Client} from "openapi-fetch";
+import {paths} from "./lib/api";
 
-export class Procurat extends GeneratedProcurat {
-  constructor(apiKey: string, baseUrl: string) {
-    super({
-      BASE: baseUrl,
-      HEADERS: { "Content-Type": "application/json", "X-Api-Key": apiKey },
-    });
-  }
+export class Procurat {
+    public readonly client: Client<paths, `${string}/${string}`>
+    constructor({baseUrl, apiKey}: { baseUrl: string, apiKey: string }) {
+        this.client = createClient<paths>({
+            baseUrl, headers: {
+                'X-API-KEY': apiKey
+            }
+        })
+    }
 }
 
-export * from "./client/GeneratedProcurat";

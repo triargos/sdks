@@ -16,7 +16,7 @@
     "zod": "^3.22.4"
   },
   "scripts": {
-    "generate": "npx openapi-typescript ./openapi.json -o ./src/lib/api.d.ts",
+    "generate": "npx openapi-typescript ./openapi.json -o src/lib/api.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "coverage": "vitest --coverage",

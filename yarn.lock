@@ -1719,8 +1719,10 @@ __metadata:
     "@hey-api/openapi-ts": "npm:^0.46.2"
     "@types/node": "npm:^20.12.4"
     axios: "npm:^1.6.8"
+    openapi-fetch: "npm:^0.10.5"
+    openapi-typescript: "npm:^7.3.0"
     prettier: "npm:^3.2.5"
-    typescript: "npm:^5.4.5"
+    typescript: "npm:^5.5.4"
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
@@ -1732,8 +1734,6 @@ __metadata:
     "@qiwi/multi-semantic-release": "npm:^7.1.1"
     "@semantic-release/changelog": "npm:^6.0.3"
     "@semantic-release/git": "npm:^10.0.1"
-    openapi-fetch: "npm:^0.10.5"
-    openapi-typescript: "npm:^7.3.0"
     semantic-release: "npm:^23.1.1"
     typescript: "npm:^5.5.4"
   languageName: unknown
@@ -8743,7 +8743,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.4.3, typescript@npm:^5.4.5":
+"typescript@npm:^5.4.3":
   version: 5.4.5
   resolution: "typescript@npm:5.4.5"
   bin:
@@ -8763,7 +8763,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.4.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.4.5#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.4.3#optional!builtin<compat/typescript>":
   version: 5.4.5
   resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"
   bin:

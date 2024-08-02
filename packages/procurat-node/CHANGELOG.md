@@ -1,3 +1,15 @@
+# @triargos/procurat-node [2.0.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.7.0...@triargos/procurat-node@2.0.0) (2024-08-02)
+
+
+### Bug Fixes
+
+* **package:** remove correct config ([ab978f7](https://github.com/triargos/sdks/commit/ab978f71a9c7b6fcba8ce12e394bd42bffe6f563))
+
+
+### BREAKING CHANGES
+
+* **package:** remove openapi ts
+
 # @triargos/procurat-node [1.7.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@1.6.0...@triargos/procurat-node@1.7.0) (2024-08-01)
 
 

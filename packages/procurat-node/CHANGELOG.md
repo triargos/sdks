@@ -1,3 +1,10 @@
+# @triargos/procurat-node [2.1.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.0.1...@triargos/procurat-node@2.1.0) (2024-10-18)
+
+
+### Features
+
+* **procurat:** add residents endpoint ([f544845](https://github.com/triargos/sdks/commit/f5448455c0d761480ae4a50ccd47227a81d6d4b3))
+
 ## @triargos/procurat-node [2.0.1](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.0.0...@triargos/procurat-node@2.0.1) (2024-08-02)
 
 

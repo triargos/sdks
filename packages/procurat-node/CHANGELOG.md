@@ -1,3 +1,10 @@
+# @triargos/procurat-node [2.2.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.1.0...@triargos/procurat-node@2.2.0) (2024-11-15)
+
+
+### Features
+
+* **procurat:** add group member id to groups ([b2b8e70](https://github.com/triargos/sdks/commit/b2b8e7057d0c07e91cbaf7513752b9775af95138))
+
 # @triargos/procurat-node [2.1.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.0.1...@triargos/procurat-node@2.1.0) (2024-10-18)
 
 

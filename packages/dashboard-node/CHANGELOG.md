@@ -1,3 +1,15 @@
+# @triargos/dashboard-node [2.0.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@1.2.0...@triargos/dashboard-node@2.0.0) (2024-11-15)
+
+
+### Features
+
+* **dashboard:** move to openapi-fetch ([8710f57](https://github.com/triargos/sdks/commit/8710f573b36b8e930a11e80a1da5d625f3712f8c))
+
+
+### BREAKING CHANGES
+
+* **dashboard:** usage is now inherently different!
+
 # @triargos/dashboard-node [1.2.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@1.1.2...@triargos/dashboard-node@1.2.0) (2024-08-01)
 
 

@@ -34,19 +34,22 @@ You can specify a set of environments
 > You can only list organizations that have your integration installed.
 
 ```ts
-const organizations = await dashboard.organizations.getOrganizations()
+const {data, error} = await dashboard.client.get("/v1/organizations")
 ```
 
 After listing organizations, you can take the organization id to perform additional operations
 
-#### Listing members
+#### Listing persons
 
 ```ts
-const members = await dashboard.persons.getPersons({organizationId: "org_1234"})
+const {data} = await dashboard.client.GET("/v1/organizations/{organizationId}/persons", {
+    params: {
+        path: {
+            organizationId: "123"
+        }
+    }
+})
 ```
-
-> [!TIP]
-> You can find the whole API documentation [here](https://dashboard-docs.triargos.de/)
 
 ## License
 

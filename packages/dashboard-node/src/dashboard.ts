@@ -1,4 +1,6 @@
-import {GeneratedDashboard} from './client';
+import createClient, {Client} from "openapi-fetch";
+import {paths} from "./lib/api";
+
 
 type Environment = 'staging' | 'production' | 'development';
 
@@ -6,7 +8,10 @@ export const PRODUCTION_URL = 'https://dashboard.triargos.de/api';
 export const STAGING_URL = 'https://dashboard.staging.triargos.de/api';
 export const DEVELOPMENT_URL = 'http://localhost:3000/api';
 
-export class Dashboard extends GeneratedDashboard {
+
+export class Dashboard {
+    public readonly client: Client<paths, `${string}/${string}`>
+
     constructor({
                     apiKey,
                     environment = 'production',
@@ -14,14 +19,20 @@ export class Dashboard extends GeneratedDashboard {
         apiKey: string;
         environment?: Environment;
     }) {
-        super({
-            BASE:
-                environment === 'production'
-                    ? PRODUCTION_URL
-                    : environment === 'staging'
-                        ? STAGING_URL
-                        : DEVELOPMENT_URL,
-            HEADERS: {'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}`},
-        });
+        this.client = createClient<paths>({
+            baseUrl: this.getBaseUrl(environment),
+            headers: {
+                "Authorization": `Bearer ${apiKey}`
+            }
+        })
     }
+
+    private getBaseUrl(environment: Environment) {
+        return environment === 'production'
+            ? PRODUCTION_URL
+            : environment === 'staging'
+                ? STAGING_URL
+                : DEVELOPMENT_URL;
+    }
+
 }

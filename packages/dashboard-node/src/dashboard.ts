@@ -34,5 +34,4 @@ export class Dashboard {
                 ? STAGING_URL
                 : DEVELOPMENT_URL;
     }
-
 }

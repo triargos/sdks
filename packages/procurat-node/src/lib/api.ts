@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/relationships/person/{personId}": {
+    "/addresses": {
         parameters: {
             query?: never;
             header?: never;
@@ -12,12 +12,76 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get relationships for person
-         * @description Get relationships for person
+         * Get all addresses
+         * @description Get all addresses
          */
-        get: operations["findRelationshipsForPerson"];
+        get: operations["findAllAddresses"];
+        put?: never;
+        /**
+         * Create address
+         * @description Create address
+         */
+        post: operations["createAddress"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/districts/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a district by ID
+         * @description Find a specific district by ID
+         */
+        get: operations["findDistrictById"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/contactinformation/person/{personId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Find by Person
+         * @description Find contact information by person
+         */
+        get: operations["findByPerson"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/contactinformation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create
+         * @description Create contact information
+         */
+        post: operations["createContactInformation"];
         delete?: never;
         options?: never;
         head?: never;
@@ -68,24 +132,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/families/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Find family by id */
-        get: operations["findFamilyById"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/groups/{id}": {
+    "/relationships/person/{personId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -93,10 +140,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Find group by id
-         * @description Find group by id
+         * Get relationships for person
+         * @description Get relationships for person
          */
-        get: operations["findGroupById"];
+        get: operations["findRelationshipsForPerson"];
         put?: never;
         post?: never;
         delete?: never;
@@ -133,74 +180,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/communication/child/{childId}/information": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get contact information mappings for a child
-         * @description Get contact information mappings for a child
-         */
-        get: operations["getContactInformationMappings"];
-        put?: never;
-        /**
-         * Create contact information mapping for a child
-         * @description Create contact information mapping for a child
-         */
-        post: operations["createContactInformationMapping"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/persons": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Find all
-         * @description Find all persons.
-         */
-        get: operations["findAllPersons"];
-        put?: never;
-        /**
-         * Create
-         * @description Create a person.
-         */
-        post: operations["createPerson"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/contactinformation/person/{personId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Find by Person
-         * @description Find contact information by person
-         */
-        get: operations["findByPerson"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/countries": {
         parameters: {
             query?: never;
@@ -221,7 +200,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/communication/child/{childId}/persons": {
+    "/persons/family/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -229,34 +208,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get contact person mappings for a child
-         * @description Get contact person mappings for a child
+         * Find by family id
+         * @description Find a person by family id.
          */
-        get: operations["getContactPersonMappings"];
-        put?: never;
-        /**
-         * Create contact person mapping for a child
-         * @description Create contact person mapping for a child
-         */
-        post: operations["createContactPersonMapping"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/districts/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get a district by ID
-         * @description Find a specific district by ID
-         */
-        get: operations["findDistrictById"];
+        get: operations["findPersonByFamilyId"];
         put?: never;
         post?: never;
         delete?: never;
@@ -265,7 +220,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/districts": {
+    "/religions/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -273,10 +228,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get all districts
-         * @description Get all districts
+         * Find by id
+         * @description Find a religion by its id
          */
-        get: operations["findAllDistricts"];
+        get: operations["findReligionById"];
         put?: never;
         post?: never;
         delete?: never;
@@ -285,60 +240,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/addresses/{id}/residents": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get residents of address
-         * @description Get residents of address
-         */
-        get: operations["findResidentsOfAddress"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/health": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["getHealth"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/families": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Find all families */
-        get: operations["findAllFamilies"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/contactinformation": {
+    "/communication/person/{personId}/information/{contactInformationId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -347,12 +249,49 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        post?: never;
+        /** Delete contact information mapping for a person */
+        delete: operations["deleteContactInformationMapping"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/groups/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
         /**
-         * Create
-         * @description Create contact information
+         * Find group by id
+         * @description Find group by id
          */
-        post: operations["createContactInformation"];
+        get: operations["findGroupById"];
+        put?: never;
+        post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/communication/person/{personId}/contacts/{contactId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete contact person mapping for a person
+         * @description Delete contact person mapping for a person
+         */
+        delete: operations["deleteContactPersonMapping"];
         options?: never;
         head?: never;
         patch?: never;
@@ -382,7 +321,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/countries/{id}": {
+    "/groups": {
         parameters: {
             query?: never;
             header?: never;
@@ -390,33 +329,13 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Find by ID
-         * @description Find a country by its ID
+         * Find all groups
+         * @description Find all groups
          */
-        get: operations["findCountryByIdx"];
+        get: operations["findAllGroups"];
         put?: never;
         post?: never;
         delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/communication/child/{childId}/information/{contactInformationMappingId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * Delete contact information mapping for a child
-         * @description Delete contact information mapping for a child
-         */
-        delete: operations["deleteContactInformationMapping"];
         options?: never;
         head?: never;
         patch?: never;
@@ -462,18 +381,32 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/groups": {
+    "/communication/person/{personId}/information": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /**
-         * Find all groups
-         * @description Find all groups
-         */
-        get: operations["findAllGroups"];
+        /** Get contact information mappings for a person */
+        get: operations["getContactInformationMappingsByPerson"];
+        put?: never;
+        /** Create contact information mapping for a person */
+        post: operations["createContactInformationMapping"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getDatabaseInfo"];
         put?: never;
         post?: never;
         delete?: never;
@@ -482,7 +415,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/addresses": {
+    "/addresses/{id}/residents": {
         parameters: {
             query?: never;
             header?: never;
@@ -490,37 +423,101 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get all addresses
-         * @description Get all addresses
+         * Get residents of address
+         * @description Get residents of address
          */
-        get: operations["findAllAddresses"];
+        get: operations["findResidentsOfAddress"];
         put?: never;
-        /**
-         * Create address
-         * @description Create address
-         */
-        post: operations["createAddress"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/communication/child/{childId}/persons/{contactPersonMappingId}": {
+    "/communication/person/{personId}/contacts": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /**
+         * Get contact person mappings for a person
+         * @description Get contact person mappings for a person
+         */
+        get: operations["getContactPersonMappings"];
+        put?: never;
+        /**
+         * Create contact person mapping for a child
+         * @description Create contact person mapping for a person
+         */
+        post: operations["createContactPersonMapping"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/persons": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Find all
+         * @description Find all persons.
+         */
+        get: operations["findAllPersons"];
+        put?: never;
+        /**
+         * Create
+         * @description Create a person.
+         */
+        post: operations["createPerson"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/countries/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Find by ID
+         * @description Find a country by its ID
+         */
+        get: operations["findCountryByIdx"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/districts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
         /**
-         * Delete contact person mapping for a child
-         * @description Delete contact person mapping for a child
+         * Get all districts
+         * @description Get all districts
          */
-        delete: operations["deleteContactPersonMapping"];
+        get: operations["findAllDistricts"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -530,14 +527,26 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        RelationshipDTO: {
+        AddressDTO: {
             /** Format: int32 */
-            personId?: number;
-            relationshipType?: string;
-            physical?: boolean;
-            custody?: boolean;
-            realParent?: boolean;
-            notes?: string;
+            id?: number;
+            street?: string;
+            /** Format: int32 */
+            countryId?: number;
+            zip?: string;
+            city?: string;
+            nameline2?: string;
+            additional?: string;
+            district?: string;
+            poBoxZip?: string;
+            poBox?: string;
+            /** Format: int32 */
+            countyId?: number;
+        };
+        CountyDTO: {
+            /** Format: int32 */
+            id?: number;
+            name?: string;
         };
         ContactInformationDTO: {
             /** Format: int32 */
@@ -554,6 +563,285 @@ export interface components {
             content?: string;
             comment?: string;
             secret?: boolean;
+        };
+        ContactInformationCreationDTO: {
+            type?: string;
+            medium?: string;
+            /** Format: int32 */
+            personId?: number;
+            /** Format: int32 */
+            addressId?: number;
+            externalName?: string;
+            content?: string;
+            comment?: string;
+            secret?: boolean;
+        };
+        ContentDisposition: {
+            type?: string;
+            name?: string;
+            filename?: string;
+            charset?: {
+                registered?: boolean;
+            };
+            /** Format: int64 */
+            size?: number;
+            /** Format: date-time */
+            creationDate?: string;
+            /** Format: date-time */
+            modificationDate?: string;
+            /** Format: date-time */
+            readDate?: string;
+            attachment?: boolean;
+            formData?: boolean;
+            inline?: boolean;
+        };
+        HttpHeaders: {
+            connection?: string[];
+            host?: {
+                hostString?: string;
+                address?: {
+                    multicastAddress?: boolean;
+                    siteLocalAddress?: boolean;
+                    mcglobal?: boolean;
+                    mcnodeLocal?: boolean;
+                    mclinkLocal?: boolean;
+                    mcsiteLocal?: boolean;
+                    mcorgLocal?: boolean;
+                    canonicalHostName?: string;
+                    anyLocalAddress?: boolean;
+                    loopbackAddress?: boolean;
+                    linkLocalAddress?: boolean;
+                    address?: string[];
+                    hostAddress?: string;
+                    hostName?: string;
+                };
+                /** Format: int32 */
+                port?: number;
+                unresolved?: boolean;
+                hostName?: string;
+            };
+            /** Format: int64 */
+            lastModified?: number;
+            contentType?: components["schemas"]["MediaType"];
+            /** Format: int64 */
+            contentLength?: number;
+            /** Format: int64 */
+            date?: number;
+            /** Format: int64 */
+            ifModifiedSince?: number;
+            origin?: string;
+            /** Format: uri */
+            location?: string;
+            contentLanguage?: {
+                language?: string;
+                script?: string;
+                country?: string;
+                variant?: string;
+                extensionKeys?: string[];
+                unicodeLocaleAttributes?: string[];
+                unicodeLocaleKeys?: string[];
+                iso3Language?: string;
+                iso3Country?: string;
+                displayLanguage?: string;
+                displayScript?: string;
+                displayCountry?: string;
+                displayVariant?: string;
+                displayName?: string;
+            };
+            etag?: string;
+            /** Format: int64 */
+            expires?: number;
+            cacheControl?: string;
+            accept?: components["schemas"]["MediaType"][];
+            acceptLanguage?: {
+                range?: string;
+                /** Format: double */
+                weight?: number;
+            }[];
+            acceptLanguageAsLocales?: {
+                language?: string;
+                script?: string;
+                country?: string;
+                variant?: string;
+                extensionKeys?: string[];
+                unicodeLocaleAttributes?: string[];
+                unicodeLocaleKeys?: string[];
+                iso3Language?: string;
+                iso3Country?: string;
+                displayLanguage?: string;
+                displayScript?: string;
+                displayCountry?: string;
+                displayVariant?: string;
+                displayName?: string;
+            }[];
+            allow?: ("GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE")[];
+            acceptPatch?: components["schemas"]["MediaType"][];
+            accessControlAllowCredentials?: boolean;
+            accessControlAllowHeaders?: string[];
+            accessControlAllowMethods?: ("GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE")[];
+            accessControlAllowOrigin?: string;
+            accessControlExposeHeaders?: string[];
+            /** Format: int64 */
+            accessControlMaxAge?: number;
+            accessControlRequestHeaders?: string[];
+            /** @enum {string} */
+            accessControlRequestMethod?: "GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE";
+            acceptCharset?: {
+                registered?: boolean;
+            }[];
+            basicAuth?: string;
+            bearerAuth?: string;
+            contentDisposition?: components["schemas"]["ContentDisposition"];
+            ifMatch?: string[];
+            ifNoneMatch?: string[];
+            /** Format: int64 */
+            ifUnmodifiedSince?: number;
+            pragma?: string;
+            range?: components["schemas"]["HttpRange"][];
+            upgrade?: string;
+            vary?: string[];
+            empty?: boolean;
+            all?: {
+                [key: string]: string;
+            };
+        } & {
+            [key: string]: string[];
+        };
+        HttpRange: Record<string, never>;
+        MediaType: {
+            type?: string;
+            subtype?: string;
+            parameters?: {
+                [key: string]: string;
+            };
+            /** Format: double */
+            qualityValue?: number;
+            charset?: {
+                registered?: boolean;
+            };
+            concrete?: boolean;
+            wildcardType?: boolean;
+            wildcardSubtype?: boolean;
+            subtypeSuffix?: string;
+        };
+        ResponseEntityObject: {
+            headers?: {
+                connection?: string[];
+                host?: {
+                    hostString?: string;
+                    address?: {
+                        multicastAddress?: boolean;
+                        siteLocalAddress?: boolean;
+                        mcglobal?: boolean;
+                        mcnodeLocal?: boolean;
+                        mclinkLocal?: boolean;
+                        mcsiteLocal?: boolean;
+                        mcorgLocal?: boolean;
+                        canonicalHostName?: string;
+                        anyLocalAddress?: boolean;
+                        loopbackAddress?: boolean;
+                        linkLocalAddress?: boolean;
+                        address?: string[];
+                        hostAddress?: string;
+                        hostName?: string;
+                    };
+                    /** Format: int32 */
+                    port?: number;
+                    unresolved?: boolean;
+                    hostName?: string;
+                };
+                /** Format: int64 */
+                lastModified?: number;
+                contentType?: components["schemas"]["MediaType"];
+                /** Format: int64 */
+                contentLength?: number;
+                /** Format: int64 */
+                date?: number;
+                /** Format: int64 */
+                ifModifiedSince?: number;
+                origin?: string;
+                /** Format: uri */
+                location?: string;
+                contentLanguage?: {
+                    language?: string;
+                    script?: string;
+                    country?: string;
+                    variant?: string;
+                    extensionKeys?: string[];
+                    unicodeLocaleAttributes?: string[];
+                    unicodeLocaleKeys?: string[];
+                    iso3Language?: string;
+                    iso3Country?: string;
+                    displayLanguage?: string;
+                    displayScript?: string;
+                    displayCountry?: string;
+                    displayVariant?: string;
+                    displayName?: string;
+                };
+                etag?: string;
+                /** Format: int64 */
+                expires?: number;
+                cacheControl?: string;
+                accept?: components["schemas"]["MediaType"][];
+                acceptLanguage?: {
+                    range?: string;
+                    /** Format: double */
+                    weight?: number;
+                }[];
+                acceptLanguageAsLocales?: {
+                    language?: string;
+                    script?: string;
+                    country?: string;
+                    variant?: string;
+                    extensionKeys?: string[];
+                    unicodeLocaleAttributes?: string[];
+                    unicodeLocaleKeys?: string[];
+                    iso3Language?: string;
+                    iso3Country?: string;
+                    displayLanguage?: string;
+                    displayScript?: string;
+                    displayCountry?: string;
+                    displayVariant?: string;
+                    displayName?: string;
+                }[];
+                allow?: ("GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE")[];
+                acceptPatch?: components["schemas"]["MediaType"][];
+                accessControlAllowCredentials?: boolean;
+                accessControlAllowHeaders?: string[];
+                accessControlAllowMethods?: ("GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE")[];
+                accessControlAllowOrigin?: string;
+                accessControlExposeHeaders?: string[];
+                /** Format: int64 */
+                accessControlMaxAge?: number;
+                accessControlRequestHeaders?: string[];
+                /** @enum {string} */
+                accessControlRequestMethod?: "GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE";
+                acceptCharset?: {
+                    registered?: boolean;
+                }[];
+                basicAuth?: string;
+                bearerAuth?: string;
+                contentDisposition?: components["schemas"]["ContentDisposition"];
+                ifMatch?: string[];
+                ifNoneMatch?: string[];
+                /** Format: int64 */
+                ifUnmodifiedSince?: number;
+                pragma?: string;
+                range?: components["schemas"]["HttpRange"][];
+                upgrade?: string;
+                vary?: string[];
+                empty?: boolean;
+                all?: {
+                    [key: string]: string;
+                };
+            } & {
+                [key: string]: string[];
+            };
+            body?: Record<string, never>;
+            /** @enum {string} */
+            statusCode?: "100 CONTINUE" | "101 SWITCHING_PROTOCOLS" | "102 PROCESSING" | "103 CHECKPOINT" | "200 OK" | "201 CREATED" | "202 ACCEPTED" | "203 NON_AUTHORITATIVE_INFORMATION" | "204 NO_CONTENT" | "205 RESET_CONTENT" | "206 PARTIAL_CONTENT" | "207 MULTI_STATUS" | "208 ALREADY_REPORTED" | "226 IM_USED" | "300 MULTIPLE_CHOICES" | "301 MOVED_PERMANENTLY" | "302 FOUND" | "302 MOVED_TEMPORARILY" | "303 SEE_OTHER" | "304 NOT_MODIFIED" | "305 USE_PROXY" | "307 TEMPORARY_REDIRECT" | "308 PERMANENT_REDIRECT" | "400 BAD_REQUEST" | "401 UNAUTHORIZED" | "402 PAYMENT_REQUIRED" | "403 FORBIDDEN" | "404 NOT_FOUND" | "405 METHOD_NOT_ALLOWED" | "406 NOT_ACCEPTABLE" | "407 PROXY_AUTHENTICATION_REQUIRED" | "408 REQUEST_TIMEOUT" | "409 CONFLICT" | "410 GONE" | "411 LENGTH_REQUIRED" | "412 PRECONDITION_FAILED" | "413 PAYLOAD_TOO_LARGE" | "413 REQUEST_ENTITY_TOO_LARGE" | "414 URI_TOO_LONG" | "414 REQUEST_URI_TOO_LONG" | "415 UNSUPPORTED_MEDIA_TYPE" | "416 REQUESTED_RANGE_NOT_SATISFIABLE" | "417 EXPECTATION_FAILED" | "418 I_AM_A_TEAPOT" | "419 INSUFFICIENT_SPACE_ON_RESOURCE" | "420 METHOD_FAILURE" | "421 DESTINATION_LOCKED" | "422 UNPROCESSABLE_ENTITY" | "423 LOCKED" | "424 FAILED_DEPENDENCY" | "425 TOO_EARLY" | "426 UPGRADE_REQUIRED" | "428 PRECONDITION_REQUIRED" | "429 TOO_MANY_REQUESTS" | "431 REQUEST_HEADER_FIELDS_TOO_LARGE" | "451 UNAVAILABLE_FOR_LEGAL_REASONS" | "500 INTERNAL_SERVER_ERROR" | "501 NOT_IMPLEMENTED" | "502 BAD_GATEWAY" | "503 SERVICE_UNAVAILABLE" | "504 GATEWAY_TIMEOUT" | "505 HTTP_VERSION_NOT_SUPPORTED" | "506 VARIANT_ALSO_NEGOTIATES" | "507 INSUFFICIENT_STORAGE" | "508 LOOP_DETECTED" | "509 BANDWIDTH_LIMIT_EXCEEDED" | "510 NOT_EXTENDED" | "511 NETWORK_AUTHENTICATION_REQUIRED";
+            /** Format: int32 */
+            statusCodeValue?: number;
         };
         PersonDTO: {
             /** Format: int32 */
@@ -589,10 +877,33 @@ export interface components {
             maritalStatus?: string;
             deathDate?: string;
         };
-        FamilyDTO: {
+        SuccessResponse: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+        };
+        PersonBezugDTO: {
+            /** Format: int32 */
+            personId?: number;
+            relationshipType?: string;
+            physical?: boolean;
+            custody?: boolean;
+            realParent?: boolean;
+            notes?: string;
+        };
+        CountryDTO: {
             /** Format: int32 */
             id?: number;
-            members?: number[];
+            idx?: string;
+            iso?: string;
+            name?: string;
+        };
+        ReligionDTO: {
+            /** Format: int32 */
+            id?: number;
+            name?: string;
+            /** Format: int32 */
+            lookupVal?: number;
         };
         GroupDTO: {
             /** Format: int32 */
@@ -605,75 +916,24 @@ export interface components {
             character?: string;
             schoolYear?: string;
         };
-        ContactInformationMappingDTO: {
+        GroupMemberDTO: {
+            /** Format: int32 */
+            personId?: number;
+            entryDate?: string;
+            exitDate?: string;
+        };
+        KommunikationKontaktinfoDTO: {
             /** Format: int32 */
             id?: number;
             /** Format: int32 */
-            childId?: number;
+            personId?: number;
             /** Format: int32 */
             contactInfoId?: number;
             /** Format: int32 */
             emergencyPriority?: number;
             isOnList?: boolean;
         };
-        PersonCreationDTO: {
-            firstName?: string;
-            lastName?: string;
-            gender?: string;
-            /** Format: int32 */
-            addressId?: number;
-            /** Format: int32 */
-            familyId?: number;
-            familyRole?: string;
-            birthDate?: string;
-            birthPlace?: string;
-            /** Format: int32 */
-            birthCountryId?: number;
-            /** Format: int32 */
-            languageId?: number;
-            /** Format: int32 */
-            religionId?: number;
-            allFirstNames?: string;
-            birthName?: string;
-            academicTitle?: string;
-            namePrefix?: string;
-            nobilityTitle?: string;
-            salutationA?: string;
-            salutationB?: string;
-            jobTitle?: string;
-            /** Format: int32 */
-            nationalityId?: number;
-            maritalStatus?: string;
-            deathDate?: string;
-        };
-        SuccessResponse: {
-            /** Format: int32 */
-            code?: number;
-            message?: string;
-        };
-        CountryDTO: {
-            /** Format: int32 */
-            id?: number;
-            idx?: string;
-            iso?: string;
-        };
-        ContactPersonMappingDTO: {
-            /** Format: int32 */
-            id?: number;
-            /** Format: int32 */
-            childId?: number;
-            /** Format: int32 */
-            parentId?: number;
-            isEmergency?: boolean;
-            includeAddressOnList?: boolean;
-            includeHomePhoneOnList?: boolean;
-        };
-        CountyDTO: {
-            /** Format: int32 */
-            id?: number;
-            name?: string;
-        };
-        HealthDTO: {
+        DatabaseInfoDTO: {
             /** Format: int32 */
             databaseVersion?: number;
             /** Format: int32 */
@@ -682,346 +942,11 @@ export interface components {
             databaseValid?: boolean;
             databaseLocked?: boolean;
             nightShiftManagerRunning?: boolean;
+            isProduction?: boolean;
             centralSqlCommandEnabled?: boolean;
             lastUpdateStart?: string;
             lastUpdateEnd?: string;
             lastUpdateFailed?: string;
-            production?: boolean;
-        };
-        ContactInformationCreationDTO: {
-            type: string;
-            medium: string;
-            /** Format: int32 */
-            personId?: number;
-            /** Format: int32 */
-            addressId?: number;
-            externalName?: string;
-            content: string;
-            comment?: string;
-            secret?: boolean;
-        };
-        ContentDisposition: {
-            type?: string;
-            name?: string;
-            filename?: string;
-            charset?: {
-                registered?: boolean;
-            };
-            /** Format: int64 */
-            size?: number;
-            /** Format: date-time */
-            creationDate?: string;
-            /** Format: date-time */
-            modificationDate?: string;
-            /** Format: date-time */
-            readDate?: string;
-            attachment?: boolean;
-            formData?: boolean;
-            inline?: boolean;
-        };
-        HttpHeaders: {
-            origin?: string;
-            contentType?: components["schemas"]["MediaType"];
-            /** Format: int64 */
-            contentLength?: number;
-            /** Format: int64 */
-            ifModifiedSince?: number;
-            host?: {
-                hostString?: string;
-                address?: {
-                    multicastAddress?: boolean;
-                    anyLocalAddress?: boolean;
-                    linkLocalAddress?: boolean;
-                    siteLocalAddress?: boolean;
-                    mcglobal?: boolean;
-                    mcnodeLocal?: boolean;
-                    mclinkLocal?: boolean;
-                    mcsiteLocal?: boolean;
-                    mcorgLocal?: boolean;
-                    canonicalHostName?: string;
-                    loopbackAddress?: boolean;
-                    address?: string[];
-                    hostAddress?: string;
-                    hostName?: string;
-                };
-                /** Format: int32 */
-                port?: number;
-                unresolved?: boolean;
-                hostName?: string;
-            };
-            /** Format: int64 */
-            date?: number;
-            /** Format: int64 */
-            lastModified?: number;
-            connection?: string[];
-            empty?: boolean;
-            /** Format: uri */
-            location?: string;
-            all?: {
-                [key: string]: string;
-            };
-            acceptLanguageAsLocales?: {
-                language?: string;
-                script?: string;
-                country?: string;
-                variant?: string;
-                extensionKeys?: string[];
-                unicodeLocaleAttributes?: string[];
-                unicodeLocaleKeys?: string[];
-                iso3Language?: string;
-                iso3Country?: string;
-                displayLanguage?: string;
-                displayScript?: string;
-                displayCountry?: string;
-                displayVariant?: string;
-                displayName?: string;
-            }[];
-            accessControlAllowCredentials?: boolean;
-            accessControlAllowHeaders?: string[];
-            accessControlAllowMethods?: ("GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE")[];
-            accessControlAllowOrigin?: string;
-            accessControlExposeHeaders?: string[];
-            accessControlRequestHeaders?: string[];
-            /** @enum {string} */
-            accessControlRequestMethod?: "GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE";
-            cacheControl?: string;
-            /** Format: int64 */
-            expires?: number;
-            contentLanguage?: {
-                language?: string;
-                script?: string;
-                country?: string;
-                variant?: string;
-                extensionKeys?: string[];
-                unicodeLocaleAttributes?: string[];
-                unicodeLocaleKeys?: string[];
-                iso3Language?: string;
-                iso3Country?: string;
-                displayLanguage?: string;
-                displayScript?: string;
-                displayCountry?: string;
-                displayVariant?: string;
-                displayName?: string;
-            };
-            range?: components["schemas"]["HttpRange"][];
-            allow?: ("GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE")[];
-            etag?: string;
-            vary?: string[];
-            acceptPatch?: components["schemas"]["MediaType"][];
-            accept?: components["schemas"]["MediaType"][];
-            acceptLanguage?: {
-                range?: string;
-                /** Format: double */
-                weight?: number;
-            }[];
-            /** Format: int64 */
-            accessControlMaxAge?: number;
-            acceptCharset?: {
-                registered?: boolean;
-            }[];
-            basicAuth?: string;
-            bearerAuth?: string;
-            contentDisposition?: components["schemas"]["ContentDisposition"];
-            ifMatch?: string[];
-            ifNoneMatch?: string[];
-            /** Format: int64 */
-            ifUnmodifiedSince?: number;
-            pragma?: string;
-            upgrade?: string;
-        } & {
-            [key: string]: string[];
-        };
-        HttpRange: Record<string, never>;
-        MediaType: {
-            type?: string;
-            subtype?: string;
-            parameters?: {
-                [key: string]: string;
-            };
-            /** Format: double */
-            qualityValue?: number;
-            subtypeSuffix?: string;
-            wildcardType?: boolean;
-            wildcardSubtype?: boolean;
-            concrete?: boolean;
-            charset?: {
-                registered?: boolean;
-            };
-        };
-        ResponseEntityObject: {
-            headers?: {
-                origin?: string;
-                contentType?: components["schemas"]["MediaType"];
-                /** Format: int64 */
-                contentLength?: number;
-                /** Format: int64 */
-                ifModifiedSince?: number;
-                host?: {
-                    hostString?: string;
-                    address?: {
-                        multicastAddress?: boolean;
-                        anyLocalAddress?: boolean;
-                        linkLocalAddress?: boolean;
-                        siteLocalAddress?: boolean;
-                        mcglobal?: boolean;
-                        mcnodeLocal?: boolean;
-                        mclinkLocal?: boolean;
-                        mcsiteLocal?: boolean;
-                        mcorgLocal?: boolean;
-                        canonicalHostName?: string;
-                        loopbackAddress?: boolean;
-                        address?: string[];
-                        hostAddress?: string;
-                        hostName?: string;
-                    };
-                    /** Format: int32 */
-                    port?: number;
-                    unresolved?: boolean;
-                    hostName?: string;
-                };
-                /** Format: int64 */
-                date?: number;
-                /** Format: int64 */
-                lastModified?: number;
-                connection?: string[];
-                empty?: boolean;
-                /** Format: uri */
-                location?: string;
-                all?: {
-                    [key: string]: string;
-                };
-                acceptLanguageAsLocales?: {
-                    language?: string;
-                    script?: string;
-                    country?: string;
-                    variant?: string;
-                    extensionKeys?: string[];
-                    unicodeLocaleAttributes?: string[];
-                    unicodeLocaleKeys?: string[];
-                    iso3Language?: string;
-                    iso3Country?: string;
-                    displayLanguage?: string;
-                    displayScript?: string;
-                    displayCountry?: string;
-                    displayVariant?: string;
-                    displayName?: string;
-                }[];
-                accessControlAllowCredentials?: boolean;
-                accessControlAllowHeaders?: string[];
-                accessControlAllowMethods?: ("GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE")[];
-                accessControlAllowOrigin?: string;
-                accessControlExposeHeaders?: string[];
-                accessControlRequestHeaders?: string[];
-                /** @enum {string} */
-                accessControlRequestMethod?: "GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE";
-                cacheControl?: string;
-                /** Format: int64 */
-                expires?: number;
-                contentLanguage?: {
-                    language?: string;
-                    script?: string;
-                    country?: string;
-                    variant?: string;
-                    extensionKeys?: string[];
-                    unicodeLocaleAttributes?: string[];
-                    unicodeLocaleKeys?: string[];
-                    iso3Language?: string;
-                    iso3Country?: string;
-                    displayLanguage?: string;
-                    displayScript?: string;
-                    displayCountry?: string;
-                    displayVariant?: string;
-                    displayName?: string;
-                };
-                range?: components["schemas"]["HttpRange"][];
-                allow?: ("GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "TRACE")[];
-                etag?: string;
-                vary?: string[];
-                acceptPatch?: components["schemas"]["MediaType"][];
-                accept?: components["schemas"]["MediaType"][];
-                acceptLanguage?: {
-                    range?: string;
-                    /** Format: double */
-                    weight?: number;
-                }[];
-                /** Format: int64 */
-                accessControlMaxAge?: number;
-                acceptCharset?: {
-                    registered?: boolean;
-                }[];
-                basicAuth?: string;
-                bearerAuth?: string;
-                contentDisposition?: components["schemas"]["ContentDisposition"];
-                ifMatch?: string[];
-                ifNoneMatch?: string[];
-                /** Format: int64 */
-                ifUnmodifiedSince?: number;
-                pragma?: string;
-                upgrade?: string;
-            } & {
-                [key: string]: string[];
-            };
-            body?: Record<string, never>;
-            /** @enum {string} */
-            statusCode?: "100 CONTINUE" | "101 SWITCHING_PROTOCOLS" | "102 PROCESSING" | "103 CHECKPOINT" | "200 OK" | "201 CREATED" | "202 ACCEPTED" | "203 NON_AUTHORITATIVE_INFORMATION" | "204 NO_CONTENT" | "205 RESET_CONTENT" | "206 PARTIAL_CONTENT" | "207 MULTI_STATUS" | "208 ALREADY_REPORTED" | "226 IM_USED" | "300 MULTIPLE_CHOICES" | "301 MOVED_PERMANENTLY" | "302 FOUND" | "302 MOVED_TEMPORARILY" | "303 SEE_OTHER" | "304 NOT_MODIFIED" | "305 USE_PROXY" | "307 TEMPORARY_REDIRECT" | "308 PERMANENT_REDIRECT" | "400 BAD_REQUEST" | "401 UNAUTHORIZED" | "402 PAYMENT_REQUIRED" | "403 FORBIDDEN" | "404 NOT_FOUND" | "405 METHOD_NOT_ALLOWED" | "406 NOT_ACCEPTABLE" | "407 PROXY_AUTHENTICATION_REQUIRED" | "408 REQUEST_TIMEOUT" | "409 CONFLICT" | "410 GONE" | "411 LENGTH_REQUIRED" | "412 PRECONDITION_FAILED" | "413 PAYLOAD_TOO_LARGE" | "413 REQUEST_ENTITY_TOO_LARGE" | "414 URI_TOO_LONG" | "414 REQUEST_URI_TOO_LONG" | "415 UNSUPPORTED_MEDIA_TYPE" | "416 REQUESTED_RANGE_NOT_SATISFIABLE" | "417 EXPECTATION_FAILED" | "418 I_AM_A_TEAPOT" | "419 INSUFFICIENT_SPACE_ON_RESOURCE" | "420 METHOD_FAILURE" | "421 DESTINATION_LOCKED" | "422 UNPROCESSABLE_ENTITY" | "423 LOCKED" | "424 FAILED_DEPENDENCY" | "425 TOO_EARLY" | "426 UPGRADE_REQUIRED" | "428 PRECONDITION_REQUIRED" | "429 TOO_MANY_REQUESTS" | "431 REQUEST_HEADER_FIELDS_TOO_LARGE" | "451 UNAVAILABLE_FOR_LEGAL_REASONS" | "500 INTERNAL_SERVER_ERROR" | "501 NOT_IMPLEMENTED" | "502 BAD_GATEWAY" | "503 SERVICE_UNAVAILABLE" | "504 GATEWAY_TIMEOUT" | "505 HTTP_VERSION_NOT_SUPPORTED" | "506 VARIANT_ALSO_NEGOTIATES" | "507 INSUFFICIENT_STORAGE" | "508 LOOP_DETECTED" | "509 BANDWIDTH_LIMIT_EXCEEDED" | "510 NOT_EXTENDED" | "511 NETWORK_AUTHENTICATION_REQUIRED";
-            /** Format: int32 */
-            statusCodeValue?: number;
-        };
-        AddressDTO: {
-            /** Format: int32 */
-            id?: number;
-            street?: string;
-            /** Format: int32 */
-            countryId?: number;
-            zip?: string;
-            city?: string;
-            nameline2?: string;
-            additional?: string;
-            district?: string;
-            poBoxZip?: string;
-            poBox?: string;
-            /** Format: int32 */
-            countyId?: number;
-        };
-        PersonUpdateDTO: {
-            /** Format: int32 */
-            id?: number;
-            firstName?: string;
-            lastName?: string;
-            gender?: string;
-            birthDate?: string;
-            birthPlace?: string;
-            /** Format: int32 */
-            birthCountryId?: number;
-            /** Format: int32 */
-            addressId?: number;
-            /** Format: int32 */
-            languageId?: number;
-            /** Format: int32 */
-            religionId?: number;
-            allFirstNames?: string;
-            birthName?: string;
-            academicTitle?: string;
-            namePrefix?: string;
-            nobilityTitle?: string;
-            salutationA?: string;
-            salutationB?: string;
-            jobTitle?: string;
-            comment?: string;
-            /** Format: int32 */
-            nationalityId?: number;
-            maritalStatus?: string;
-        };
-        GroupMemberDTO: {
-            /** Format: int32 */
-            personId?: number;
-            entryDate?: string;
-            exitDate?: string;
-        };
-        ReligionDTO: {
-            /** Format: int32 */
-            id?: number;
-            name?: string;
         };
         AddressCreationDTO: {
             /** Format: int32 */
@@ -1039,6 +964,56 @@ export interface components {
             /** Format: int32 */
             countyId?: number;
         };
+        KommunikationKontaktpersonCreationDTO: {
+            /** Format: int32 */
+            personId?: number;
+            /** Format: int32 */
+            contactPersonId?: number;
+            isEmergency?: boolean;
+            includeAddressOnList?: boolean;
+            includeHomePhoneOnList?: boolean;
+        };
+        KommunikationKontaktpersonDTO: {
+            /** Format: int32 */
+            id?: number;
+            /** Format: int32 */
+            personId?: number;
+            /** Format: int32 */
+            contactPersonId?: number;
+            isEmergency?: boolean;
+            includeAddressOnList?: boolean;
+            includeHomePhoneOnList?: boolean;
+        };
+        PersonCreationDTO: {
+            firstName?: string;
+            lastName?: string;
+            gender?: string;
+            /** Format: int32 */
+            addressId?: number;
+            /** Format: int32 */
+            familyId?: number;
+            familyRole?: string;
+            birthDate?: string;
+            birthPlace?: string;
+            /** Format: int32 */
+            birthCountryId?: number;
+            /** Format: int32 */
+            nationalityId?: number;
+        };
+        CreationResponse: {
+            /** Format: int32 */
+            id?: number;
+            message?: string;
+        };
+        KommunikationKontaktInfoCreationDTO: {
+            /** Format: int32 */
+            personId?: number;
+            /** Format: int32 */
+            contactInfoId?: number;
+            /** Format: int32 */
+            emergencyPriority?: number;
+            isOnList?: boolean;
+        };
     };
     responses: never;
     parameters: never;
@@ -1048,7 +1023,73 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    findRelationshipsForPerson: {
+    findAllAddresses: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description default response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["AddressDTO"][];
+                };
+            };
+        };
+    };
+    createAddress: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["AddressCreationDTO"];
+            };
+        };
+        responses: {
+            /** @description default response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["AddressDTO"];
+                };
+            };
+        };
+    };
+    findDistrictById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description default response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CountyDTO"];
+                };
+            };
+        };
+    };
+    findByPerson: {
         parameters: {
             query?: never;
             header?: never;
@@ -1065,7 +1106,31 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["RelationshipDTO"][];
+                    "*/*": components["schemas"]["ContactInformationDTO"][];
+                };
+            };
+        };
+    };
+    createContactInformation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ContactInformationCreationDTO"];
+            };
+        };
+        responses: {
+            /** @description default response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ResponseEntityObject"];
                 };
             };
         };
@@ -1125,7 +1190,7 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["PersonUpdateDTO"];
+                "application/json": components["schemas"]["PersonDTO"];
             };
         };
         responses: {
@@ -1140,12 +1205,12 @@ export interface operations {
             };
         };
     };
-    findFamilyById: {
+    findRelationshipsForPerson: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                personId: number;
             };
             cookie?: never;
         };
@@ -1157,29 +1222,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["FamilyDTO"];
-                };
-            };
-        };
-    };
-    findGroupById: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description default response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["GroupDTO"];
+                    "*/*": components["schemas"]["PersonBezugDTO"][];
                 };
             };
         };
@@ -1254,120 +1297,6 @@ export interface operations {
             };
         };
     };
-    getContactInformationMappings: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                childId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description default response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ContactInformationMappingDTO"][];
-                };
-            };
-        };
-    };
-    createContactInformationMapping: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                childId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["ContactInformationMappingDTO"];
-            };
-        };
-        responses: {
-            /** @description default response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ContactInformationMappingDTO"];
-                };
-            };
-        };
-    };
-    findAllPersons: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description default response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["PersonDTO"][];
-                };
-            };
-        };
-    };
-    createPerson: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["PersonCreationDTO"];
-            };
-        };
-        responses: {
-            /** @description default response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["SuccessResponse"];
-                };
-            };
-        };
-    };
-    findByPerson: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                personId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description default response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ContactInformationDTO"][];
-                };
-            };
-        };
-    };
     findAllCountries: {
         parameters: {
             query?: never;
@@ -1388,97 +1317,7 @@ export interface operations {
             };
         };
     };
-    getContactPersonMappings: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                childId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description default response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ContactPersonMappingDTO"][];
-                };
-            };
-        };
-    };
-    createContactPersonMapping: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                childId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["ContactPersonMappingDTO"];
-            };
-        };
-        responses: {
-            /** @description default response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ContactPersonMappingDTO"];
-                };
-            };
-        };
-    };
-    findDistrictById: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description default response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["CountyDTO"];
-                };
-            };
-        };
-    };
-    findAllDistricts: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description default response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["CountyDTO"][];
-                };
-            };
-        };
-    };
-    findResidentsOfAddress: {
+    findPersonByFamilyId: {
         parameters: {
             query?: never;
             header?: never;
@@ -1500,11 +1339,13 @@ export interface operations {
             };
         };
     };
-    getHealth: {
+    findReligionById: {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                id: number;
+            };
             cookie?: never;
         };
         requestBody?: never;
@@ -1515,16 +1356,39 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["HealthDTO"];
+                    "*/*": components["schemas"]["ReligionDTO"];
                 };
             };
         };
     };
-    findAllFamilies: {
+    deleteContactInformationMapping: {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                personId: number;
+                contactInformationId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description default response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    findGroupById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
             cookie?: never;
         };
         requestBody?: never;
@@ -1535,32 +1399,29 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["FamilyDTO"][];
+                    "*/*": components["schemas"]["GroupDTO"];
                 };
             };
         };
     };
-    createContactInformation: {
+    deleteContactPersonMapping: {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                personId: number;
+                contactId: number;
+            };
             cookie?: never;
         };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["ContactInformationCreationDTO"];
-            };
-        };
+        requestBody?: never;
         responses: {
             /** @description default response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "*/*": components["schemas"]["ResponseEntityObject"];
-                };
+                content?: never;
             };
         };
     };
@@ -1612,13 +1473,11 @@ export interface operations {
             };
         };
     };
-    findCountryByIdx: {
+    findAllGroups: {
         parameters: {
             query?: never;
             header?: never;
-            path: {
-                id: number;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -1629,29 +1488,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["CountryDTO"];
+                    "*/*": components["schemas"]["GroupDTO"][];
                 };
-            };
-        };
-    };
-    deleteContactInformationMapping: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                childId: number;
-                contactInformationMappingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description default response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
         };
     };
@@ -1697,7 +1535,55 @@ export interface operations {
             };
         };
     };
-    findAllGroups: {
+    getContactInformationMappingsByPerson: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                personId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description default response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["KommunikationKontaktinfoDTO"][];
+                };
+            };
+        };
+    };
+    createContactInformationMapping: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                personId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["KommunikationKontaktInfoCreationDTO"];
+            };
+        };
+        responses: {
+            /** @description default response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["KommunikationKontaktinfoDTO"];
+                };
+            };
+        };
+    };
+    getDatabaseInfo: {
         parameters: {
             query?: never;
             header?: never;
@@ -1712,12 +1598,82 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["GroupDTO"][];
+                    "*/*": components["schemas"]["DatabaseInfoDTO"];
                 };
             };
         };
     };
-    findAllAddresses: {
+    findResidentsOfAddress: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description default response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PersonDTO"][];
+                };
+            };
+        };
+    };
+    getContactPersonMappings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                personId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description default response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["KommunikationKontaktpersonDTO"][];
+                };
+            };
+        };
+    };
+    createContactPersonMapping: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                personId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["KommunikationKontaktpersonCreationDTO"];
+            };
+        };
+        responses: {
+            /** @description default response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["KommunikationKontaktpersonDTO"];
+                };
+            };
+        };
+    };
+    findAllPersons: {
         parameters: {
             query?: never;
             header?: never;
@@ -1732,12 +1688,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["AddressDTO"][];
+                    "*/*": components["schemas"]["PersonDTO"][];
                 };
             };
         };
     };
-    createAddress: {
+    createPerson: {
         parameters: {
             query?: never;
             header?: never;
@@ -1746,7 +1702,7 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["AddressCreationDTO"];
+                "application/json": components["schemas"]["PersonCreationDTO"];
             };
         };
         responses: {
@@ -1756,18 +1712,17 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["AddressDTO"];
+                    "*/*": components["schemas"]["CreationResponse"];
                 };
             };
         };
     };
-    deleteContactPersonMapping: {
+    findCountryByIdx: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                childId: number;
-                contactPersonMappingId: number;
+                id: number;
             };
             cookie?: never;
         };
@@ -1778,7 +1733,29 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "*/*": components["schemas"]["CountryDTO"];
+                };
+            };
+        };
+    };
+    findAllDistricts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description default response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CountyDTO"][];
+                };
             };
         };
     };

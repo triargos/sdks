@@ -1,3 +1,10 @@
+# @triargos/procurat-node [2.3.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.2.1...@triargos/procurat-node@2.3.0) (2024-12-10)
+
+
+### Features
+
+* **procurat:** release next version ([fa3081c](https://github.com/triargos/sdks/commit/fa3081c145570d3ce93df6632f2c780877b81b51))
+
 ## @triargos/procurat-node [2.2.1](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.2.0...@triargos/procurat-node@2.2.1) (2024-11-18)
 
 

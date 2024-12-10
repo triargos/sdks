@@ -1,3 +1,10 @@
+## @triargos/procurat-node [2.2.1](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.2.0...@triargos/procurat-node@2.2.1) (2024-11-18)
+
+
+### Bug Fixes
+
+* **dashboard:** change export ([d2af0af](https://github.com/triargos/sdks/commit/d2af0af8e7af2ea021ecec5ee09430c30067bd41))
+
 # @triargos/procurat-node [2.2.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.1.0...@triargos/procurat-node@2.2.0) (2024-11-15)
 
 

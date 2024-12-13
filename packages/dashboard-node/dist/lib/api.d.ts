@@ -497,7 +497,7 @@ export interface operations {
                         addressId: number | null;
                         familyId: number | null;
                         /** @enum {string|null} */
-                        familyRole: "father" | "mother" | "child" | "etc" | null;
+                        familyRole: "father" | "mother" | "jklml" | "etc" | null;
                         birthDate: string | null;
                         birthPlace: string | null;
                         birthCountryId: number | null;
@@ -571,7 +571,7 @@ export interface operations {
                         addressId: number | null;
                         familyId: number | null;
                         /** @enum {string|null} */
-                        familyRole: "father" | "mother" | "child" | "etc" | null;
+                        familyRole: "father" | "mother" | "jklml" | "etc" | null;
                         birthDate: string | null;
                         birthPlace: string | null;
                         birthCountryId: number | null;
@@ -680,11 +680,15 @@ export interface operations {
                         id: number;
                         parentGroupId: number | null;
                         name: string;
+                        shortName: string;
                         /** @enum {string} */
                         type: "root" | "systemRoot" | "systemPersonGroup" | "systemYear" | "systemFacility" | "systemDepartment" | "personGroup" | "class" | "careGroup" | "schoolYear" | "facility" | "department" | "institution";
-                        grade: string | null;
+                        grade: number | null;
                         character: string | null;
                         schoolYear: string | null;
+                        /** @enum {string|null} */
+                        additionalType: "classFacility" | null;
+                        sortKey: number | null;
                     }[];
                 };
             };
@@ -723,11 +727,15 @@ export interface operations {
                         id: number;
                         parentGroupId: number | null;
                         name: string;
+                        shortName: string;
                         /** @enum {string} */
                         type: "root" | "systemRoot" | "systemPersonGroup" | "systemYear" | "systemFacility" | "systemDepartment" | "personGroup" | "class" | "careGroup" | "schoolYear" | "facility" | "department" | "institution";
-                        grade: string | null;
+                        grade: number | null;
                         character: string | null;
                         schoolYear: string | null;
+                        /** @enum {string|null} */
+                        additionalType: "classFacility" | null;
+                        sortKey: number | null;
                     };
                 };
             };

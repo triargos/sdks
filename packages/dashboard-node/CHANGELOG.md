@@ -1,3 +1,10 @@
+# @triargos/dashboard-node [2.2.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@2.1.0...@triargos/dashboard-node@2.2.0) (2024-12-13)
+
+
+### Features
+
+* **dashboard-node:** adapt group types ([d97bcca](https://github.com/triargos/sdks/commit/d97bccaf96aa7ea119ec9f14aa68dc6b6deb9d89))
+
 # @triargos/dashboard-node [2.1.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@2.0.1...@triargos/dashboard-node@2.1.0) (2024-12-13)
 
 

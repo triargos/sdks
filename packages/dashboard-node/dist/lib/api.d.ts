@@ -489,31 +489,46 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        firstName?: string | null;
-                        lastName?: string | null;
-                        gender?: string | null;
-                        familyId?: number | null;
-                        birthDate?: string | null;
-                        birthPlace?: string | null;
-                        birthCountryId?: number | null;
-                        languageId?: number | null;
-                        religionId?: number | null;
-                        allFirstNames?: string | null;
-                        birthName?: string | null;
-                        academicTitle?: string | null;
-                        namePrefix?: string | null;
-                        nobilityTitle?: string | null;
-                        salutationA?: string | null;
-                        salutationB?: string | null;
-                        jobTitle?: string | null;
-                        comment?: string | null;
-                        nationalityId?: number | null;
-                        maritalStatus?: string | null;
                         id: number;
-                        addressId?: number | null;
-                        familyRole?: string | null;
-                        email?: string | null;
-                        deathDate?: string | null;
+                        firstName: string | null;
+                        lastName: string | null;
+                        /** @enum {string|null} */
+                        gender: "male" | "female" | "other" | null;
+                        addressId: number | null;
+                        familyId: number | null;
+                        /** @enum {string|null} */
+                        familyRole: "father" | "mother" | "child" | "etc" | null;
+                        birthDate: string | null;
+                        birthPlace: string | null;
+                        birthCountryId: number | null;
+                        languageId: number | null;
+                        religionId: number | null;
+                        allFirstNames: string | null;
+                        email: string | null;
+                        birthName: string | null;
+                        academicTitle: string | null;
+                        namePrefix: string | null;
+                        nobilityTitle: string | null;
+                        salutationA: string | null;
+                        salutationB: string | null;
+                        jobTitle: string | null;
+                        comment: string | null;
+                        nationalityId: number | null;
+                        maritalStatus: string | null;
+                        deathDate: string | null;
+                        address: {
+                            id: number;
+                            street: string;
+                            countryId: number | null;
+                            zip: string;
+                            city: string;
+                            nameline2: string | null;
+                            additional: string | null;
+                            district: string | null;
+                            poBoxZip: string | null;
+                            poBox: string | null;
+                            countyId: number | null;
+                        } | null;
                     }[];
                 };
             };
@@ -548,43 +563,45 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        firstName?: string | null;
-                        lastName?: string | null;
-                        gender?: string | null;
-                        familyId?: number | null;
-                        birthDate?: string | null;
-                        birthPlace?: string | null;
-                        birthCountryId?: number | null;
-                        languageId?: number | null;
-                        religionId?: number | null;
-                        allFirstNames?: string | null;
-                        birthName?: string | null;
-                        academicTitle?: string | null;
-                        namePrefix?: string | null;
-                        nobilityTitle?: string | null;
-                        salutationA?: string | null;
-                        salutationB?: string | null;
-                        jobTitle?: string | null;
-                        comment?: string | null;
-                        nationalityId?: number | null;
-                        maritalStatus?: string | null;
                         id: number;
-                        addressId?: number | null;
-                        familyRole?: string | null;
-                        email?: string | null;
-                        deathDate?: string | null;
+                        firstName: string | null;
+                        lastName: string | null;
+                        /** @enum {string|null} */
+                        gender: "male" | "female" | "other" | null;
+                        addressId: number | null;
+                        familyId: number | null;
+                        /** @enum {string|null} */
+                        familyRole: "father" | "mother" | "child" | "etc" | null;
+                        birthDate: string | null;
+                        birthPlace: string | null;
+                        birthCountryId: number | null;
+                        languageId: number | null;
+                        religionId: number | null;
+                        allFirstNames: string | null;
+                        email: string | null;
+                        birthName: string | null;
+                        academicTitle: string | null;
+                        namePrefix: string | null;
+                        nobilityTitle: string | null;
+                        salutationA: string | null;
+                        salutationB: string | null;
+                        jobTitle: string | null;
+                        comment: string | null;
+                        nationalityId: number | null;
+                        maritalStatus: string | null;
+                        deathDate: string | null;
                         address: {
-                            street?: string | null;
-                            countryId?: number | null;
-                            zip?: string | null;
-                            city?: string | null;
-                            nameline2?: string | null;
-                            additional?: string | null;
-                            district?: string | null;
-                            poBoxZip?: string | null;
-                            poBox?: string | null;
-                            countyId?: number | null;
                             id: number;
+                            street: string;
+                            countryId: number | null;
+                            zip: string;
+                            city: string;
+                            nameline2: string | null;
+                            additional: string | null;
+                            district: string | null;
+                            poBoxZip: string | null;
+                            poBox: string | null;
+                            countyId: number | null;
                         } | null;
                     };
                 };
@@ -622,10 +639,10 @@ export interface operations {
                     "application/json": {
                         personId: number;
                         /** @enum {string} */
-                        relationshipType: "father" | "mother" | "son" | "daughter" | "other" | "child";
+                        relationShipType: "daughter" | "other" | "father" | "child" | "son" | "mother";
+                        physical: boolean;
                         custody: boolean;
                         realParent: boolean;
-                        physical: boolean;
                         notes: string | null;
                     }[];
                 };
@@ -661,13 +678,13 @@ export interface operations {
                 content: {
                     "application/json": {
                         id: number;
+                        parentGroupId: number | null;
                         name: string;
                         /** @enum {string} */
                         type: "root" | "systemRoot" | "systemPersonGroup" | "systemYear" | "systemFacility" | "systemDepartment" | "personGroup" | "class" | "careGroup" | "schoolYear" | "facility" | "department" | "institution";
-                        grade?: string | null;
-                        schoolYear?: string | null;
-                        char?: string | null;
-                        parentId: number | null;
+                        grade: string | null;
+                        character: string | null;
+                        schoolYear: string | null;
                     }[];
                 };
             };
@@ -689,7 +706,8 @@ export interface operations {
             path: {
                 /** @description The organization's ID. */
                 organizationId: string;
-                groupId: string;
+                /** @description The group's ID. */
+                groupId: number;
             };
             cookie?: never;
         };
@@ -703,13 +721,13 @@ export interface operations {
                 content: {
                     "application/json": {
                         id: number;
+                        parentGroupId: number | null;
                         name: string;
                         /** @enum {string} */
                         type: "root" | "systemRoot" | "systemPersonGroup" | "systemYear" | "systemFacility" | "systemDepartment" | "personGroup" | "class" | "careGroup" | "schoolYear" | "facility" | "department" | "institution";
-                        grade?: string | null;
-                        schoolYear?: string | null;
-                        char?: string | null;
-                        parentId: number | null;
+                        grade: string | null;
+                        character: string | null;
+                        schoolYear: string | null;
                     };
                 };
             };
@@ -745,8 +763,9 @@ export interface operations {
                 content: {
                     "application/json": {
                         personId: number;
-                        entryDate: string | null;
+                        entryDate: string;
                         exitDate: string | null;
+                        jsonData?: unknown;
                     }[];
                 };
             };

@@ -1,3 +1,10 @@
+# @triargos/dashboard-node [2.1.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@2.0.1...@triargos/dashboard-node@2.1.0) (2024-12-13)
+
+
+### Features
+
+* **release:** release new schemas ([8dbcd9e](https://github.com/triargos/sdks/commit/8dbcd9ef7d35000e21ade4f1c28aa618b5ed4c2c))
+
 ## @triargos/dashboard-node [2.0.1](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@2.0.0...@triargos/dashboard-node@2.0.1) (2024-11-18)
 
 

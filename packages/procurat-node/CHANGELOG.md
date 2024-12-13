@@ -1,3 +1,10 @@
+## @triargos/procurat-node [2.3.1](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.3.0...@triargos/procurat-node@2.3.1) (2024-12-10)
+
+
+### Bug Fixes
+
+* **procurat:** remove optional types ([71ff680](https://github.com/triargos/sdks/commit/71ff68003be2dc69384360cc3ba7cb59ce70d623))
+
 # @triargos/procurat-node [2.3.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.2.1...@triargos/procurat-node@2.3.0) (2024-12-10)
 
 

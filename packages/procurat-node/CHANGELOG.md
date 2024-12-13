@@ -1,3 +1,10 @@
+# @triargos/procurat-node [2.4.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.3.1...@triargos/procurat-node@2.4.0) (2024-12-13)
+
+
+### Features
+
+* **release:** release new schemas ([8dbcd9e](https://github.com/triargos/sdks/commit/8dbcd9ef7d35000e21ade4f1c28aa618b5ed4c2c))
+
 ## @triargos/procurat-node [2.3.1](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.3.0...@triargos/procurat-node@2.3.1) (2024-12-10)
 
 

@@ -498,7 +498,7 @@ export interface operations {
                         addressId: number | null;
                         familyId: number | null;
                         /** @enum {string|null} */
-                        familyRole: "father" | "mother" | "jklml" | "etc" | null;
+                        familyRole: "father" | "mother" | "child" | "etc" | null;
                         birthDate: string | null;
                         birthPlace: string | null;
                         birthCountryId: number | null;
@@ -519,10 +519,10 @@ export interface operations {
                         deathDate: string | null;
                         address: {
                             id: number;
-                            street: string;
+                            street: string | null;
                             countryId: number | null;
-                            zip: string;
-                            city: string;
+                            zip: string | null;
+                            city: string | null;
                             nameline2: string | null;
                             additional: string | null;
                             district: string | null;
@@ -572,7 +572,7 @@ export interface operations {
                         addressId: number | null;
                         familyId: number | null;
                         /** @enum {string|null} */
-                        familyRole: "father" | "mother" | "jklml" | "etc" | null;
+                        familyRole: "father" | "mother" | "child" | "etc" | null;
                         birthDate: string | null;
                         birthPlace: string | null;
                         birthCountryId: number | null;
@@ -593,10 +593,10 @@ export interface operations {
                         deathDate: string | null;
                         address: {
                             id: number;
-                            street: string;
+                            street: string | null;
                             countryId: number | null;
-                            zip: string;
-                            city: string;
+                            zip: string | null;
+                            city: string | null;
                             nameline2: string | null;
                             additional: string | null;
                             district: string | null;
@@ -640,7 +640,7 @@ export interface operations {
                     "application/json": {
                         personId: number;
                         /** @enum {string} */
-                        relationShipType: "daughter" | "other" | "father" | "child" | "son" | "mother";
+                        relationShipType?: "daughter" | "other" | "father" | "child" | "son" | "mother";
                         physical: boolean;
                         custody: boolean;
                         realParent: boolean;
@@ -684,8 +684,7 @@ export interface operations {
                         shortName: string;
                         /** @enum {string} */
                         type: "root" | "systemRoot" | "systemPersonGroup" | "systemYear" | "systemFacility" | "systemDepartment" | "personGroup" | "class" | "careGroup" | "schoolYear" | "facility" | "department" | "institution";
-                        grade: number | null;
-                        character: string | null;
+                        grades: number[] | null;
                         schoolYear: string | null;
                         /** @enum {string|null} */
                         additionalType: "classFacility" | null;
@@ -731,8 +730,7 @@ export interface operations {
                         shortName: string;
                         /** @enum {string} */
                         type: "root" | "systemRoot" | "systemPersonGroup" | "systemYear" | "systemFacility" | "systemDepartment" | "personGroup" | "class" | "careGroup" | "schoolYear" | "facility" | "department" | "institution";
-                        grade: number | null;
-                        character: string | null;
+                        grades: number[] | null;
                         schoolYear: string | null;
                         /** @enum {string|null} */
                         additionalType: "classFacility" | null;
@@ -775,6 +773,7 @@ export interface operations {
                         entryDate: string;
                         exitDate: string | null;
                         jsonData?: unknown;
+                        grade: number | null;
                     }[];
                 };
             };

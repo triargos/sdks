@@ -9,6 +9,7 @@
     "packages/*"
   ],
   "scripts": {
+    "generate": "yarn workspaces foreach -A run generate",
     "build": "yarn workspaces foreach -A run build",
     "test": "yarn workspaces foreach -A run test",
     "release": "multi-semantic-release"

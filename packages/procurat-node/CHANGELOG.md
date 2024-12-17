@@ -1,3 +1,10 @@
+# @triargos/procurat-node [2.5.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.4.0...@triargos/procurat-node@2.5.0) (2024-12-17)
+
+
+### Features
+
+* **procurat:** rework grades ([c38ec66](https://github.com/triargos/sdks/commit/c38ec666378fd134553e407d91f50bd6d0fd7f6a))
+
 # @triargos/procurat-node [2.4.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.3.1...@triargos/procurat-node@2.4.0) (2024-12-13)
 
 

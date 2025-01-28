@@ -1,3 +1,15 @@
+# @triargos/dashboard-node [3.0.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@2.2.0...@triargos/dashboard-node@3.0.0) (2024-12-17)
+
+
+### Features
+
+* **dashboard-node:** adapt group member schema ([3246e72](https://github.com/triargos/sdks/commit/3246e7222ad774192b41cea84f2f9929f1978db6))
+
+
+### BREAKING CHANGES
+
+* **dashboard-node:** change group.grade to group.grades
+
 # @triargos/dashboard-node [2.2.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@2.1.0...@triargos/dashboard-node@2.2.0) (2024-12-13)
 
 

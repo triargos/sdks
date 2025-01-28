@@ -491,45 +491,78 @@ export interface operations {
                 content: {
                     "application/json": {
                         id: number;
+                        /** @default null */
                         firstName: string | null;
+                        /** @default null */
                         lastName: string | null;
                         /** @enum {string|null} */
                         gender: "male" | "female" | "other" | null;
+                        /** @default null */
                         addressId: number | null;
+                        /** @default null */
                         familyId: number | null;
                         /** @enum {string|null} */
                         familyRole: "father" | "mother" | "child" | "etc" | null;
+                        /** @default null */
                         birthDate: string | null;
+                        /** @default null */
                         birthPlace: string | null;
+                        /** @default null */
                         birthCountryId: number | null;
+                        /** @default null */
                         languageId: number | null;
+                        /** @default null */
                         religionId: number | null;
+                        /** @default null */
                         allFirstNames: string | null;
+                        /** @default null */
                         email: string | null;
+                        /** @default null */
                         birthName: string | null;
+                        /** @default null */
                         academicTitle: string | null;
+                        /** @default null */
                         namePrefix: string | null;
+                        /** @default null */
                         nobilityTitle: string | null;
+                        /** @default null */
                         salutationA: string | null;
+                        /** @default null */
                         salutationB: string | null;
+                        /** @default null */
                         jobTitle: string | null;
+                        /** @default null */
                         comment: string | null;
+                        /** @default null */
                         nationalityId: number | null;
+                        /** @default null */
                         maritalStatus: string | null;
+                        /** @default null */
                         deathDate: string | null;
                         address: {
                             id: number;
+                            /** @default null */
                             street: string | null;
+                            /** @default null */
                             countryId: number | null;
+                            /** @default null */
                             zip: string | null;
+                            /** @default null */
                             city: string | null;
+                            /** @default null */
                             nameline2: string | null;
+                            /** @default null */
                             additional: string | null;
+                            /** @default null */
                             district: string | null;
+                            /** @default null */
                             poBoxZip: string | null;
+                            /** @default null */
                             poBox: string | null;
+                            /** @default null */
                             countyId: number | null;
                         } | null;
+                        businessEmail: string | null;
                     }[];
                 };
             };
@@ -565,45 +598,78 @@ export interface operations {
                 content: {
                     "application/json": {
                         id: number;
+                        /** @default null */
                         firstName: string | null;
+                        /** @default null */
                         lastName: string | null;
                         /** @enum {string|null} */
                         gender: "male" | "female" | "other" | null;
+                        /** @default null */
                         addressId: number | null;
+                        /** @default null */
                         familyId: number | null;
                         /** @enum {string|null} */
                         familyRole: "father" | "mother" | "child" | "etc" | null;
+                        /** @default null */
                         birthDate: string | null;
+                        /** @default null */
                         birthPlace: string | null;
+                        /** @default null */
                         birthCountryId: number | null;
+                        /** @default null */
                         languageId: number | null;
+                        /** @default null */
                         religionId: number | null;
+                        /** @default null */
                         allFirstNames: string | null;
+                        /** @default null */
                         email: string | null;
+                        /** @default null */
                         birthName: string | null;
+                        /** @default null */
                         academicTitle: string | null;
+                        /** @default null */
                         namePrefix: string | null;
+                        /** @default null */
                         nobilityTitle: string | null;
+                        /** @default null */
                         salutationA: string | null;
+                        /** @default null */
                         salutationB: string | null;
+                        /** @default null */
                         jobTitle: string | null;
+                        /** @default null */
                         comment: string | null;
+                        /** @default null */
                         nationalityId: number | null;
+                        /** @default null */
                         maritalStatus: string | null;
+                        /** @default null */
                         deathDate: string | null;
                         address: {
                             id: number;
+                            /** @default null */
                             street: string | null;
+                            /** @default null */
                             countryId: number | null;
+                            /** @default null */
                             zip: string | null;
+                            /** @default null */
                             city: string | null;
+                            /** @default null */
                             nameline2: string | null;
+                            /** @default null */
                             additional: string | null;
+                            /** @default null */
                             district: string | null;
+                            /** @default null */
                             poBoxZip: string | null;
+                            /** @default null */
                             poBox: string | null;
+                            /** @default null */
                             countyId: number | null;
                         } | null;
+                        businessEmail: string | null;
                     };
                 };
             };

@@ -1,3 +1,10 @@
+# @triargos/dashboard-node [3.1.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@3.0.0...@triargos/dashboard-node@3.1.0) (2025-01-28)
+
+
+### Features
+
+* **dashboard-node:** add work email to person ([a9afaf9](https://github.com/triargos/sdks/commit/a9afaf9388f142d6fbfad27531b0069062770be6))
+
 # @triargos/dashboard-node [3.0.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@2.2.0...@triargos/dashboard-node@3.0.0) (2024-12-17)
 
 

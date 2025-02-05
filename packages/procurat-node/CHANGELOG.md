@@ -1,3 +1,10 @@
+# @triargos/procurat-node [2.6.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.5.0...@triargos/procurat-node@2.6.0) (2025-02-05)
+
+
+### Features
+
+* **procurat:** update endpoint definition ([1738534](https://github.com/triargos/sdks/commit/1738534e6894fe36a8e93e8f4ab1f6e803d774f7))
+
 # @triargos/procurat-node [2.5.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.4.0...@triargos/procurat-node@2.5.0) (2024-12-17)
 
 

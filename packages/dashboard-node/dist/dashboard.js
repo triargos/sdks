@@ -5,9 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Dashboard = exports.DEVELOPMENT_URL = exports.STAGING_URL = exports.PRODUCTION_URL = void 0;
 const openapi_fetch_1 = __importDefault(require("openapi-fetch"));
-exports.PRODUCTION_URL = 'https://elternportal.triargos.de/api';
-exports.STAGING_URL = 'https://dashboard.staging.triargos.de/api';
-exports.DEVELOPMENT_URL = 'http://localhost:3000/api';
+exports.PRODUCTION_URL = 'https://elternportal.triargos.de';
+exports.STAGING_URL = 'https://dashboard.staging.triargos.de';
+exports.DEVELOPMENT_URL = 'http://localhost:3000';
 class Dashboard {
     constructor({ apiKey, environment = 'production', }) {
         this.client = (0, openapi_fetch_1.default)({

@@ -1,3 +1,15 @@
+# @triargos/dashboard-node [4.0.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@3.1.0...@triargos/dashboard-node@4.0.0) (2025-03-20)
+
+
+### Bug Fixes
+
+* **dashboard:** fix production endpoints ([6978bc3](https://github.com/triargos/sdks/commit/6978bc3e4b6d5a32a4f0e94d45036a9f376dc1fd))
+
+
+### BREAKING CHANGES
+
+* **dashboard:** the endpoints are now prefixed with /api/v1
+
 # @triargos/dashboard-node [3.1.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@3.0.0...@triargos/dashboard-node@3.1.0) (2025-01-28)
 
 

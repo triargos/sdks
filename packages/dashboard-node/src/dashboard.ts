@@ -4,9 +4,9 @@ import {paths} from "./lib/api";
 
 type Environment = 'staging' | 'production' | 'development';
 
-export const PRODUCTION_URL = 'https://dashboard.triargos.de/api';
-export const STAGING_URL = 'https://dashboard.staging.triargos.de/api';
-export const DEVELOPMENT_URL = 'http://localhost:3000/api';
+export const PRODUCTION_URL = 'https://elternportal.triargos.de';
+export const STAGING_URL = 'https://dashboard.staging.triargos.de';
+export const DEVELOPMENT_URL = 'http://localhost:3000';
 
 
 export class Dashboard {

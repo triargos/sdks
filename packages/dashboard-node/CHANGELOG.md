@@ -1,3 +1,10 @@
+## @triargos/dashboard-node [4.0.1](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@4.0.0...@triargos/dashboard-node@4.0.1) (2025-03-20)
+
+
+### Bug Fixes
+
+* **client:** fix return types ([a7f5b14](https://github.com/triargos/sdks/commit/a7f5b1451977a041bc801d1fc93f9800fc674664))
+
 # @triargos/dashboard-node [4.0.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@3.1.0...@triargos/dashboard-node@4.0.0) (2025-03-20)
 
 

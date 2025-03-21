@@ -1,3 +1,10 @@
+## @triargos/dashboard-node [4.0.2](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@4.0.1...@triargos/dashboard-node@4.0.2) (2025-03-21)
+
+
+### Bug Fixes
+
+* **dashboard:** fix incorrect param schema ([832ca9b](https://github.com/triargos/sdks/commit/832ca9bb098a35b554fdd8e34fb34dbf06c78d7b))
+
 ## @triargos/dashboard-node [4.0.1](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@4.0.0...@triargos/dashboard-node@4.0.1) (2025-03-20)
 
 

@@ -547,7 +547,9 @@ export interface paths {
             parameters: {
                 query?: never;
                 header?: never;
-                path?: never;
+                path: {
+                    organizationId: string;
+                };
                 cookie?: never;
             };
             requestBody?: never;

@@ -27,6 +27,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/groups/{groupId}/members/{personId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update a person's group membership
+         * @description Update a person's group membership
+         */
+        put: operations["updateGroupMembership"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/followups/{id}": {
         parameters: {
             query?: never;
@@ -126,6 +146,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/relationships/person/{parentId}/child": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add child relationship
+         * @description Add a new child relationship to a parent
+         */
+        post: operations["addChildRelationship"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/relationships/person/{childId}/parent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add parent relationship
+         * @description Add a new parent relationship to a child
+         */
+        post: operations["addParentRelationship"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/persons": {
         parameters: {
             query?: never;
@@ -144,6 +204,26 @@ export interface paths {
          * @description Create a person.
          */
         post: operations["createPerson"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/groups/{groupId}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add a member to a group
+         * @description Add a member to a group
+         */
+        post: operations["addMemberToGroup"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1267,6 +1347,10 @@ export interface components {
             code: number;
             message: string;
         };
+        UpdateGroupMemberDTO: {
+            /** @description Custom defined fields for that group membership */
+            jsonData: Record<string, never>;
+        };
         FollowUpDTO: {
             /** Format: int32 */
             id: number;
@@ -1274,6 +1358,8 @@ export interface components {
             dueDate: string;
             /** Format: int32 */
             assignedPersonId: number | null;
+            /** Format: int32 */
+            assignedGroupId: number;
             subject: string;
             message: string;
             /** Format: int32 */
@@ -1330,6 +1416,69 @@ export interface components {
             medicalCertificateRequested: string | null;
             medicalCertificateRequired: boolean;
         };
+        CreateChildRelationshipDTO: {
+            /**
+             * Format: int32
+             * @description The ID of the child that the relationship is created to
+             * @example 1
+             */
+            childId: number;
+            /**
+             * @description The type of the relationship of the child, e.g son, daughter
+             * @enum {string}
+             */
+            childRelationshipType: "son" | "daughter" | "child" | "grandson" | "granddaughter" | "grandchild" | "guestchild" | "guestson" | "guestdaughter" | "fosterchild" | "fosterson" | "fosterdaughter" | "other";
+            /**
+             * @description The type of the relationship of the parent, e.g father, mother
+             * @enum {string}
+             */
+            parentRelationshipType: "father" | "mother" | "grandfather" | "grandmother" | "grandparents" | "guestfather" | "guestmother" | "fosterparent" | "fosterfather" | "fostermother" | "other";
+            /** @description Whether the parent has custody of the child */
+            custody: boolean;
+            /** @description Whether the parent is the biological parent of the child */
+            physical: boolean;
+            /**
+             * @description Whether the parent is currently a parent of the child
+             * @default false
+             */
+            realParent: boolean;
+            /** @description Notes about the relationship */
+            notes: string | null;
+        };
+        CreationResponse: {
+            /** Format: int32 */
+            id: number;
+            message: string;
+        };
+        CreateParentRelationshipDTO: {
+            /**
+             * Format: int32
+             * @description The ID of the parent that the relationship is created to
+             * @example 1
+             */
+            parentId: number;
+            /**
+             * @description The type of the relationship of the child, e.g son, daughter
+             * @enum {string}
+             */
+            childRelationshipType: "son" | "daughter" | "child" | "grandson" | "granddaughter" | "grandchild" | "guestchild" | "guestson" | "guestdaughter" | "fosterchild" | "fosterson" | "fosterdaughter" | "other";
+            /**
+             * @description The type of the relationship of the parent, e.g father, mother
+             * @enum {string}
+             */
+            parentRelationshipType: "father" | "mother" | "grandfather" | "grandmother" | "grandparents" | "guestfather" | "guestmother" | "fosterparent" | "fosterfather" | "fostermother" | "other";
+            /** @description Whether the parent has custody of the child */
+            custody: boolean;
+            /** @description Whether the parent is the biological parent of the child */
+            physical: boolean;
+            /**
+             * @description Whether the parent is currently a parent of the child
+             * @default false
+             */
+            realParent: boolean;
+            /** @description Notes about the relationship */
+            notes: string | null;
+        };
         PersonCreationDTO: {
             firstName: string;
             lastName: string;
@@ -1347,16 +1496,28 @@ export interface components {
             /** Format: int32 */
             nationalityId: number | null;
         };
-        CreationResponse: {
-            /** Format: int32 */
-            id: number;
-            message: string;
+        CreateGroupMemberDTO: {
+            /**
+             * Format: int32
+             * @description The ID of the person to join the group
+             */
+            personId: number;
+            /** @description The date when the person should join the group */
+            entryDate: string;
+            /**
+             * Format: int32
+             * @description The grade where to join the group. Defaults to 1
+             * @default 1
+             */
+            grade: number;
         };
         FollowUpCreationDTO: {
             /** @example 2024-12-09T23:00:00Z */
             dueDate: string;
             /** Format: int32 */
-            assignedPersonId: number;
+            assignedPersonId: number | null;
+            /** Format: int32 */
+            assignedGroupId: number | null;
             subject: string;
             message: string;
             /** Format: int32 */
@@ -1452,14 +1613,29 @@ export interface components {
             /** Format: int32 */
             lookupVal: number;
         };
-        PersonBezugDTO: {
-            /** Format: int32 */
+        RelationshipDTO: {
+            /**
+             * Format: int32
+             * @description The ID of the person that the relationship is for
+             * @example 1
+             */
             personId: number;
-            relationshipType: string;
-            physical: boolean;
+            /**
+             * @description The type of the relationship, e.g. father, mother, child, etc.
+             * @enum {string}
+             */
+            relationshipType: "father" | "son" | "mother" | "daughter" | "child" | "grandfather" | "grandmother" | "grandparents" | "grandson" | "granddaughter" | "grandchild" | "guestfather" | "guestmother" | "guestchild" | "guestson" | "guestdaughter" | "fosterparent" | "fosterfather" | "fostermother" | "fosterchild" | "fosterson" | "fosterdaughter" | "other";
+            /** @description Whether the person has custody of the related person */
             custody: boolean;
+            /** @description Whether the person is the biological parent of the related person */
+            physical: boolean;
+            /** @description Whether the person is currently a parent of the related person */
             realParent: boolean;
-            notes: string;
+            /**
+             * @description Additional notes regarding the relationship
+             * @example Revoked at 2023-10-01
+             */
+            notes: string | null;
         };
         GenericLookupDTO: {
             /** Format: int32 */
@@ -1579,10 +1755,16 @@ export interface components {
             sortIndex: number;
         };
         GroupMemberDTO: {
-            /** Format: int32 */
+            /**
+             * Format: int32
+             * @description The ID of the person in the group
+             */
             personId: number;
+            /** @description The date the person joined the group */
             entryDate: string;
+            /** @description The date the person left the group. If null, the person is an active member of the group */
             exitDate: string | null;
+            /** @description If extra data (user defined fields) is defined on that group, it shows up here */
             jsonData: Record<string, never>;
             /** Format: int32 */
             grade: number | null;
@@ -1642,6 +1824,33 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["PersonDTO"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["SuccessResponse"];
+                };
+            };
+        };
+    };
+    updateGroupMembership: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                groupId: number;
+                personId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateGroupMemberDTO"];
             };
         };
         responses: {
@@ -1910,6 +2119,58 @@ export interface operations {
             };
         };
     };
+    addChildRelationship: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                parentId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateChildRelationshipDTO"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CreationResponse"];
+                };
+            };
+        };
+    };
+    addParentRelationship: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                childId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateParentRelationshipDTO"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CreationResponse"];
+                };
+            };
+        };
+    };
     findAllPersons: {
         parameters: {
             query?: never;
@@ -1950,6 +2211,32 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["CreationResponse"];
+                };
+            };
+        };
+    };
+    addMemberToGroup: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                groupId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateGroupMemberDTO"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["SuccessResponse"];
                 };
             };
         };
@@ -2268,7 +2555,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["PersonBezugDTO"][];
+                    "*/*": components["schemas"]["RelationshipDTO"][];
                 };
             };
         };

@@ -1,3 +1,10 @@
+# @triargos/procurat-node [2.7.0-next.3](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.7.0-next.2...@triargos/procurat-node@2.7.0-next.3) (2025-04-08)
+
+
+### Bug Fixes
+
+* **procurat:** correct schema ([1f29133](https://github.com/triargos/sdks/commit/1f2913325e3ea567d3ebd2515c092d0813a912e7))
+
 # @triargos/procurat-node [2.7.0-next.2](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.7.0-next.1...@triargos/procurat-node@2.7.0-next.2) (2025-04-02)
 
 

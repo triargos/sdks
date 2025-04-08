@@ -1482,12 +1482,12 @@ export interface components {
         PersonCreationDTO: {
             firstName: string;
             lastName: string;
-            allFirstNames: string;
+            allFirstNames: string | null;
             gender: string;
             /** Format: int32 */
             addressId: number | null;
             /** Format: int32 */
-            familyId: number;
+            familyId: number | null;
             familyRole: string;
             birthDate: string | null;
             birthPlace: string | null;

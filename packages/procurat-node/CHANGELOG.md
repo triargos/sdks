@@ -1,3 +1,10 @@
+# @triargos/procurat-node [2.7.0-next.2](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.7.0-next.1...@triargos/procurat-node@2.7.0-next.2) (2025-04-02)
+
+
+### Features
+
+* **procurat:** add groups to follow ups ([de9cda5](https://github.com/triargos/sdks/commit/de9cda5ac50f7abefd18d418190e2da5c0066a19))
+
 # @triargos/procurat-node [2.7.0-next.1](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.6.0...@triargos/procurat-node@2.7.0-next.1) (2025-03-24)
 
 

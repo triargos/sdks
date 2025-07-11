@@ -1,3 +1,10 @@
+# @triargos/procurat-node [2.7.0-next.4](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.7.0-next.3...@triargos/procurat-node@2.7.0-next.4) (2025-04-21)
+
+
+### Features
+
+* **procurat:** add files endpoints ([df8fbcf](https://github.com/triargos/sdks/commit/df8fbcf68a82af52d8de68a36c90835764d61153))
+
 # @triargos/procurat-node [2.7.0-next.3](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.7.0-next.2...@triargos/procurat-node@2.7.0-next.3) (2025-04-08)
 
 

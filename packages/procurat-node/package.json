@@ -14,7 +14,7 @@
     "openapi-fetch": "^0.10.5"
   },
   "scripts": {
-    "generate": "npx openapi-typescript ./openapi.json -o src/lib/api.ts  --properties-required-by-default",
+    "generate": "pnpm dlx openapi-typescript ./openapi.json -o src/lib/api.ts  --properties-required-by-default",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "coverage": "vitest --coverage",

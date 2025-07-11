@@ -11,7 +11,8 @@
   "author": "Triargos GmbH <entwicklung@triargos.de>",
   "license": "MIT",
   "dependencies": {
-    "openapi-typescript": "^7.4.3"
+    "openapi-typescript": "^7.4.3",
+    "openapi-fetch": "^0.14.0"
   },
   "scripts": {
     "generate": "npx openapi-typescript ./openapi.json -o src/lib/api.ts",

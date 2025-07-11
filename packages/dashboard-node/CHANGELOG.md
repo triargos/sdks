@@ -1,3 +1,10 @@
+# @triargos/dashboard-node [4.1.0-next.2](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@4.1.0-next.1...@triargos/dashboard-node@4.1.0-next.2) (2025-07-11)
+
+
+### Features
+
+* **procurat:** release new version ([e4a30aa](https://github.com/triargos/sdks/commit/e4a30aa69fe5529c00cc3f32ebea2b062f76b826))
+
 # @triargos/dashboard-node [4.1.0-next.1](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@4.0.1...@triargos/dashboard-node@4.1.0-next.1) (2025-03-24)
 
 

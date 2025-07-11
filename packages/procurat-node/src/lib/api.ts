@@ -28,14 +28,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/groups/{groupId}/members/{personId}": {
+    "/groups/{id}/members/{personId}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** Find a specific group member by group ID and person ID */
+        get: operations["findGroupMemberById"];
         /**
          * Update a person's group membership
          * @description Update a person's group membership
@@ -211,14 +212,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/groups/{groupId}/members": {
+    "/groups/{id}/members": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** Find group members by group ID */
+        get: operations["findGroupMembersById"];
         put?: never;
         /**
          * Add a member to a group
@@ -465,6 +467,26 @@ export interface paths {
          * @description Get relationships for person
          */
         get: operations["findRelationshipsForPerson"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/persons/{id}/roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Find roles by person ID
+         * @description Get all roles for a specific person
+         */
+        get: operations["findRolesByPersonId"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1062,7 +1084,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/groups/{id}/members": {
+    "/groups/{id}/supervisors": {
         parameters: {
             query?: never;
             header?: never;
@@ -1070,10 +1092,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Find group members by id
-         * @description Find group members by id
+         * Find supervisors by group ID
+         * @description Get all supervisors for a specific group
          */
-        get: operations["findGroupMembersById"];
+        get: operations["findSupervisorsByGroupId"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1108,6 +1130,38 @@ export interface paths {
         };
         /** Find follow-ups for assignee */
         get: operations["findForAssignee"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/filestarter/update/info": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getUpdateResponse"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/filestarter/update/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["downloadFileStarter"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1453,6 +1507,19 @@ export interface components {
             /** @description Custom defined fields for that group membership */
             jsonData: Record<string, never>;
         };
+        GroupMemberDTO: {
+            /** Format: int32 */
+            id: number;
+            /** Format: int32 */
+            groupId: number;
+            /** Format: int32 */
+            personId: number;
+            entryDate: string;
+            exitDate: string;
+            jsonData: Record<string, never>;
+            /** Format: int32 */
+            grade: number;
+        };
         FollowUpDTO: {
             /** Format: int32 */
             id: number;
@@ -1739,6 +1806,28 @@ export interface components {
              */
             notes: string | null;
         };
+        GroupSupervisorDto: {
+            /** Format: int32 */
+            groupId: number;
+            /** Format: int32 */
+            personId: number;
+            /** @description A list of roles the person has in the group. Roles can be inactive or active */
+            roles: components["schemas"]["RoleDto"][];
+        };
+        /** @description A list of roles the person has in the group. Roles can be inactive or active */
+        RoleDto: {
+            /** @description Whether this role is currently active */
+            active: boolean;
+            /**
+             * @description Name of the role
+             * @enum {string}
+             */
+            name: "teacher" | "supervisor" | "educator" | "treasurer";
+            /** @description Display name of the role */
+            displayName: string;
+            /** @description Additional comment for this role */
+            comment: string | null;
+        };
         GenericLookupDTO: {
             /** Format: int32 */
             id: number;
@@ -1856,21 +1945,6 @@ export interface components {
             /** Format: int32 */
             sortIndex: number;
         };
-        GroupMemberDTO: {
-            /**
-             * Format: int32
-             * @description The ID of the person in the group
-             */
-            personId: number;
-            /** @description The date the person joined the group */
-            entryDate: string;
-            /** @description The date the person left the group. If null, the person is an active member of the group */
-            exitDate: string | null;
-            /** @description If extra data (user defined fields) is defined on that group, it shows up here */
-            jsonData: Record<string, never>;
-            /** Format: int32 */
-            grade: number | null;
-        };
         StreamingResponseBody: Record<string, never>;
         FileStorageDirectoryInfoDTO: {
             name: string;
@@ -1952,12 +2026,35 @@ export interface operations {
             };
         };
     };
+    findGroupMemberById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                personId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["GroupMemberDTO"];
+                };
+            };
+        };
+    };
     updateGroupMembership: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                groupId: number;
+                id: number;
                 personId: number;
             };
             cookie?: never;
@@ -1974,7 +2071,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["SuccessResponse"];
+                    "*/*": components["schemas"]["GroupMemberDTO"];
                 };
             };
         };
@@ -2329,12 +2426,37 @@ export interface operations {
             };
         };
     };
+    findGroupMembersById: {
+        parameters: {
+            query?: {
+                status?: string;
+                includeUdfs?: boolean;
+            };
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["GroupMemberDTO"][];
+                };
+            };
+        };
+    };
     addMemberToGroup: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                groupId: number;
+                id: number;
             };
             cookie?: never;
         };
@@ -2350,7 +2472,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["SuccessResponse"];
+                    "*/*": components["schemas"]["GroupMemberDTO"];
                 };
             };
         };
@@ -3049,6 +3171,28 @@ export interface operations {
             };
         };
     };
+    findRolesByPersonId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["GroupSupervisorDto"][];
+                };
+            };
+        };
+    };
     findPersonByFamilyId: {
         parameters: {
             query?: never;
@@ -3739,7 +3883,7 @@ export interface operations {
             };
         };
     };
-    findGroupMembersById: {
+    findSupervisorsByGroupId: {
         parameters: {
             query?: never;
             header?: never;
@@ -3756,7 +3900,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["GroupMemberDTO"][];
+                    "*/*": components["schemas"]["GroupSupervisorDto"][];
                 };
             };
         };
@@ -3801,6 +3945,46 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["FollowUpDTO"][];
+                };
+            };
+        };
+    };
+    getUpdateResponse: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": Record<string, never>;
+                };
+            };
+        };
+    };
+    downloadFileStarter: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["StreamingResponseBody"];
                 };
             };
         };

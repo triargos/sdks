@@ -220,7 +220,7 @@ export interface paths {
                             addressId?: number | null;
                             familyId?: number | null;
                             /** @enum {string|null} */
-                            familyRole: "father" | "mother" | "child" | "etc" | null;
+                            familyRole: "father" | "mother" | "child" | "etc" | "parent" | "son" | "daughter" | null;
                             birthDate?: string | null;
                             birthPlace?: string | null;
                             birthCountryId?: number | null;
@@ -348,7 +348,7 @@ export interface paths {
                             addressId?: number | null;
                             familyId?: number | null;
                             /** @enum {string|null} */
-                            familyRole: "father" | "mother" | "child" | "etc" | null;
+                            familyRole: "father" | "mother" | "child" | "etc" | "parent" | "son" | "daughter" | null;
                             birthDate?: string | null;
                             birthPlace?: string | null;
                             birthCountryId?: number | null;
@@ -470,11 +470,106 @@ export interface paths {
                         "application/json": {
                             personId: number;
                             /** @enum {string} */
-                            relationShipType?: "daughter" | "other" | "father" | "child" | "son" | "mother";
+                            relationshipType?: "father" | "son" | "mother" | "daughter" | "child" | "grandfather" | "grandmother" | "grandparents" | "grandson" | "granddaughter" | "grandchild" | "guestfather" | "guestmother" | "guestchild" | "guestson" | "guestdaughter" | "fosterparent" | "fosterfather" | "fostermother" | "fosterchild" | "fosterson" | "fosterdaughter" | "other";
                             physical: boolean;
                             custody: boolean;
                             realParent: boolean;
                             notes: string | null;
+                        }[];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            details: string;
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            details: string;
+                        };
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            details: string;
+                        };
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            details: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/organizations/{organizationId}/persons/{personId}/roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    organizationId: string;
+                    personId: number | null;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A list of different groups supervised by the person, including their roles and status. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            groupId: number;
+                            personId: number;
+                            roles: {
+                                active: boolean;
+                                name: ("teacher" | "supervisor" | "educator" | "treasurer") | string | unknown;
+                                displayName: string | null;
+                                comment: string | null;
+                            }[];
                         }[];
                     };
                 };
@@ -762,6 +857,101 @@ export interface paths {
                             exitDate: string | null;
                             jsonData?: unknown;
                             grade: number | null;
+                        }[];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            details: string;
+                        };
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            details: string;
+                        };
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            details: string;
+                        };
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            details: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/organizations/{organizationId}/groups/{groupId}/supervisors": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    organizationId: string;
+                    groupId: number | null;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Return a list of supervisors of a group. Each supervisor can include multiple roles. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            groupId: number;
+                            personId: number;
+                            roles: {
+                                active: boolean;
+                                name: ("teacher" | "supervisor" | "educator" | "treasurer") | string | unknown;
+                                displayName: string | null;
+                                comment: string | null;
+                            }[];
                         }[];
                     };
                 };

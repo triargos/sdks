@@ -836,7 +836,9 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    type?: ("active" | "inactive" | "future")[] | ("active" | "inactive" | "future");
+                };
                 header?: never;
                 path: {
                     organizationId: string;

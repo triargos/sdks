@@ -1,3 +1,38 @@
+# @triargos/procurat-node [2.7.0-next.5](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.7.0-next.4...@triargos/procurat-node@2.7.0-next.5) (2025-07-11)
+
+
+### Features
+
+* **procurat:** release new version ([e4a30aa](https://github.com/triargos/sdks/commit/e4a30aa69fe5529c00cc3f32ebea2b062f76b826))
+
+# @triargos/procurat-node [2.7.0-next.4](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.7.0-next.3...@triargos/procurat-node@2.7.0-next.4) (2025-04-21)
+
+
+### Features
+
+* **procurat:** add files endpoints ([df8fbcf](https://github.com/triargos/sdks/commit/df8fbcf68a82af52d8de68a36c90835764d61153))
+
+# @triargos/procurat-node [2.7.0-next.3](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.7.0-next.2...@triargos/procurat-node@2.7.0-next.3) (2025-04-08)
+
+
+### Bug Fixes
+
+* **procurat:** correct schema ([1f29133](https://github.com/triargos/sdks/commit/1f2913325e3ea567d3ebd2515c092d0813a912e7))
+
+# @triargos/procurat-node [2.7.0-next.2](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.7.0-next.1...@triargos/procurat-node@2.7.0-next.2) (2025-04-02)
+
+
+### Features
+
+* **procurat:** add groups to follow ups ([de9cda5](https://github.com/triargos/sdks/commit/de9cda5ac50f7abefd18d418190e2da5c0066a19))
+
+# @triargos/procurat-node [2.7.0-next.1](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.6.0...@triargos/procurat-node@2.7.0-next.1) (2025-03-24)
+
+
+### Features
+
+* **procurat-node:** preview ([08a38ae](https://github.com/triargos/sdks/commit/08a38aecc96576ebb1b0e8c498e6015a23944928))
+
 # @triargos/procurat-node [2.6.0](https://github.com/triargos/sdks/compare/@triargos/procurat-node@2.5.0...@triargos/procurat-node@2.6.0) (2025-02-05)
 
 

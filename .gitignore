@@ -1,6 +1,6 @@
 .idea
 */**/coverage
-packages/**/dist
+packages/**/dist/**
 *.iml
 node_modules
 packages/**/node_modules

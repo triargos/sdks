@@ -2,11 +2,10 @@ import createClient, {Client} from "openapi-fetch";
 import {paths} from "./lib/api";
 
 
-type Environment = 'staging' | 'production' | 'development';
+type Environment = 'production' | 'development';
 
 export const PRODUCTION_URL = 'https://elternportal.triargos.de';
-export const STAGING_URL = 'https://dashboard.staging.triargos.de';
-export const DEVELOPMENT_URL = 'http://localhost:3000';
+export const DEVELOPMENT_URL = 'http://localhost:5173';
 
 
 export class Dashboard {
@@ -28,11 +27,14 @@ export class Dashboard {
     }
 
     private getBaseUrl(environment: Environment) {
-        return environment === 'production'
-            ? PRODUCTION_URL
-            : environment === 'staging'
-                ? STAGING_URL
-                : DEVELOPMENT_URL;
+        switch (environment) {
+            case 'production':
+                return PRODUCTION_URL;
+            case 'development':
+                return DEVELOPMENT_URL;
+            default:
+                throw new Error(`Unknown environment: ${environment}`);
+        }
     }
 }
 

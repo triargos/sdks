@@ -6,18 +6,21 @@
   "author": "Triargos GmbH <entwicklung@triargos.de>",
   "license": "MIT",
   "scripts": {
+    "changeset": "changeset",
     "generate": "pnpm -r run generate",
     "build": "pnpm -r run build",
     "test": "pnpm -r run test",
-    "release": "multi-semantic-release",
+    "release": "pnpm run build && changeset publish",
     "dashboard:generate": "pnpm --filter @triargos/dashboard-node run generate",
     "dashboard:build": "pnpm --filter @triargos/dashboard-node run build",
     "dashboard:test": "pnpm --filter @triargos/dashboard-node run test",
     "procurat:generate": "pnpm --filter @triargos/procurat-node run generate",
     "procurat:build": "pnpm --filter @triargos/procurat-node run build",
-    "procurat:test": "pnpm --filter @triargos/procurat-node run test"
+    "procurat:test": "pnpm --filter @triargos/procurat-node run test",
+    "effect-procurat": "pnpm --filter @triargos/effect-procurat"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.7",
     "@qiwi/multi-semantic-release": "^7.1.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",

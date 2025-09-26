@@ -1,0 +1,56 @@
+{
+  "name": "@triargos/effect-procurat",
+  "version": "0.0.2",
+  "description": "Effect-based Procurat SDK",
+  "type": "module",
+  "private": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./schemas": {
+      "import": "./dist/schemas.js",
+      "types": "./dist/schemas.d.ts"
+    },
+    "./errors": {
+      "import": "./dist/errors.js",
+      "types": "./dist/errors.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm run clean && tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
+    "release": "pnpm build && changeset publish",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "effect",
+    "procurat",
+    "sdk",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "@effect/platform": "^0.91.1",
+    "effect": "^3.17.14"
+  },
+  "devDependencies": {
+    "@effect/platform": "^0.91.1",
+    "@types/node": "^20.0.0",
+    "effect": "^3.17.14",
+    "prettier": "^3.2.5",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}

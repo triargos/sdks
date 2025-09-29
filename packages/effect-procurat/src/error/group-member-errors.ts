@@ -4,7 +4,7 @@ import { ProcuratBadRequestError, ProcuratNotFoundError, ProcuratServerError } f
 
 export class AddGroupMemberError extends Schema.TaggedError<AddGroupMemberError>()('AddGroupMemberError', {
   groupId: Schema.Number,
-  data: AddMemberToGroupSchema,
+  memberId: Schema.Number,
   cause: Schema.Union(ProcuratServerError, ProcuratBadRequestError),
 }) {}
 

@@ -2,7 +2,7 @@ import { Schema } from 'effect';
 
 export class ProcuratErrorSchema extends Schema.Class<ProcuratErrorSchema>('ProcuratErrorSchema')({
   code: Schema.Number,
-  message: Schema.String,
+  error: Schema.String,
 }) {}
 
 export const ProcuratErrorDetailsSchema = Schema.Struct({

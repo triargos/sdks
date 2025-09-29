@@ -5,6 +5,7 @@ import { ProcuratGroupMember } from './modules/procurat-group-member';
 import { ProcuratContactInformation } from './modules/procurat-contact-information';
 import { ProcuratHttpClient } from './http-client';
 import { ProcuratRelationship } from './modules/procurat-relationship';
+import { ProcuratGroup } from './modules/procurat-group';
 
 export class ProcuratClient extends Effect.Service<ProcuratClient>()('ProcuratClient', {
   dependencies: [
@@ -13,6 +14,7 @@ export class ProcuratClient extends Effect.Service<ProcuratClient>()('ProcuratCl
     ProcuratGroupMember.Default,
     ProcuratContactInformation.Default,
     ProcuratRelationship.Default,
+    ProcuratGroup.Default
   ],
   effect: Effect.gen(function* () {
     const person = yield* ProcuratPerson;
@@ -20,8 +22,9 @@ export class ProcuratClient extends Effect.Service<ProcuratClient>()('ProcuratCl
     const groupMember = yield* ProcuratGroupMember;
     const contactInformation = yield* ProcuratContactInformation;
     const relationship = yield* ProcuratRelationship;
+    const group = yield* ProcuratGroup
 
-    return { person, address, groupMember, contactInformation, relationship };
+    return { person, address, groupMember, contactInformation, relationship, group };
   }),
 }) {
   static layer({ apiKey, baseUrl }: { apiKey: string; baseUrl: string }) {

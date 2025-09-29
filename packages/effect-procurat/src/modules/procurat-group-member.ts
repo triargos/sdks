@@ -26,7 +26,7 @@ export class ProcuratGroupMember extends Effect.Service<ProcuratGroupMember>()('
           (cause) =>
             new AddGroupMemberError({
               groupId,
-              data: member,
+              memberId: member.personId,
               cause,
             }),
         ),

@@ -29,7 +29,8 @@ export class ProcuratHttpClient extends Effect.Service<ProcuratHttpClient>()('Pr
             Effect.orDie,
           );
           const errorDetails = {
-            ...json,
+            message: json.error,
+            code: json.code,
             endpoint,
             status,
           };

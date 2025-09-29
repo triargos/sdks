@@ -1,6 +1,6 @@
 {
   "name": "@triargos/effect-procurat",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "Effect-based Procurat SDK",
   "type": "module",
   "private": false,

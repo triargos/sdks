@@ -10,7 +10,7 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
     const http = yield* ProcuratHttpClient;
 
     const findAll = Effect.fn('group.findAll')(function* () {
-      return http.get(`/groups`).pipe(
+      return yield* http.get(`/groups`).pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(GroupSchema))),
         removeUnrecoverableErrors,
         Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
@@ -22,7 +22,7 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
 
     const findById = Effect.fn('group.findById')(function* ({ groupId }: { groupId: number }) {
       yield* Effect.annotateCurrentSpan({ groupId });
-      return http.get(`/groups/${groupId}`).pipe(
+      return yield* http.get(`/groups/${groupId}`).pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(GroupSchema)),
         removeUnrecoverableErrors,
         Effect.catchTag('ProcuratBadRequestError', Effect.die),

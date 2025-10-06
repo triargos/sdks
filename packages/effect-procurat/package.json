@@ -1,6 +1,6 @@
 {
   "name": "@triargos/effect-procurat",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "Effect-based Procurat SDK",
   "type": "module",
   "private": false,
@@ -28,7 +28,7 @@
     "build": "pnpm run clean && tsup",
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
-    "release": "pnpm build && changeset publish",
+    "release": "pnpm build && changeset publish --dry-run",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm run build",
     "test": "echo \"Error: no test specified\" && exit 1"

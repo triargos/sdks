@@ -6,3 +6,5 @@ node_modules
 packages/**/node_modules
 packages/**/.yarn
 .yarn
+.DS_Store
+*/**/.DS_Store

@@ -1,7 +1,7 @@
 {
   "name": "@triargos/procurat-node",
   "version": "0.0.0-semantic-release",
-  "private": false,
+  "private": true,
   "type": "module",
   "description": "A nodejs SDK for the Procurat api",
   "main": "./dist/index.js",

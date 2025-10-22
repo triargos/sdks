@@ -18,4 +18,6 @@ export * from './schema/religion-schema';
 export * from './schema/country-schema';
 //County schema
 export * from './schema/county-schema';
+//Communication schema
+export * from './schema/communication-schema';
 

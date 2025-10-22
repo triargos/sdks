@@ -6,6 +6,6 @@ export class CreateContactPersonError extends Schema.TaggedError<CreateContactPe
   'CreateContactPersonError',
   {
     cause: Schema.Union(ProcuratBadRequestError, ProcuratServerError),
-    data: ContactPersonCreationSchema,
+    data: Schema.Unknown,
   },
 ) {}

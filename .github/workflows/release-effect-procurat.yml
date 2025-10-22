@@ -43,7 +43,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm --filter @triargos/effect-procurat release
+          publish: pnpm release
           title: 'chore(effect-procurat): version packages'
           commit: 'chore(effect-procurat): version packages'
         env:

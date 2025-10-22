@@ -1,9 +1,13 @@
-import { Effect } from 'effect';
+import { Effect, Schema } from 'effect';
 import { ProcuratHttpClient } from '../http-client';
 import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
 import { ContactInformationSchema, CreateContactInformationSchema } from '../schema/contact-information-schema';
 import { removeUnrecoverableErrors } from '../utils/error-parsing';
-import { CreateContactInformationError } from '../error/contact-information-errors';
+import {
+  CreateContactInformationError,
+  FindContactInformationByPersonError,
+} from '../error/contact-information-errors';
+import { PersonNotFoundError, ProcuratCommonErrors } from '../errors';
 
 export class ProcuratContactInformation extends Effect.Service<ProcuratContactInformation>()(
   'ProcuratContactInformation',
@@ -11,7 +15,12 @@ export class ProcuratContactInformation extends Effect.Service<ProcuratContactIn
     effect: Effect.gen(function* () {
       const http = yield* ProcuratHttpClient;
 
-      const create = Effect.fn('contactInformation.create')(function* (
+      const create: (
+        contactInformation: CreateContactInformationSchema,
+      ) => Effect.Effect<
+        ContactInformationSchema,
+        CreateContactInformationError | ProcuratCommonErrors
+      > = Effect.fn('contactInformation.create')(function* (
         contactInformation: CreateContactInformationSchema,
       ) {
         return yield* HttpClientRequest.post('/contactinformation').pipe(
@@ -27,7 +36,26 @@ export class ProcuratContactInformation extends Effect.Service<ProcuratContactIn
           ),
         );
       });
-      return { create };
+
+      const findByPerson: (args: {
+        personId: number;
+      }) => Effect.Effect<
+        ReadonlyArray<ContactInformationSchema>,
+        PersonNotFoundError | FindContactInformationByPersonError | ProcuratCommonErrors
+      > = Effect.fn('contactInformation.findByPerson')(function* ({ personId }) {
+        return yield* HttpClientRequest.get(`/contactinformation/person/${personId}`).pipe(
+          http.execute,
+          Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(ContactInformationSchema))),
+          removeUnrecoverableErrors,
+          Effect.catchTags({
+            ProcuratBadRequestError: Effect.die,
+            ProcuratServerError: (cause) => new FindContactInformationByPersonError({ personId, cause }),
+            ProcuratNotFoundError: (cause) => new PersonNotFoundError({ personId, cause }),
+          }),
+        );
+      });
+
+      return { create, findByPerson };
     }),
   },
 ) {}

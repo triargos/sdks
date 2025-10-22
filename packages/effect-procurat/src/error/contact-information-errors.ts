@@ -9,3 +9,11 @@ export class CreateContactInformationError extends Schema.TaggedError<CreateCont
     data: CreateContactInformationSchema,
   },
 ) {}
+
+export class FindContactInformationByPersonError extends Schema.TaggedError<FindContactInformationByPersonError>()(
+  'FindContactInformationByPersonError',
+  {
+    cause: ProcuratServerError,
+    personId: Schema.Number,
+  },
+) {}

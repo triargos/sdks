@@ -15,3 +15,8 @@ export class FindGroupError extends Schema.TaggedError<FindGroupError>()("FindGr
   groupId: Schema.Number,
   cause: ProcuratServerError
 }) {}
+
+export class FindGroupMembersError extends Schema.TaggedError<FindGroupMembersError>()("FindGroupMembersError", {
+  groupId: Schema.Number,
+  cause: ProcuratServerError
+}) {}

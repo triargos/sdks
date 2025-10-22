@@ -1,4 +1,5 @@
 import { Schema } from 'effect';
+import { RequestError } from '@effect/platform/HttpClientError';
 
 export class ProcuratErrorSchema extends Schema.Class<ProcuratErrorSchema>('ProcuratErrorSchema')({
   code: Schema.Number,
@@ -30,3 +31,5 @@ export class ProcuratBadRequestError extends Schema.TaggedError<ProcuratBadReque
   'ProcuratBadRequestError',
   ProcuratErrorDetailsSchema,
 ) {}
+
+export type ProcuratCommonErrors = RequestError | ProcuratUnauthorizedError;

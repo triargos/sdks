@@ -55,5 +55,7 @@ export class ContactInformationSchema extends Schema.Class<ContactInformationSch
   personId: Schema.NullOr(Schema.Number),
   addressId: Schema.NullOr(Schema.Number),
   externalName: Schema.NullOr(Schema.String),
+  content: Schema.String,
+  comment: Schema.NullOr(Schema.String),
   secret: Schema.Boolean,
 }) {}

@@ -5,8 +5,8 @@ export const FamilyRoleSchema = Schema.Literal('father', 'mother', 'child', 'etc
 
 export class PersonSchema extends Schema.Class<PersonSchema>('PersonSchema')({
   id: Schema.Number,
-  firstName: Schema.String,
-  lastName: Schema.String,
+  firstName: Schema.NullOr(Schema.String),
+  lastName: Schema.NullOr(Schema.String),
   allFirstNames: Schema.NullOr(Schema.String),
   gender: Schema.NullOr(GenderSchema),
   addressId: Schema.NullOr(Schema.Number),

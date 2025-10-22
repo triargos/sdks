@@ -1,9 +1,8 @@
 import { Schema } from 'effect';
 
 const JsonDataSchema = Schema.Record({
-  //We allow numbers here to prepare for [id: value] instead of [name: value]
   key: Schema.String,
-  value: Schema.NullOr(Schema.Union(Schema.Number, Schema.String, Schema.Boolean)),
+  value: Schema.Unknown,
 })
 
 export class GroupMemberSchema extends Schema.Class<GroupMemberSchema>('GroupMemberSchema')({

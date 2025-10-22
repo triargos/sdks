@@ -7,3 +7,8 @@ export class CreateRelationshipError extends Schema.TaggedError<CreateRelationsh
   personToAddId: Schema.Number,
   basePersonId: Schema.Number,
 }) {}
+
+export class ListRelationshipsError extends Schema.TaggedError<ListRelationshipsError>()("ListRelationshipsError", {
+  cause: Schema.Union(ProcuratServerError, ProcuratBadRequestError),
+  personId: Schema.Number,
+}) {}

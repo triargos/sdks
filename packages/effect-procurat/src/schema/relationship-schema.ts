@@ -51,3 +51,38 @@ export class AddChildToParentSchema extends Schema.Class<AddChildToParentSchema>
 export class CreatedRelationShipSchema extends Schema.Class<CreatedRelationShipSchema>('CreatedRelationshipSchema')({
   id: Schema.Number,
 }) {}
+
+export const RelationshipTypeSchema = Schema.Literal(
+  'father',
+  'son',
+  'mother',
+  'daughter',
+  'child',
+  'grandfather',
+  'grandmother',
+  'grandparents',
+  'grandson',
+  'granddaughter',
+  'grandchild',
+  'guestfather',
+  'guestmother',
+  'guestchild',
+  'guestson',
+  'guestdaughter',
+  'fosterparent',
+  'fosterfather',
+  'fostermother',
+  'fosterchild',
+  'fosterson',
+  'fosterdaughter',
+  'other',
+);
+
+export class RelationshipSchema extends Schema.Class<RelationshipSchema>('RelationshipSchema')({
+  personId: Schema.Number,
+  relationshipType: RelationshipTypeSchema,
+  custody: Schema.Boolean,
+  physical: Schema.Boolean,
+  realParent: Schema.Boolean,
+  notes: Schema.NullOr(Schema.String),
+}) {}

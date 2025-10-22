@@ -1,6 +1,6 @@
 {
   "name": "@triargos/effect-procurat",
-  "version": "0.0.9",
+  "version": "0.0.13-beta.1",
   "description": "Effect-based Procurat SDK",
   "type": "module",
   "private": false,
@@ -42,13 +42,13 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "@effect/platform": "^0.91.1",
-    "effect": "^3.17.14"
+    "@effect/platform": "^0.92.1",
+    "effect": "^3.18.4"
   },
   "devDependencies": {
-    "@effect/platform": "^0.91.1",
+    "@effect/platform": "^0.92.1",
     "@types/node": "^20.0.0",
-    "effect": "^3.17.14",
+    "effect": "^3.18.4",
     "prettier": "^3.2.5",
     "tsup": "^8.0.0",
     "typescript": "^5.0.0"

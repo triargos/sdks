@@ -2,8 +2,8 @@ import {Schema} from "effect";
 
 export class AddressSchema extends Schema.Class<AddressSchema>("AddressSchema")({
     id: Schema.Number,
-    street: Schema.String,
-    zip: Schema.String,
+    street: Schema.NullOr(Schema.String),
+    zip: Schema.NullOr(Schema.String),
     city: Schema.String,
     nameline2: Schema.NullOr(Schema.String),
     additional: Schema.NullOr(Schema.String),

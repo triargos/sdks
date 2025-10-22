@@ -838,6 +838,7 @@ export interface paths {
             parameters: {
                 query?: {
                     type?: ("active" | "inactive" | "future")[] | ("active" | "inactive" | "future");
+                    includeAttributes?: boolean | null;
                 };
                 header?: never;
                 path: {
@@ -848,7 +849,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Return a list of members of a group */
+                /** @description Return a list of members of a group. If no "types" are specified, this will only return active group members */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -858,7 +859,9 @@ export interface paths {
                             personId: number;
                             entryDate: string;
                             exitDate: string | null;
-                            jsonData?: unknown;
+                            jsonData: {
+                                [key: string]: unknown;
+                            } | null;
                             grade: number | null;
                         }[];
                     };

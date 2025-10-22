@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.1.2
+
+### Patch Changes
+
+- 8626957: fix error schema on contact person
+
 ## 0.1.1
 
 ### Patch Changes

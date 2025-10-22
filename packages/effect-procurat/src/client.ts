@@ -22,7 +22,7 @@ export class ProcuratClient extends Effect.Service<ProcuratClient>()('ProcuratCl
     ProcuratCountry.Default,
     ProcuratCounty.Default,
     ProcuratReligion.Default,
-    ProcuratLookupTable.Default
+    ProcuratLookupTable.Default,
   ],
   effect: Effect.gen(function* () {
     const person = yield* ProcuratPerson;
@@ -35,6 +35,7 @@ export class ProcuratClient extends Effect.Service<ProcuratClient>()('ProcuratCl
     const county = yield* ProcuratCounty;
     const religion = yield* ProcuratReligion;
     const lookupTable = yield* ProcuratLookupTable;
+    const statistics = yield* ProcuratStatistics;
 
     return { person, address, groupMember, contactInformation, relationship, group, country, county, religion, lookupTable };
   }),

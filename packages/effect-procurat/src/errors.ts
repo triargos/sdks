@@ -15,3 +15,6 @@ export * from "./error/lookup-table-errors"
 export * from "./error/person-errors"
 //Relationship errors
 export * from "./error/relationship-errors"
+//Country errors
+export * from "./error/country-errors"
+

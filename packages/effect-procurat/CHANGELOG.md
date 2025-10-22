@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.1.1
+
+### Patch Changes
+
+- 9d92169: fix update person schem to use dates
+
 ## 0.1.0
 
 ### Minor Changes

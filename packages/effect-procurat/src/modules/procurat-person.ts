@@ -1,9 +1,9 @@
 import { Effect, Schema } from 'effect';
 import { ProcuratHttpClient } from '../http-client';
 import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
-import { CreatePersonSchema, PersonSchema } from '../schema/person-schema';
+import { CreatePersonSchema, PersonSchema, SuccessResponseSchema, UpdatePersonSchema } from '../schema/person-schema';
 import { removeUnrecoverableErrors } from '../utils/error-parsing';
-import { CreatePersonError, FindPersonError, ListPersonsError, PersonNotFoundError } from '../error/person-errors';
+import { CreatePersonError, FindPersonError, ListPersonsError, PersonNotFoundError, UpdatePersonError } from '../error/person-errors';
 
 export class ProcuratPerson extends Effect.Service<ProcuratPerson>()('ProcuratPerson', {
   effect: Effect.gen(function* () {
@@ -47,6 +47,21 @@ export class ProcuratPerson extends Effect.Service<ProcuratPerson>()('ProcuratPe
       );
     });
 
-    return { findAll, findById, create };
+    const update = Effect.fn('person.update')(function* (person: UpdatePersonSchema) {
+      return yield* HttpClientRequest.put(`/persons/${person.id}`).pipe(
+        HttpClientRequest.schemaBodyJson(UpdatePersonSchema)(person),
+        Effect.flatMap(http.execute),
+        Effect.flatMap(HttpClientResponse.schemaBodyJson(SuccessResponseSchema)),
+        removeUnrecoverableErrors,
+        Effect.catchTag('HttpBodyError', Effect.die),
+        Effect.catchTags({
+          ProcuratNotFoundError: (cause) => new PersonNotFoundError({ personId: person.id, cause }),
+          ProcuratServerError: (cause) => new UpdatePersonError({ cause, data: person }),
+          ProcuratBadRequestError: (cause) => new UpdatePersonError({ cause, data: person }),
+        }),
+      );
+    });
+
+    return { findAll, findById, create, update };
   }),
 }) {}

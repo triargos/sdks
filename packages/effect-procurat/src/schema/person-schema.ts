@@ -55,7 +55,7 @@ export class UpdatePersonSchema extends Schema.Class<UpdatePersonSchema>('Update
   addressId: Schema.NullOr(Schema.Number),
   familyId: Schema.NullOr(Schema.Number),
   familyRole: Schema.NullOr(FamilyRoleSchema),
-  birthDate: Schema.NullOr(Schema.String),
+  birthDate: Schema.NullOr(Schema.Date),
   birthPlace: Schema.NullOr(Schema.String),
   birthCountryId: Schema.NullOr(Schema.Number),
   languageId: Schema.NullOr(Schema.Number),
@@ -71,7 +71,7 @@ export class UpdatePersonSchema extends Schema.Class<UpdatePersonSchema>('Update
   comment: Schema.NullOr(Schema.String),
   nationalityId: Schema.NullOr(Schema.Number),
   maritalStatus: Schema.NullOr(Schema.String),
-  deathDate: Schema.NullOr(Schema.String),
+  deathDate: Schema.NullOr(Schema.Date),
 }) {}
 
 export class SuccessResponseSchema extends Schema.Class<SuccessResponseSchema>('SuccessResponseSchema')({

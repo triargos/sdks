@@ -1,3 +1,13 @@
+# @triargos/dashboard-node [4.1.0](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@4.0.2...@triargos/dashboard-node@4.1.0) (2025-07-24)
+
+
+### Features
+
+* **dashboard:** add new type query param ([b6d9c17](https://github.com/triargos/sdks/commit/b6d9c17f2b05c7805c24239e0159a29c5caa0c94))
+* **dashboard:** release new version ([f3492af](https://github.com/triargos/sdks/commit/f3492afc9bbd8ce4f5e5f57e25ea44d976a37f4b))
+* **procurat-node:** preview ([08a38ae](https://github.com/triargos/sdks/commit/08a38aecc96576ebb1b0e8c498e6015a23944928))
+* **procurat:** release new version ([e4a30aa](https://github.com/triargos/sdks/commit/e4a30aa69fe5529c00cc3f32ebea2b062f76b826))
+
 # @triargos/dashboard-node [4.1.0-next.2](https://github.com/triargos/sdks/compare/@triargos/dashboard-node@4.1.0-next.1...@triargos/dashboard-node@4.1.0-next.2) (2025-07-11)
 
 

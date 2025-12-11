@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.1.3
+
+### Patch Changes
+
+- 30433ac: fix error creation of person module
+
 ## 0.1.2
 
 ### Patch Changes

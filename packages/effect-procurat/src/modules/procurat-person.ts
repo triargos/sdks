@@ -42,7 +42,7 @@ export class ProcuratPerson extends Effect.Service<ProcuratPerson>()('ProcuratPe
         Effect.catchTag(
           'ProcuratServerError',
           'ProcuratBadRequestError',
-          (cause) => new CreatePersonError({ cause, data: person }),
+          (cause) => new CreatePersonError({ cause, data: new CreatePersonSchema(person) }),
         ),
       );
     });

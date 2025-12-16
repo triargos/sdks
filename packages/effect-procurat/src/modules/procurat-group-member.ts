@@ -57,7 +57,7 @@ export class ProcuratGroupMember extends Effect.Service<ProcuratGroupMember>()('
             new UpdateGroupMembershipError({
               groupId,
               personId,
-              data: membership,
+              data: new UpdateGroupMembershipSchema({...membership}),
               cause,
             }),
         ),

@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.1.4
+
+### Patch Changes
+
+- 3335c21: fix(error): fix error not constructing because of instance problems
+
 ## 0.1.3
 
 ### Patch Changes

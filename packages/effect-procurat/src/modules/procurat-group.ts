@@ -1,9 +1,10 @@
 import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
 import { Effect, Schema } from 'effect';
-import { FindGroupError, FindGroupMembersError, GroupNotFoundError, ListGroupsError } from '../error/group-errors';
+import { FindGroupError, FindGroupMembersError, GroupNotFoundError, ListCustomFieldsError, ListGroupsError } from '../error/group-errors';
 import { ProcuratHttpClient } from '../http-client';
 import { GroupMemberSchema } from '../schema/group-member-schema';
 import { GroupSchema } from '../schema/group-schema';
+import { GroupUdfSchema } from '../schema/group-udf-schema';
 import { removeUnrecoverableErrors } from '../utils/error-parsing';
 import { ProcuratCommonErrors } from '../error/procurat-errors';
 
@@ -12,6 +13,10 @@ type GroupMemberStatus = 'ACTIVE' | 'INACTIVE' | 'ALL';
 interface FindGroupMembersOptions {
   status?: GroupMemberStatus;
   includeUdfs?: boolean;
+}
+
+interface ListCustomFieldsOptions {
+  includeParentGroups?: boolean;
 }
 
 export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGroup', {
@@ -76,6 +81,32 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
       );
     });
 
-    return { findAll, findById, findMembers };
+    const listCustomFields: (params: {
+      groupId: number;
+      options?: ListCustomFieldsOptions;
+    }) => Effect.Effect<
+      ReadonlyArray<GroupUdfSchema>,
+      GroupNotFoundError | ListCustomFieldsError | ProcuratCommonErrors
+    > = Effect.fn('group.listCustomFields')(function* ({ groupId, options = {} }) {
+      yield* Effect.annotateCurrentSpan({ groupId, options });
+
+      const { includeParentGroups = false } = options;
+
+      return yield* HttpClientRequest.get(`/groups/${groupId}/udfs`).pipe(
+        HttpClientRequest.setUrlParams({
+          includeParentGroups,
+        }),
+        http.execute,
+        Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(GroupUdfSchema))),
+        removeUnrecoverableErrors,
+        Effect.catchTags({
+          ProcuratBadRequestError: Effect.die,
+          ProcuratNotFoundError: (cause) => new GroupNotFoundError({ groupId, cause }),
+          ProcuratServerError: (cause) => new ListCustomFieldsError({ groupId, cause }),
+        }),
+      );
+    });
+
+    return { findAll, findById, findMembers, listCustomFields };
   }),
 }) {}

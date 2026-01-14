@@ -2,7 +2,7 @@
   "name": "@triargos/sdks",
   "version": "0.0.0-semantic-release",
   "main": "index.js",
-  "repository": "https://github.com/triargos/sdks.git",
+  "repository": "https://github.com/triargos/sdks",
   "author": "Triargos GmbH <entwicklung@triargos.de>",
   "license": "MIT",
   "scripts": {

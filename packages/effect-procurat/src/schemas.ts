@@ -4,6 +4,8 @@ export * from './schema/address-schema';
 export * from './schema/contact-information-schema';
 //Group Member schema
 export * from './schema/group-member-schema';
+//Group UDF schema
+export * from './schema/group-udf-schema';
 //Lookup Table schema
 export * from './schema/lookup-table-schema';
 //Person schema

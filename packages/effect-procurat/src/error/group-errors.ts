@@ -20,3 +20,8 @@ export class FindGroupMembersError extends Schema.TaggedError<FindGroupMembersEr
   groupId: Schema.Number,
   cause: ProcuratServerError
 }) {}
+
+export class ListCustomFieldsError extends Schema.TaggedError<ListCustomFieldsError>()("ListCustomFieldsError", {
+  groupId: Schema.Number,
+  cause: ProcuratServerError
+}) {}

@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.2.0
+
+### Minor Changes
+
+- c8c88e9: add group udf endpoint
+
 ## 0.1.4
 
 ### Patch Changes

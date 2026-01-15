@@ -21,7 +21,7 @@ export const GroupUdfFieldType = Schema.Literal(
   'idArray',
   'text',
   'view',
-  'valueSelection'
+  'valueSelection',
 );
 
 export const GroupUdfUsage = Schema.Literal('address', 'group', 'person', 'groupMember');
@@ -29,8 +29,8 @@ export const GroupUdfUsage = Schema.Literal('address', 'group', 'person', 'group
 export class GroupUdfSchema extends Schema.Class<GroupUdfSchema>('GroupUdfSchema')({
   id: Schema.Number,
   groupId: Schema.Number,
-  groupType: Schema.String,
-  groupBaseType: Schema.String,
+  groupType: Schema.NullOr(Schema.String),
+  groupBaseType: Schema.NullOr(Schema.String),
   name: Schema.String,
   fieldType: GroupUdfFieldType,
   usage: GroupUdfUsage,

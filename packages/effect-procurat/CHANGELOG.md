@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.2.1
+
+### Patch Changes
+
+- d2bf81e: fix group type being nullable
+
 ## 0.2.0
 
 ### Minor Changes

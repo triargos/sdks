@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.3.0
+
+### Minor Changes
+
+- db1173f: add findByFamily endpoint to persons
+
 ## 0.2.1
 
 ### Patch Changes

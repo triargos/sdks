@@ -32,6 +32,17 @@ export class ProcuratPerson extends Effect.Service<ProcuratPerson>()('ProcuratPe
       );
     });
 
+    const findByFamilyId = Effect.fn('persons.findByFamilyId')(function* ({ familyId }: { familyId: number }) {
+      return yield* http.get(`/persons/family/${familyId}`).pipe(
+        Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(PersonSchema))),
+        removeUnrecoverableErrors,
+        Effect.catchTag('ProcuratNotFoundError', 'ProcuratBadRequestError', Effect.die),
+        Effect.catchTags({
+          ProcuratServerError: (cause) => new ListPersonsError({ cause }),
+        }),
+      );
+    });
+
     const create = Effect.fn('person.create')(function* (person: CreatePersonSchema) {
       return yield* HttpClientRequest.post('/persons').pipe(
         HttpClientRequest.schemaBodyJson(CreatePersonSchema)(person),
@@ -62,6 +73,6 @@ export class ProcuratPerson extends Effect.Service<ProcuratPerson>()('ProcuratPe
       );
     });
 
-    return { findAll, findById, create, update };
+    return { findAll, findById, findByFamilyId, create, update };
   }),
 }) {}

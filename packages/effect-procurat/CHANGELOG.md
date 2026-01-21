@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.3.1
+
+### Patch Changes
+
+- 39ff8d6: fix care type lookup table schema
+
 ## 0.3.0
 
 ### Minor Changes

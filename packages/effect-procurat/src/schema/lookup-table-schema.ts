@@ -47,8 +47,8 @@ export class CareTypeSchema extends Schema.Class<CareTypeSchema>('CareTypeSchema
   id: Schema.Number,
   label: Schema.String,
   value: Schema.String,
-  factor: Schema.String,
-  description: Schema.String,
+  factor: Schema.NullOr(Schema.String),
+  description: Schema.NullOr(Schema.String),
 }) {}
 
 export class CostBearerSchema extends Schema.Class<CostBearerSchema>('CostBearerSchema')({

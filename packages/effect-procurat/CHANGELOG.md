@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.4.1
+
+### Patch Changes
+
+- ac51ebe: encode provided file path
+
 ## 0.4.0
 
 ### Minor Changes

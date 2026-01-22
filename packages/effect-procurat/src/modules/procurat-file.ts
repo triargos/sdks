@@ -1,4 +1,4 @@
-import { Effect, Schema, Stream } from 'effect';
+import { Effect, Stream } from 'effect';
 import { ProcuratHttpClient } from '../http-client';
 import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
 import { DirectoryContentSchema } from '../schema/file-schema';
@@ -7,6 +7,12 @@ import { ListFilesError, DownloadFileError, UploadFileError } from '../error/fil
 
 // Encode path segments while preserving directory structure
 const encodePath = (path: string) => path.split('/').map(encodeURIComponent).join('/');
+
+// Convert Effect stream to Blob for multipart upload
+const streamToBlob = (stream: Stream.Stream<Uint8Array>, contentType: string) =>
+  Effect.promise(() => new Response(Stream.toReadableStream(stream)).blob()).pipe(
+    Effect.map((blob) => new Blob([blob], { type: contentType })),
+  );
 
 export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile', {
   effect: Effect.gen(function* () {
@@ -104,22 +110,23 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
       );
     });
 
-    // Upload operations (stream-based)
+    // Upload operations (stream API, multipart internally)
     const uploadManagementFile = Effect.fn('file.uploadManagementFile')(function* ({
       personId,
       path,
       stream,
       contentType = 'application/octet-stream',
-      contentLength,
     }: {
       personId: number;
       path: string;
-      stream: Stream.Stream<Uint8Array, never, never>;
+      stream: Stream.Stream<Uint8Array>;
       contentType?: string;
-      contentLength?: number;
     }) {
+      const blob = yield* streamToBlob(stream, contentType);
+      const formData = new FormData();
+      formData.append('file', blob);
       const request = HttpClientRequest.post(`/files/person/${personId}/management/${encodePath(path)}`).pipe(
-        HttpClientRequest.bodyStream(stream, { contentType, contentLength }),
+        HttpClientRequest.bodyFormData(formData),
       );
       return yield* http.execute(request).pipe(
         Effect.asVoid,
@@ -136,16 +143,17 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
       path,
       stream,
       contentType = 'application/octet-stream',
-      contentLength,
     }: {
       personId: number;
       path: string;
-      stream: Stream.Stream<Uint8Array, never, never>;
+      stream: Stream.Stream<Uint8Array>;
       contentType?: string;
-      contentLength?: number;
     }) {
+      const blob = yield* streamToBlob(stream, contentType);
+      const formData = new FormData();
+      formData.append('file', blob);
       const request = HttpClientRequest.post(`/files/person/${personId}/finance/${encodePath(path)}`).pipe(
-        HttpClientRequest.bodyStream(stream, { contentType, contentLength }),
+        HttpClientRequest.bodyFormData(formData),
       );
       return yield* http.execute(request).pipe(
         Effect.asVoid,

@@ -5,6 +5,9 @@ import { DirectoryContentSchema } from '../schema/file-schema';
 import { removeUnrecoverableErrors } from '../utils/error-parsing';
 import { ListFilesError, DownloadFileError, UploadFileError } from '../error/file-errors';
 
+// Encode path segments while preserving directory structure
+const encodePath = (path: string) => path.split('/').map(encodeURIComponent).join('/');
+
 export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile', {
   effect: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
@@ -17,7 +20,7 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
       personId: number;
       path?: string;
     }) {
-      return yield* http.get(`/files/person/${personId}/management/${path ?? ''}`).pipe(
+      return yield* http.get(`/files/person/${personId}/management/${encodePath(path ?? '')}`).pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(DirectoryContentSchema)),
         removeUnrecoverableErrors,
         Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
@@ -34,7 +37,7 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
       personId: number;
       path?: string;
     }) {
-      return yield* http.get(`/files/person/${personId}/finance/${path ?? ''}`).pipe(
+      return yield* http.get(`/files/person/${personId}/finance/${encodePath(path ?? '')}`).pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(DirectoryContentSchema)),
         removeUnrecoverableErrors,
         Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
@@ -45,7 +48,7 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
     });
 
     const listPublicFiles = Effect.fn('file.listPublicFiles')(function* ({ path }: { path?: string }) {
-      return yield* http.get(`/files/shared/${path ?? ''}`).pipe(
+      return yield* http.get(`/files/shared/${encodePath(path ?? '')}`).pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(DirectoryContentSchema)),
         removeUnrecoverableErrors,
         Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
@@ -63,7 +66,7 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
       personId: number;
       path: string;
     }) {
-      return yield* http.get(`/files/person/${personId}/management/download/${path}`).pipe(
+      return yield* http.get(`/files/person/${personId}/management/download/${encodePath(path)}`).pipe(
         Effect.map((response) => response.stream),
         removeUnrecoverableErrors,
         Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
@@ -80,7 +83,7 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
       personId: number;
       path: string;
     }) {
-      return yield* http.get(`/files/person/${personId}/finance/download/${path}`).pipe(
+      return yield* http.get(`/files/person/${personId}/finance/download/${encodePath(path)}`).pipe(
         Effect.map((response) => response.stream),
         removeUnrecoverableErrors,
         Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
@@ -91,7 +94,7 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
     });
 
     const downloadPublicFile = Effect.fn('file.downloadPublicFile')(function* ({ path }: { path: string }) {
-      return yield* http.get(`/files/shared/download/${path}`).pipe(
+      return yield* http.get(`/files/shared/download/${encodePath(path)}`).pipe(
         Effect.map((response) => response.stream),
         removeUnrecoverableErrors,
         Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
@@ -115,7 +118,7 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
       contentType?: string;
       contentLength?: number;
     }) {
-      const request = HttpClientRequest.post(`/files/person/${personId}/management/${path}`).pipe(
+      const request = HttpClientRequest.post(`/files/person/${personId}/management/${encodePath(path)}`).pipe(
         HttpClientRequest.bodyStream(stream, { contentType, contentLength }),
       );
       return yield* http.execute(request).pipe(
@@ -141,7 +144,7 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
       contentType?: string;
       contentLength?: number;
     }) {
-      const request = HttpClientRequest.post(`/files/person/${personId}/finance/${path}`).pipe(
+      const request = HttpClientRequest.post(`/files/person/${personId}/finance/${encodePath(path)}`).pipe(
         HttpClientRequest.bodyStream(stream, { contentType, contentLength }),
       );
       return yield* http.execute(request).pipe(

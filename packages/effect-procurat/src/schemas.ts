@@ -22,4 +22,5 @@ export * from './schema/country-schema';
 export * from './schema/county-schema';
 //Communication schema
 export * from './schema/communication-schema';
-
+//File schema
+export * from './schema/file-schema';

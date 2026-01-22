@@ -19,4 +19,5 @@ export * from "./error/relationship-errors"
 export * from "./error/country-errors"
 //Communication errors
 export * from "./error/communication-errors"
-
+//File errors
+export * from "./error/file-errors"

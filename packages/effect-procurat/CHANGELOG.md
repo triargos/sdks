@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.4.0
+
+### Minor Changes
+
+- 57573f5: add file module
+
 ## 0.3.1
 
 ### Patch Changes

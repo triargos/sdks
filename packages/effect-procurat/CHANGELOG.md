@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.4.3
+
+### Patch Changes
+
+- eaa7132: fix(file-module): split into path and file name
+
 ## 0.4.2
 
 ### Patch Changes

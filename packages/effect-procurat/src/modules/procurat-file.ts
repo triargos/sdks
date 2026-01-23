@@ -114,17 +114,19 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
     const uploadManagementFile = Effect.fn('file.uploadManagementFile')(function* ({
       personId,
       path,
+      fileName,
       stream,
       contentType = 'application/octet-stream',
     }: {
       personId: number;
       path: string;
+      fileName: string;
       stream: Stream.Stream<Uint8Array>;
       contentType?: string;
     }) {
       const blob = yield* streamToBlob(stream, contentType);
       const formData = new FormData();
-      formData.append('file', blob);
+      formData.append('file', blob, fileName);
       const request = HttpClientRequest.post(`/files/person/${personId}/management/${encodePath(path)}`).pipe(
         HttpClientRequest.bodyFormData(formData),
       );
@@ -133,7 +135,7 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
         removeUnrecoverableErrors,
         Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new UploadFileError({ cause, path }),
+          ProcuratServerError: (cause) => new UploadFileError({ cause, path: `${path}/${fileName}` }),
         }),
       );
     });
@@ -141,17 +143,19 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
     const uploadFinanceFile = Effect.fn('file.uploadFinanceFile')(function* ({
       personId,
       path,
+      fileName,
       stream,
       contentType = 'application/octet-stream',
     }: {
       personId: number;
       path: string;
+      fileName: string;
       stream: Stream.Stream<Uint8Array>;
       contentType?: string;
     }) {
       const blob = yield* streamToBlob(stream, contentType);
       const formData = new FormData();
-      formData.append('file', blob);
+      formData.append('file', blob, fileName);
       const request = HttpClientRequest.post(`/files/person/${personId}/finance/${encodePath(path)}`).pipe(
         HttpClientRequest.bodyFormData(formData),
       );
@@ -160,7 +164,7 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
         removeUnrecoverableErrors,
         Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new UploadFileError({ cause, path }),
+          ProcuratServerError: (cause) => new UploadFileError({ cause, path: `${path}/${fileName}` }),
         }),
       );
     });

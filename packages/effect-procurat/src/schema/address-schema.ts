@@ -4,7 +4,7 @@ export class AddressSchema extends Schema.Class<AddressSchema>("AddressSchema")(
     id: Schema.Number,
     street: Schema.NullOr(Schema.String),
     zip: Schema.NullOr(Schema.String),
-    city: Schema.String,
+    city: Schema.NullOr(Schema.String),
     nameline2: Schema.NullOr(Schema.String),
     additional: Schema.NullOr(Schema.String),
     district: Schema.NullOr(Schema.String),

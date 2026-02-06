@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 0.4.4
+
+### Patch Changes
+
+- 51007c0: fix(schema): make city nullable
+
 ## 0.4.3
 
 ### Patch Changes

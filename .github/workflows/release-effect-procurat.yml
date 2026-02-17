@@ -55,8 +55,8 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: pnpm release
-          title: ${{ github.ref == 'refs/heads/next' && 'chore(effect-procurat): version packages (beta)' || 'chore(effect-procurat): version packages' }}
-          commit: ${{ github.ref == 'refs/heads/next' && 'chore(effect-procurat): version packages (beta)' || 'chore(effect-procurat): version packages' }}
+          title: "chore(effect-procurat): version packages${{ github.ref == 'refs/heads/next' && ' (beta)' || '' }}"
+          commit: "chore(effect-procurat): version packages${{ github.ref == 'refs/heads/next' && ' (beta)' || '' }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

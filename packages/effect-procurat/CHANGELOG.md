@@ -1,5 +1,12 @@
 # @triargos/effect-procurat
 
+## 0.5.0-beta.1
+
+### Minor Changes
+
+- e0baaec: feat(contact-information): add findAll method
+  - Add `findAll` method to `ProcuratContactInformation` to list all contact information for persons
+
 ## 0.5.0-beta.0
 
 ### Minor Changes

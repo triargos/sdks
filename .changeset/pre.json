@@ -7,6 +7,7 @@
     "@triargos/procurat-node": "0.0.0-semantic-release"
   },
   "changesets": [
+    "add-contact-information-findall",
     "consolidate-errors"
   ]
 }

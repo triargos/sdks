@@ -18,6 +18,24 @@ export class ProcuratContactInformation extends Effect.Service<ProcuratContactIn
     effect: Effect.gen(function* () {
       const http = yield* ProcuratHttpClient;
 
+      const findAll: () => Effect.Effect<
+        ReadonlyArray<ContactInformationSchema>,
+        | ProcuratNotFoundError
+        | ProcuratUnauthorizedError
+        | ProcuratServerError
+        | ProcuratBadRequestError
+        | UnknownProcuratError
+      > = Effect.fn('contactInformation.findAll')(function* () {
+        return yield* http.get('/contactinformation/person').pipe(
+          Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(ContactInformationSchema))),
+          Effect.catchTags({
+            RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          }),
+        );
+      });
+
       const create: (
         contactInformation: CreateContactInformationSchema,
       ) => Effect.Effect<
@@ -76,7 +94,7 @@ export class ProcuratContactInformation extends Effect.Service<ProcuratContactIn
         );
       });
 
-      return { create, findByPerson };
+      return { findAll, create, findByPerson };
     }),
   },
 ) {}

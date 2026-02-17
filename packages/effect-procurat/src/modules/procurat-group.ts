@@ -1,12 +1,17 @@
 import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
 import { Effect, Schema } from 'effect';
-import { FindGroupError, FindGroupMembersError, GroupNotFoundError, ListCustomFieldsError, ListGroupsError } from '../error/group-errors';
+import {
+  GroupNotFound,
+  ProcuratBadRequestError,
+  ProcuratNotFoundError,
+  ProcuratServerError,
+  ProcuratUnauthorizedError,
+  UnknownProcuratError,
+} from '../errors';
 import { ProcuratHttpClient } from '../http-client';
 import { GroupMemberSchema } from '../schema/group-member-schema';
 import { GroupSchema } from '../schema/group-schema';
 import { GroupUdfSchema } from '../schema/group-udf-schema';
-import { removeUnrecoverableErrors } from '../utils/error-parsing';
-import { ProcuratCommonErrors } from '../error/procurat-errors';
 
 type GroupMemberStatus = 'ACTIVE' | 'INACTIVE' | 'ALL';
 
@@ -25,31 +30,40 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
 
     const findAll: () => Effect.Effect<
       ReadonlyArray<GroupSchema>,
-      ListGroupsError | ProcuratCommonErrors
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
     > = Effect.fn('group.findAll')(function* () {
       return yield* http.get(`/groups`).pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(GroupSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListGroupsError({ cause }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
     const findById: (params: {
       groupId: number;
-    }) => Effect.Effect<GroupSchema, GroupNotFoundError | FindGroupError | ProcuratCommonErrors> = Effect.fn('group.findById')(function* ({
-      groupId,
-    }) {
+    }) => Effect.Effect<
+      GroupSchema,
+      | GroupNotFound
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('group.findById')(function* ({ groupId }: { groupId: number }) {
       yield* Effect.annotateCurrentSpan({ groupId });
       return yield* http.get(`/groups/${groupId}`).pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(GroupSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', Effect.die),
+        Effect.catchTag('ProcuratNotFoundError', () => new GroupNotFound({ groupId })),
         Effect.catchTags({
-          ProcuratNotFoundError: (cause) => new GroupNotFoundError({ groupId, cause }),
-          ProcuratServerError: (cause) => new FindGroupError({ groupId, cause }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
@@ -59,8 +73,18 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
       options?: FindGroupMembersOptions;
     }) => Effect.Effect<
       ReadonlyArray<GroupMemberSchema>,
-      GroupNotFoundError | FindGroupMembersError | ProcuratCommonErrors
-    > = Effect.fn('group.findMembers')(function* ({ id, options = {} }) {
+      | GroupNotFound
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('group.findMembers')(function* ({
+      id,
+      options = {},
+    }: {
+      id: number;
+      options?: FindGroupMembersOptions;
+    }) {
       yield* Effect.annotateCurrentSpan({ id, options });
 
       const { status = 'ACTIVE', includeUdfs = false } = options;
@@ -72,11 +96,11 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
         }),
         http.execute,
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(GroupMemberSchema))),
-        removeUnrecoverableErrors,
+        Effect.catchTag('ProcuratNotFoundError', () => new GroupNotFound({ groupId: id })),
         Effect.catchTags({
-          ProcuratBadRequestError: Effect.die,
-          ProcuratNotFoundError: (cause) => new GroupNotFoundError({ groupId: id, cause }),
-          ProcuratServerError: (cause) => new FindGroupMembersError({ groupId: id, cause }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
@@ -86,8 +110,18 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
       options?: ListCustomFieldsOptions;
     }) => Effect.Effect<
       ReadonlyArray<GroupUdfSchema>,
-      GroupNotFoundError | ListCustomFieldsError | ProcuratCommonErrors
-    > = Effect.fn('group.listCustomFields')(function* ({ groupId, options = {} }) {
+      | GroupNotFound
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('group.listCustomFields')(function* ({
+      groupId,
+      options = {},
+    }: {
+      groupId: number;
+      options?: ListCustomFieldsOptions;
+    }) {
       yield* Effect.annotateCurrentSpan({ groupId, options });
 
       const { includeParentGroups = false } = options;
@@ -98,11 +132,11 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
         }),
         http.execute,
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(GroupUdfSchema))),
-        removeUnrecoverableErrors,
+        Effect.catchTag('ProcuratNotFoundError', () => new GroupNotFound({ groupId })),
         Effect.catchTags({
-          ProcuratBadRequestError: Effect.die,
-          ProcuratNotFoundError: (cause) => new GroupNotFoundError({ groupId, cause }),
-          ProcuratServerError: (cause) => new ListCustomFieldsError({ groupId, cause }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });

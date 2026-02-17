@@ -1,6 +1,6 @@
 # Effect-Procurat SDK
 
-An Effect-based SDK for the Procurat API (German school management system). This package provides a strongly-typed, Effect-based wrapper with comprehensive error handling and schema validation.
+An Effect-based SDK for the Procurat API (German school management system). This package provides a strongly-typed, Effect-based wrapper with simplified error handling and schema validation.
 
 ## Package Info
 
@@ -13,7 +13,7 @@ An Effect-based SDK for the Procurat API (German school management system). This
 ```typescript
 import { ProcuratClient } from "@triargos/effect-procurat"        // Main client
 import { PersonSchema, ... } from "@triargos/effect-procurat/schemas"  // All schemas
-import { PersonNotFoundError, ... } from "@triargos/effect-procurat/errors"  // All errors
+import { PersonNotFound, PersonValidationError, ... } from "@triargos/effect-procurat/errors"  // Domain errors
 ```
 
 ## File Structure
@@ -24,20 +24,115 @@ src/
 ├── client.ts                   # ProcuratClient service orchestrator
 ├── http-client.ts              # HTTP client wrapper with error handling
 ├── schemas.ts                  # Schema re-exports
-├── errors.ts                   # Error re-exports
+├── errors.ts                   # All errors (domain + base HTTP)
 │
 ├── modules/                    # API operation implementations
 │   └── procurat-{entity}.ts    # One file per entity
 │
-├── schema/                     # Data validation schemas
-│   └── {entity}-schema.ts      # One file per entity
-│
-├── error/                      # Domain-specific errors
-│   ├── procurat-errors.ts      # Base HTTP errors (400, 401, 404, 5xx)
-│   └── {entity}-errors.ts      # One file per entity
-│
-└── utils/
-    └── error-parsing.ts        # Error filtering utility
+└── schema/                     # Data validation schemas
+    └── {entity}-schema.ts      # One file per entity
+```
+
+## Error Handling Philosophy
+
+**Core principle:** Surface actionable errors in the error channel. Infrastructure errors (network, parsing, body serialization) are mapped to `UnknownProcuratError`. HTTP-level errors (401, 404, 5xx) from the Procurat API are surfaced as `Procurat*Error` types. Domain-specific errors (`*NotFound`, `*ValidationError`) are mapped from their HTTP counterparts via `catchTag`.
+
+### Error Types
+
+| Error Type | When | What consumer can do |
+|------------|------|---------------------|
+| `*NotFound` | Entity doesn't exist (mapped from 404) | Show 404, create it, use fallback |
+| `*ValidationError` | Bad input (mapped from 400) | Show error to user, fix input, retry |
+| `ProcuratUnauthorizedError` | 401 from API | Re-authenticate, show login |
+| `ProcuratServerError` | 5xx from API | Retry, show error |
+| `ProcuratNotFoundError` | 404 (unmapped, e.g. list ops) | Log, show error |
+| `ProcuratBadRequestError` | 400 (unmapped) | Log, show error |
+| `UnknownProcuratError` | Network/parse/serialization failure | Log, retry, show generic error |
+
+### Error Pattern
+
+```typescript
+// For findById - map 404 to domain error, infrastructure → UnknownProcuratError
+http.get(`/entities/${id}`).pipe(
+  Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema)),
+  Effect.catchTag('ProcuratNotFoundError', () => new EntityNotFound({ entityId: id })),
+  Effect.catchTags({
+    RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+    ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+    ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+  }),
+)
+
+// For create/update - map 400 to domain error, infrastructure → UnknownProcuratError
+HttpClientRequest.post('/entities').pipe(
+  HttpClientRequest.schemaBodyJson(CreateEntitySchema)(data),
+  Effect.flatMap(http.execute),
+  Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema)),
+  Effect.catchTag('ProcuratBadRequestError', (cause) =>
+    new EntityValidationError({ message: cause.message, code: cause.code, input }),
+  ),
+  Effect.catchTags({
+    RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+    ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+    ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+    HttpBodyError: (e) => new UnknownProcuratError({ message: String(e), cause: e }),
+  }),
+)
+
+// For list operations - infrastructure → UnknownProcuratError
+http.get('/entities').pipe(
+  Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(Schema))),
+  Effect.catchTags({
+    RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+    ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+    ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+  }),
+)
+```
+
+### Available Domain Errors
+
+**NotFound errors:**
+- `PersonNotFound` - `{ personId }`
+- `GroupNotFound` - `{ groupId }`
+- `AddressNotFound` - `{ addressId }`
+- `CountryNotFound` - `{ countryId }`
+- `CountyNotFound` - `{ countyId }`
+- `ReligionNotFound` - `{ religionId }`
+- `GroupMembershipNotFound` - `{ groupId, personId }`
+
+**Validation errors:**
+- `PersonValidationError` - `{ message, code, input }`
+- `AddressValidationError` - `{ message, code, input }`
+- `GroupMemberValidationError` - `{ message, code, groupId, memberId }`
+- `ContactInformationValidationError` - `{ message, code, input }`
+- `RelationshipValidationError` - `{ message, code, kind, personToAddId, basePersonId }`
+
+**Infrastructure error:**
+- `UnknownProcuratError` - `{ message, cause }` — wraps network errors, parse errors, body serialization errors
+
+### Consumer Example
+
+```typescript
+// findById returns: Effect<Person, PersonNotFound | ProcuratUnauthorizedError | ProcuratServerError | ProcuratBadRequestError | UnknownProcuratError>
+// create returns: Effect<Person, PersonValidationError | ProcuratNotFoundError | ProcuratUnauthorizedError | ProcuratServerError | UnknownProcuratError>
+
+const person = yield* client.person.findById({ id: 123 });
+
+program.pipe(
+  Effect.catchTag("PersonNotFound", (e) => {
+    console.log(`Person ${e.personId} not found`);
+    return Effect.succeed(null);
+  }),
+  Effect.catchTag("PersonValidationError", (e) => {
+    return Effect.fail(new UserFacingError(e.message));
+  }),
+  Effect.catchTag("UnknownProcuratError", (e) => {
+    console.error("Infrastructure error:", e.message, e.cause);
+    return Effect.fail(new UserFacingError("Something went wrong"));
+  }),
+  // ProcuratUnauthorizedError, ProcuratServerError etc. still in channel for app-level handling
+)
 ```
 
 ## How to Add a New Module
@@ -47,97 +142,59 @@ src/
 ```typescript
 import { Schema } from "effect"
 
-// Main entity schema (for API responses)
 export class EntitySchema extends Schema.Class<EntitySchema>("EntitySchema")({
   id: Schema.Number,
   name: Schema.String,
-  optionalField: Schema.NullOr(Schema.String),  // Use NullOr for nullable fields
-  createdAt: Schema.NullOr(Schema.DateFromString),
+  optionalField: Schema.NullOr(Schema.String),
 }) {}
 
-// Create schema (no id, minimal required fields)
 export class CreateEntitySchema extends Schema.Class<CreateEntitySchema>("CreateEntitySchema")({
   name: Schema.String,
 }) {}
 
-// Update schema (all optional except id)
 export class UpdateEntitySchema extends Schema.Class<UpdateEntitySchema>("UpdateEntitySchema")({
   id: Schema.Number,
   name: Schema.optional(Schema.String),
 }) {}
 ```
 
-### 2. Create the Errors (`src/error/{entity}-errors.ts`)
+### 2. Add Domain Errors to `src/errors.ts` (if needed)
 
 ```typescript
-import { Schema } from "effect"
-import {
-  ProcuratBadRequestError,
-  ProcuratNotFoundError,
-  ProcuratServerError,
-} from "./procurat-errors.js"
+// Only add if the entity has actionable errors
 
-// NotFound error (for findById)
-export class EntityNotFoundError extends Schema.TaggedError<EntityNotFoundError>()(
-  "EntityNotFoundError",
-  {
-    entityId: Schema.Number,
-    cause: ProcuratNotFoundError,
-  }
-) {}
+// For findById operations
+export class EntityNotFound extends Schema.TaggedError<EntityNotFound>()('EntityNotFound', {
+  entityId: Schema.Number,
+}) {}
 
-// Generic find error (server errors)
-export class FindEntityError extends Schema.TaggedError<FindEntityError>()(
-  "FindEntityError",
+// For create/update operations
+export class EntityValidationError extends Schema.TaggedError<EntityValidationError>()(
+  'EntityValidationError',
   {
-    entityId: Schema.Number,
-    cause: ProcuratServerError,
-  }
-) {}
-
-// List error
-export class ListEntitiesError extends Schema.TaggedError<ListEntitiesError>()(
-  "ListEntitiesError",
-  {
-    cause: ProcuratServerError,
-  }
-) {}
-
-// Create error (include data for retry/logging)
-export class CreateEntityError extends Schema.TaggedError<CreateEntityError>()(
-  "CreateEntityError",
-  {
-    cause: Schema.Union(ProcuratServerError, ProcuratBadRequestError),
-    data: CreateEntitySchema,
-  }
-) {}
-
-// Update error
-export class UpdateEntityError extends Schema.TaggedError<UpdateEntityError>()(
-  "UpdateEntityError",
-  {
-    entityId: Schema.Number,
-    cause: Schema.Union(ProcuratServerError, ProcuratBadRequestError),
-    data: UpdateEntitySchema,
-  }
+    message: Schema.String,
+    code: Schema.Number,
+    input: Schema.Unknown,
+  },
 ) {}
 ```
 
 ### 3. Create the Module (`src/modules/procurat-{entity}.ts`)
 
 ```typescript
-import { Effect } from "effect"
-import { ProcuratHttpClient, schemaBodyJson } from "../http-client.js"
-import { removeUnrecoverableErrors } from "../utils/error-parsing.js"
-import { EntitySchema, CreateEntitySchema, UpdateEntitySchema } from "../schema/entity-schema.js"
+import { Effect, Schema } from "effect"
+import { HttpClientRequest, HttpClientResponse } from "@effect/platform"
+import { ProcuratHttpClient } from "../http-client"
+import { EntitySchema, CreateEntitySchema } from "../schema/entity-schema"
 import {
-  EntityNotFoundError,
-  FindEntityError,
-  ListEntitiesError,
-  CreateEntityError,
-  UpdateEntityError,
-} from "../error/entity-errors.js"
-import type { ProcuratCommonErrors } from "../error/procurat-errors.js"
+  EntityNotFound,
+  EntityValidationError,
+  ProcuratBadRequestError,
+  ProcuratNotFoundError,
+  ProcuratServerError,
+  ProcuratUnauthorizedError,
+  UnknownProcuratError,
+} from "../errors"
 
 export class ProcuratEntity extends Effect.Service<ProcuratEntity>()(
   "ProcuratEntity",
@@ -145,76 +202,72 @@ export class ProcuratEntity extends Effect.Service<ProcuratEntity>()(
     effect: Effect.gen(function* () {
       const http = yield* ProcuratHttpClient
 
-      // List all entities
-      const findAll = Effect.fn("entity.findAll")(function* (): Effect.Effect<
+      const findAll: () => Effect.Effect<
         ReadonlyArray<EntitySchema>,
-        ListEntitiesError | ProcuratCommonErrors
-      > {
+        | ProcuratNotFoundError
+        | ProcuratUnauthorizedError
+        | ProcuratServerError
+        | ProcuratBadRequestError
+        | UnknownProcuratError
+      > = Effect.fn("entity.findAll")(function* () {
         return yield* http.get("/entities").pipe(
-          schemaBodyJson(Schema.Array(EntitySchema)),
-          removeUnrecoverableErrors,
-          Effect.catchTag("ProcuratServerError", (cause) =>
-            new ListEntitiesError({ cause })
-          ),
-        )
-      })
-
-      // Find by ID
-      const findById = Effect.fn("entity.findById")(function* (
-        entityId: number
-      ): Effect.Effect<
-        EntitySchema,
-        EntityNotFoundError | FindEntityError | ProcuratCommonErrors
-      > {
-        return yield* http.get(`/entities/${entityId}`).pipe(
-          schemaBodyJson(EntitySchema),
-          removeUnrecoverableErrors,
-          Effect.catchTag("ProcuratNotFoundError", (cause) =>
-            new EntityNotFoundError({ entityId, cause })
-          ),
-          Effect.catchTag("ProcuratServerError", (cause) =>
-            new FindEntityError({ entityId, cause })
-          ),
-        )
-      })
-
-      // Create
-      const create = Effect.fn("entity.create")(function* (
-        data: typeof CreateEntitySchema.Type
-      ): Effect.Effect<
-        EntitySchema,
-        CreateEntityError | ProcuratCommonErrors
-      > {
-        return yield* http.post("/entities", data).pipe(
-          schemaBodyJson(EntitySchema),
-          removeUnrecoverableErrors,
+          Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(EntitySchema))),
           Effect.catchTags({
-            ProcuratServerError: (cause) => new CreateEntityError({ cause, data }),
-            ProcuratBadRequestError: (cause) => new CreateEntityError({ cause, data }),
+            RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
           }),
         )
       })
 
-      // Update
-      const update = Effect.fn("entity.update")(function* (
-        data: typeof UpdateEntitySchema.Type
-      ): Effect.Effect<
-        SuccessResponseSchema,
-        UpdateEntityError | ProcuratCommonErrors
-      > {
-        return yield* http.put(`/entities/${data.id}`, data).pipe(
-          schemaBodyJson(SuccessResponseSchema),
-          removeUnrecoverableErrors,
+      const findById: (args: {
+        id: number;
+      }) => Effect.Effect<
+        EntitySchema,
+        | EntityNotFound
+        | ProcuratUnauthorizedError
+        | ProcuratServerError
+        | ProcuratBadRequestError
+        | UnknownProcuratError
+      > = Effect.fn("entity.findById")(function* ({ id }: { id: number }) {
+        return yield* http.get(`/entities/${id}`).pipe(
+          Effect.flatMap(HttpClientResponse.schemaBodyJson(EntitySchema)),
+          Effect.catchTag("ProcuratNotFoundError", () => new EntityNotFound({ entityId: id })),
           Effect.catchTags({
-            ProcuratServerError: (cause) =>
-              new UpdateEntityError({ entityId: data.id, cause, data }),
-            ProcuratBadRequestError: (cause) =>
-              new UpdateEntityError({ entityId: data.id, cause, data }),
+            RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
           }),
         )
       })
 
-      return { findAll, findById, create, update }
+      const create: (
+        data: CreateEntitySchema,
+      ) => Effect.Effect<
+        EntitySchema,
+        | EntityValidationError
+        | ProcuratNotFoundError
+        | ProcuratUnauthorizedError
+        | ProcuratServerError
+        | UnknownProcuratError
+      > = Effect.fn("entity.create")(function* (data: CreateEntitySchema) {
+        return yield* HttpClientRequest.post("/entities").pipe(
+          HttpClientRequest.schemaBodyJson(CreateEntitySchema)(data),
+          Effect.flatMap(http.execute),
+          Effect.flatMap(HttpClientResponse.schemaBodyJson(EntitySchema)),
+          Effect.catchTag("ProcuratBadRequestError", (cause) =>
+            new EntityValidationError({ message: cause.message, code: cause.code, input: data }),
+          ),
+          Effect.catchTags({
+            RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            HttpBodyError: (e) => new UnknownProcuratError({ message: String(e), cause: e }),
+          }),
+        )
+      })
+
+      return { findAll, findById, create }
     }),
   }
 ) {}
@@ -227,23 +280,19 @@ export class ProcuratEntity extends Effect.Service<ProcuratEntity>()(
    export * from "./schema/entity-schema.js"
    ```
 
-2. **Add error exports** to `src/errors.ts`:
-   ```typescript
-   export * from "./error/entity-errors.js"
-   ```
-
-3. **Add to ProcuratClient** in `src/client.ts`:
+2. **Add to ProcuratClient** in `src/client.ts`:
    ```typescript
    import { ProcuratEntity } from "./modules/procurat-entity.js"
 
-   // In the service definition
+   // In dependencies
+   ProcuratEntity.Default,
+
+   // In effect
    const entity = yield* ProcuratEntity
 
-   // In the return object
+   // In return
    return { ..., entity }
    ```
-
-4. **Update build config** if needed (tsup.config.ts entries)
 
 ## Conventions & Practices
 
@@ -253,12 +302,9 @@ export class ProcuratEntity extends Effect.Service<ProcuratEntity>()(
 |------|---------|---------|
 | Module file | `procurat-{entity}.ts` | `procurat-person.ts` |
 | Schema file | `{entity}-schema.ts` | `person-schema.ts` |
-| Error file | `{entity}-errors.ts` | `person-errors.ts` |
 | Schema class | `{Entity}Schema` | `PersonSchema` |
-| Create schema | `Create{Entity}Schema` | `CreatePersonSchema` |
-| Update schema | `Update{Entity}Schema` | `UpdatePersonSchema` |
-| NotFound error | `{Entity}NotFoundError` | `PersonNotFoundError` |
-| Operation error | `{Operation}{Entity}Error` | `CreatePersonError` |
+| NotFound error | `{Entity}NotFound` | `PersonNotFound` |
+| Validation error | `{Entity}ValidationError` | `PersonValidationError` |
 
 ### Function Naming for Tracing
 
@@ -267,34 +313,6 @@ Always use `Effect.fn()` with descriptive names:
 - `'entity.findById'`
 - `'entity.create'`
 - `'entity.update'`
-- `'group.findMembers'`
-
-### Error Handling Pipeline
-
-Every HTTP call should follow this pattern:
-
-```typescript
-http.get(path).pipe(
-  schemaBodyJson(Schema),        // 1. Parse response body
-  removeUnrecoverableErrors,     // 2. Die on ParseError/ResponseError
-  Effect.catchTag(...),          // 3. Map to domain errors
-)
-```
-
-### Type Annotations
-
-Add explicit return type annotations for complex functions:
-
-```typescript
-const findById = Effect.fn("entity.findById")(function* (
-  entityId: number
-): Effect.Effect<
-  EntitySchema,
-  EntityNotFoundError | FindEntityError | ProcuratCommonErrors
-> {
-  // ...
-})
-```
 
 ### Observability
 
@@ -309,7 +327,6 @@ yield* Effect.annotateCurrentSpan({ entityId, options })
 - Use `Schema.NullOr()` for nullable API fields
 - Use `Schema.DateFromString` for date parsing
 - Use `Schema.Literal()` for enums: `Schema.Literal('active', 'inactive')`
-- Share base fields with spreading: `...BaseSchema.fields`
 
 ## Scripts
 

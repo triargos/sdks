@@ -2,46 +2,84 @@ import { Effect, Schema } from 'effect';
 import { ProcuratHttpClient } from '../http-client';
 import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
 import { AddressSchema, CreateAddressSchema } from '../schema/address-schema';
-import { removeUnrecoverableErrors } from '../utils/error-parsing';
-import { AddressNotFoundError, CreateAddressError, FindAddressError, ListAddressesError } from '../error/address-errors';
+import {
+  AddressNotFound,
+  AddressValidationError,
+  ProcuratBadRequestError,
+  ProcuratNotFoundError,
+  ProcuratServerError,
+  ProcuratUnauthorizedError,
+  UnknownProcuratError,
+} from '../errors';
 
 export class ProcuratAddress extends Effect.Service<ProcuratAddress>()('ProcuratAddress', {
   effect: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
 
-    const findAll = Effect.fn('address.findAll')(function* () {
+    const findAll: () => Effect.Effect<
+      ReadonlyArray<AddressSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('address.findAll')(function* () {
       return yield* http.get('/addresses').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(AddressSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratNotFoundError', 'ProcuratBadRequestError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListAddressesError({ cause }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const findById = Effect.fn('address.findById')(function* ({ id }: { id: number }) {
+    const findById: (args: {
+      id: number;
+    }) => Effect.Effect<
+      AddressSchema,
+      | AddressNotFound
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('address.findById')(function* ({ id }: { id: number }) {
       return yield* http.get(`/addresses/${id}`).pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(AddressSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', Effect.die),
+        Effect.catchTag('ProcuratNotFoundError', () => new AddressNotFound({ addressId: id })),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new FindAddressError({ cause, addressId: id }),
-          ProcuratNotFoundError: (cause) => new AddressNotFoundError({ cause, addressId: id }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const create  = Effect.fn("address.create")(function* (address: CreateAddressSchema) {
-      return yield* HttpClientRequest.post("/addresses").pipe(
+    const create: (
+      address: CreateAddressSchema,
+    ) => Effect.Effect<
+      AddressSchema,
+      | AddressValidationError
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | UnknownProcuratError
+    > = Effect.fn('address.create')(function* (address: CreateAddressSchema) {
+      return yield* HttpClientRequest.post('/addresses').pipe(
         HttpClientRequest.schemaBodyJson(CreateAddressSchema)(address),
         Effect.flatMap(http.execute),
         Effect.flatMap(HttpClientResponse.schemaBodyJson(AddressSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTag("ProcuratNotFoundError", "HttpBodyError", Effect.die),
-        Effect.catchTag("ProcuratBadRequestError", "ProcuratServerError", (cause) => new CreateAddressError({cause, data: address}))
-      )
-    })
+        Effect.catchTag('ProcuratBadRequestError', (cause) =>
+          new AddressValidationError({ message: cause.message, code: cause.code, input: address }),
+        ),
+        Effect.catchTags({
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          HttpBodyError: (e) => new UnknownProcuratError({ message: String(e), cause: e }),
+        }),
+      );
+    });
 
     return { findAll, findById, create };
   }),

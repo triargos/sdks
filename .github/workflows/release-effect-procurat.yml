@@ -2,17 +2,17 @@ name: Release Effect Procurat
 
 on:
   push:
-    branches: [main]
+    branches: [main, next]
     paths:
       - 'packages/effect-procurat/**'
       - '.changeset/**'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 permissions:
-   id-token: write 
+   id-token: write
    contents: read
-   
-   
+
+
 jobs:
   release:
     name: Release
@@ -43,13 +43,20 @@ jobs:
       - name: Build effect-procurat
         run: pnpm --filter @triargos/effect-procurat build
 
+      - name: Enter prerelease mode (next branch only)
+        if: github.ref == 'refs/heads/next'
+        run: |
+          if [ ! -f .changeset/pre.json ]; then
+            npx changeset pre enter beta
+          fi
+
       - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@v1
         with:
           publish: pnpm release
-          title: 'chore(effect-procurat): version packages'
-          commit: 'chore(effect-procurat): version packages'
+          title: ${{ github.ref == 'refs/heads/next' && 'chore(effect-procurat): version packages (beta)' || 'chore(effect-procurat): version packages' }}
+          commit: ${{ github.ref == 'refs/heads/next' && 'chore(effect-procurat): version packages (beta)' || 'chore(effect-procurat): version packages' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

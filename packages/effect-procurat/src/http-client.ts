@@ -6,7 +6,7 @@ import {
   ProcuratNotFoundError,
   ProcuratServerError,
   ProcuratUnauthorizedError,
-} from './error/procurat-errors';
+} from './errors';
 
 export class ProcuratHttpClient extends Effect.Service<ProcuratHttpClient>()('ProcuratHttpClient', {
   effect: Effect.fnUntraced(function* ({ baseUrl, apiKey }: { baseUrl: string; apiKey: string }) {

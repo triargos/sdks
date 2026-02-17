@@ -10,328 +10,536 @@ import {
   MunicipalitySchema,
   SchoolSchema,
 } from '../schema/lookup-table-schema';
-import { removeUnrecoverableErrors } from '../utils/error-parsing';
-import { ListLookupsError } from '../error/lookup-table-errors';
+import {
+  ProcuratBadRequestError,
+  ProcuratNotFoundError,
+  ProcuratServerError,
+  ProcuratUnauthorizedError,
+  UnknownProcuratError,
+} from '../errors';
 
 export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('ProcuratLookupTable', {
   effect: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
 
-    const listTransitions = Effect.fn('lookupTable.listTransitions')(function* () {
+    const listTransitions: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listTransitions')(function* () {
       return yield* http.get('/lookups/transition').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'transitions' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listSpecialSupportTypes = Effect.fn('lookupTable.listSpecialSupportTypes')(function* () {
+    const listSpecialSupportTypes: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listSpecialSupportTypes')(function* () {
       return yield* http.get('/lookups/special-support').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'special-support-types' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listSchools = Effect.fn('lookupTable.listSchools')(function* () {
+    const listSchools: () => Effect.Effect<
+      ReadonlyArray<SchoolSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listSchools')(function* () {
       return yield* http.get('/lookups/school').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(SchoolSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'schools' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listSchoolTypes = Effect.fn('lookupTable.listSchoolTypes')(function* () {
+    const listSchoolTypes: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listSchoolTypes')(function* () {
       return yield* http.get('/lookups/school-type').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'school-types' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listSchoolGraduations = Effect.fn('lookupTable.listSchoolGraduations')(function* () {
+    const listSchoolGraduations: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listSchoolGraduations')(function* () {
       return yield* http.get('/lookups/school-graduation').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'school-graduations' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listRepetitionReasons = Effect.fn('lookupTable.listRepetitionReasons')(function* () {
+    const listRepetitionReasons: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listRepetitionReasons')(function* () {
       return yield* http.get('/lookups/repetition-reason').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'repetition-reasons' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listRelocationsReasons = Effect.fn('lookupTable.listRelocationsReasons')(function* () {
+    const listRelocationsReasons: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listRelocationsReasons')(function* () {
       return yield* http.get('/lookups/relocation').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'relocation-reasons' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listReligiousEducations = Effect.fn('lookupTable.listReligiousEducations')(function* () {
+    const listReligiousEducations: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listReligiousEducations')(function* () {
       return yield* http.get('/lookups/religious-education').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'religious-educations' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listReligions = Effect.fn('lookupTable.listReligions')(function* () {
+    const listReligions: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listReligions')(function* () {
       return yield* http.get('/lookups/religion').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'religions' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listPreviousSchools = Effect.fn('lookupTable.listPreviousSchools')(function* () {
+    const listPreviousSchools: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listPreviousSchools')(function* () {
       return yield* http.get('/lookups/previous-school').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'previous-schools' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listPersonTypes = Effect.fn('lookupTable.listPersonTypes')(function* () {
+    const listPersonTypes: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listPersonTypes')(function* () {
       return yield* http.get('/lookups/person-type').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'person-types' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listOriginGradeLevels = Effect.fn('lookupTable.listOriginGradeLevels')(function* () {
+    const listOriginGradeLevels: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listOriginGradeLevels')(function* () {
       return yield* http.get('/lookups/origin-grade-level').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'origin-grade-levels' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listMunicipalities = Effect.fn('lookupTable.listMunicipalities')(function* () {
+    const listMunicipalities: () => Effect.Effect<
+      ReadonlyArray<MunicipalitySchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listMunicipalities')(function* () {
       return yield* http.get('/lookups/municipality').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(MunicipalitySchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'municipalities' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listMunicipalityCodes = Effect.fn('lookupTable.listMunicipalityCodes')(function* () {
+    const listMunicipalityCodes: () => Effect.Effect<
+      ReadonlyArray<MunicipalityCodeSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listMunicipalityCodes')(function* () {
       return yield* http.get('/lookups/municipality-code').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(MunicipalityCodeSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'municipality-codes' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listGuestStudentTypes = Effect.fn('lookupTable.listGuestStudentTypes')(function* () {
+    const listGuestStudentTypes: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listGuestStudentTypes')(function* () {
       return yield* http.get('/lookups/guest-student-type').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'guest-student-types' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listGradeLevels = Effect.fn('lookupTable.listGradeLevels')(function* () {
+    const listGradeLevels: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listGradeLevels')(function* () {
       return yield* http.get('/lookups/grade-level').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'grade-levels' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listForeignLanguages = Effect.fn('lookupTable.listForeignLanguages')(function* () {
+    const listForeignLanguages: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listForeignLanguages')(function* () {
       return yield* http.get('/lookups/foreign-language').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'foreign-languages' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listExitReasons = Effect.fn('lookupTable.listExitReasons')(function* () {
+    const listExitReasons: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listExitReasons')(function* () {
       return yield* http.get('/lookups/exit-reason').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'exit-reasons' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listEnrollmentTypes = Effect.fn('lookupTable.listEnrollmentTypes')(function* () {
+    const listEnrollmentTypes: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listEnrollmentTypes')(function* () {
       return yield* http.get('/lookups/enrollment-type').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'enrollment-types' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listDisordersAndWeaknesses = Effect.fn('lookupTable.listDisordersAndWeaknesses')(function* () {
+    const listDisordersAndWeaknesses: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listDisordersAndWeaknesses')(function* () {
       return yield* http.get('/lookups/disorder-weakness').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'disorders-and-weaknesses' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listDepartureReasons = Effect.fn('lookupTable.listDepartureReasons')(function* () {
+    const listDepartureReasons: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listDepartureReasons')(function* () {
       return yield* http.get('/lookups/departure-reason').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'departure-reasons' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listCostBearers = Effect.fn('lookupTable.listCostBearers')(function* () {
+    const listCostBearers: () => Effect.Effect<
+      ReadonlyArray<CostBearerSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listCostBearers')(function* () {
       return yield* http.get('/lookups/cost-bearer').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(CostBearerSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'cost-bearers' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listCompulsoryEducations = Effect.fn('lookupTable.listCompulsoryEducations')(function* () {
+    const listCompulsoryEducations: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listCompulsoryEducations')(function* () {
       return yield* http.get('/lookups/compulsory-education').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'compulsory-educations' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listCommonLanguages = Effect.fn('lookupTable.listCommonLanguages')(function* () {
+    const listCommonLanguages: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listCommonLanguages')(function* () {
       return yield* http.get('/lookups/common-language').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'common-languages' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listClassGoals = Effect.fn('lookupTable.listClassGoals')(function* () {
+    const listClassGoals: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listClassGoals')(function* () {
       return yield* http.get('/lookups/class-goal').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'class-goals' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listCarePrograms = Effect.fn('lookupTable.listCarePrograms')(function* () {
+    const listCarePrograms: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listCarePrograms')(function* () {
       return yield* http.get('/lookups/care').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'care-programs' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listCareTypes = Effect.fn('lookupTable.listCareTypes')(function* () {
+    const listCareTypes: () => Effect.Effect<
+      ReadonlyArray<CareTypeSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listCareTypes')(function* () {
       return yield* http.get('/lookups/care-type').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(CareTypeSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'care-types' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listBavarianSchools = Effect.fn('lookupTable.listBavarianSchools')(function* () {
+    const listBavarianSchools: () => Effect.Effect<
+      ReadonlyArray<BavarianSchoolSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listBavarianSchools')(function* () {
       return yield* http.get('/lookups/bavarian-schools').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(BavarianSchoolSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'bavarian-schools' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });
 
-    const listAdmissionAuthorizations = Effect.fn('lookupTable.listAdmissionAuthorizations')(function* () {
+    const listAdmissionAuthorizations: () => Effect.Effect<
+      ReadonlyArray<LookupTableSchema>,
+      | ProcuratNotFoundError
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('lookupTable.listAdmissionAuthorizations')(function* () {
       return yield* http.get('/lookups/admission-authorization').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
         Effect.catchTags({
-          ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'admission-authorizations' }),
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
         }),
       );
     });

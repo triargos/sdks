@@ -2,12 +2,15 @@ import { Effect, Schema } from 'effect';
 import { ProcuratHttpClient } from '../http-client';
 import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
 import { ContactInformationSchema, CreateContactInformationSchema } from '../schema/contact-information-schema';
-import { removeUnrecoverableErrors } from '../utils/error-parsing';
 import {
-  CreateContactInformationError,
-  FindContactInformationByPersonError,
-} from '../error/contact-information-errors';
-import { PersonNotFoundError, ProcuratCommonErrors } from '../errors';
+  ContactInformationValidationError,
+  PersonNotFound,
+  ProcuratBadRequestError,
+  ProcuratNotFoundError,
+  ProcuratServerError,
+  ProcuratUnauthorizedError,
+  UnknownProcuratError,
+} from '../errors';
 
 export class ProcuratContactInformation extends Effect.Service<ProcuratContactInformation>()(
   'ProcuratContactInformation',
@@ -19,7 +22,11 @@ export class ProcuratContactInformation extends Effect.Service<ProcuratContactIn
         contactInformation: CreateContactInformationSchema,
       ) => Effect.Effect<
         ContactInformationSchema,
-        CreateContactInformationError | ProcuratCommonErrors
+        | ContactInformationValidationError
+        | ProcuratNotFoundError
+        | ProcuratUnauthorizedError
+        | ProcuratServerError
+        | UnknownProcuratError
       > = Effect.fn('contactInformation.create')(function* (
         contactInformation: CreateContactInformationSchema,
       ) {
@@ -27,13 +34,19 @@ export class ProcuratContactInformation extends Effect.Service<ProcuratContactIn
           HttpClientRequest.schemaBodyJson(CreateContactInformationSchema)(contactInformation),
           Effect.flatMap(http.execute),
           Effect.flatMap(HttpClientResponse.schemaBodyJson(ContactInformationSchema)),
-          removeUnrecoverableErrors,
-          Effect.catchTag('HttpBodyError', 'ProcuratNotFoundError', Effect.die),
-          Effect.catchTag(
-            'ProcuratBadRequestError',
-            'ProcuratServerError',
-            (cause) => new CreateContactInformationError({ cause, data: contactInformation }),
+          Effect.catchTag('ProcuratBadRequestError', (cause) =>
+            new ContactInformationValidationError({
+              message: cause.message,
+              code: cause.code,
+              input: contactInformation,
+            }),
           ),
+          Effect.catchTags({
+            RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            HttpBodyError: (e) => new UnknownProcuratError({ message: String(e), cause: e }),
+          }),
         );
       });
 
@@ -41,16 +54,24 @@ export class ProcuratContactInformation extends Effect.Service<ProcuratContactIn
         personId: number;
       }) => Effect.Effect<
         ReadonlyArray<ContactInformationSchema>,
-        PersonNotFoundError | FindContactInformationByPersonError | ProcuratCommonErrors
-      > = Effect.fn('contactInformation.findByPerson')(function* ({ personId }) {
+        | PersonNotFound
+        | ProcuratUnauthorizedError
+        | ProcuratServerError
+        | ProcuratBadRequestError
+        | UnknownProcuratError
+      > = Effect.fn('contactInformation.findByPerson')(function* ({
+        personId,
+      }: {
+        personId: number;
+      }) {
         return yield* HttpClientRequest.get(`/contactinformation/person/${personId}`).pipe(
           http.execute,
           Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(ContactInformationSchema))),
-          removeUnrecoverableErrors,
+          Effect.catchTag('ProcuratNotFoundError', () => new PersonNotFound({ personId })),
           Effect.catchTags({
-            ProcuratBadRequestError: Effect.die,
-            ProcuratServerError: (cause) => new FindContactInformationByPersonError({ personId, cause }),
-            ProcuratNotFoundError: (cause) => new PersonNotFoundError({ personId, cause }),
+            RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
           }),
         );
       });

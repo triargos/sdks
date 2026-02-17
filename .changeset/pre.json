@@ -1,0 +1,12 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "@triargos/dashboard-node": "4.2.0",
+    "@triargos/effect-procurat": "0.4.3",
+    "@triargos/procurat-node": "0.0.0-semantic-release"
+  },
+  "changesets": [
+    "consolidate-errors"
+  ]
+}

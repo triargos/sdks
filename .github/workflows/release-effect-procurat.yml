@@ -6,6 +6,7 @@ on:
     paths:
       - 'packages/effect-procurat/**'
       - '.changeset/**'
+      - '.github/workflows/release-effect-procurat.yml'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 permissions:

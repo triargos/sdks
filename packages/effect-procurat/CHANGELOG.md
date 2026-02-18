@@ -1,5 +1,18 @@
 # @triargos/effect-procurat
 
+## 0.5.0-beta.2
+
+### Minor Changes
+
+- 3150a2e: feat(group): add findSupervisors method
+  - Add RoleSchema and GroupSupervisorSchema for the /groups/{id}/supervisors endpoint
+  - Add findSupervisors method to ProcuratGroup module
+  - Export new schemas from schemas entrypoint
+
+### Patch Changes
+
+- 9cc52ad: add group supervisors endpoint
+
 ## 0.5.0-beta.1
 
 ### Minor Changes

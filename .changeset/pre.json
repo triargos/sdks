@@ -8,6 +8,8 @@
   },
   "changesets": [
     "add-contact-information-findall",
-    "consolidate-errors"
+    "add-group-find-supervisors",
+    "consolidate-errors",
+    "ten-falcons-judge"
   ]
 }

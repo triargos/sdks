@@ -11,6 +11,7 @@ import {
 import { ProcuratHttpClient } from '../http-client';
 import { GroupMemberSchema } from '../schema/group-member-schema';
 import { GroupSchema } from '../schema/group-schema';
+import { GroupSupervisorSchema } from '../schema/group-supervisor-schema';
 import { GroupUdfSchema } from '../schema/group-udf-schema';
 
 type GroupMemberStatus = 'ACTIVE' | 'INACTIVE' | 'ALL';
@@ -141,6 +142,28 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
       );
     });
 
-    return { findAll, findById, findMembers, listCustomFields };
+    const findSupervisors: (params: {
+      groupId: number;
+    }) => Effect.Effect<
+      ReadonlyArray<GroupSupervisorSchema>,
+      | GroupNotFound
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('group.findSupervisors')(function* ({ groupId }: { groupId: number }) {
+      yield* Effect.annotateCurrentSpan({ groupId });
+      return yield* http.get(`/groups/${groupId}/supervisors`).pipe(
+        Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(GroupSupervisorSchema))),
+        Effect.catchTag('ProcuratNotFoundError', () => new GroupNotFound({ groupId })),
+        Effect.catchTags({
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+        }),
+      );
+    });
+
+    return { findAll, findById, findMembers, findSupervisors, listCustomFields };
   }),
 }) {}

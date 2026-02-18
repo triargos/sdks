@@ -24,3 +24,5 @@ export * from './schema/county-schema';
 export * from './schema/communication-schema';
 //File schema
 export * from './schema/file-schema';
+//Group Supervisor schema
+export * from './schema/group-supervisor-schema';

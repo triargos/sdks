@@ -2,6 +2,7 @@ import { Effect, Schema } from 'effect';
 import { ProcuratHttpClient } from '../http-client';
 import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
 import { CreatePersonSchema, PersonSchema, SuccessResponseSchema, UpdatePersonSchema } from '../schema/person-schema';
+import { GroupSupervisorSchema } from '../schema/group-supervisor-schema';
 import {
   PersonNotFound,
   PersonValidationError,
@@ -128,6 +129,27 @@ export class ProcuratPerson extends Effect.Service<ProcuratPerson>()('ProcuratPe
       );
     });
 
-    return { findAll, findById, findByFamilyId, create, update };
+    const findRolesInGroups: (args: {
+      id: number;
+    }) => Effect.Effect<
+      ReadonlyArray<GroupSupervisorSchema>,
+      | PersonNotFound
+      | ProcuratUnauthorizedError
+      | ProcuratServerError
+      | ProcuratBadRequestError
+      | UnknownProcuratError
+    > = Effect.fn('person.findRolesInGroups')(function* ({ id }: { id: number }) {
+      return yield* http.get(`/persons/${id}/roles`).pipe(
+        Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(GroupSupervisorSchema))),
+        Effect.catchTag('ProcuratNotFoundError', () => new PersonNotFound({ personId: id })),
+        Effect.catchTags({
+          RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+        }),
+      );
+    });
+
+    return { findAll, findById, findByFamilyId, findRolesInGroups, create, update };
   }),
 }) {}

@@ -1,5 +1,13 @@
 # @triargos/effect-procurat
 
+## 0.5.0-beta.3
+
+### Minor Changes
+
+- db19ab4: feat(person): add findRolesInGroups method
+  - Add `findRolesInGroups` to `ProcuratPerson` for `GET /persons/{id}/roles`
+  - Returns `ReadonlyArray<GroupSupervisorSchema>` with person's roles across groups
+
 ## 0.5.0-beta.2
 
 ### Minor Changes

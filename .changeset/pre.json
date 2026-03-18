@@ -9,6 +9,7 @@
   "changesets": [
     "add-address-find-residents",
     "add-contact-information-find-by-address",
+    "add-contact-information-find-by-id",
     "add-contact-information-findall",
     "add-group-find-supervisors",
     "add-person-find-roles",

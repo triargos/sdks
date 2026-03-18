@@ -7,6 +7,8 @@
     "@triargos/procurat-node": "0.0.0-semantic-release"
   },
   "changesets": [
+    "add-address-find-residents",
+    "add-contact-information-find-by-address",
     "add-contact-information-findall",
     "add-group-find-supervisors",
     "add-person-find-roles",

@@ -1,5 +1,19 @@
 # @triargos/effect-procurat
 
+## 0.5.0-beta.4
+
+### Minor Changes
+
+- afc095b: feat(address): add findResidents method
+  - Add `findResidents` to `ProcuratAddress` module
+  - Calls `GET /addresses/{addressId}/residents` returning `PersonSchema[]`
+  - Maps 404 to `AddressNotFound` error
+
+- 3077c95: feat(contact-information): add findByAddress method
+  - Add `findByAddress` method to `ProcuratContactInformation` service
+  - Query contact information by address ID via `GET /contactinformation/address/{addressId}`
+  - Map `ProcuratNotFoundError` to `AddressNotFound` domain error
+
 ## 0.5.0-beta.3
 
 ### Minor Changes

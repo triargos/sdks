@@ -39,7 +39,6 @@ Endpoints available in `procurat-node` that are **not yet implemented** in `effe
 | `GET /contactinformation/{id}` | `findById` | Get contact info by ID |
 | `PUT /contactinformation/{id}` | `update` | Update contact information |
 | `DELETE /contactinformation/{id}` | `delete` | Delete contact information |
-| `GET /contactinformation/address/{addressId}` | `findByAddress` | Get contact info for an address |
 
 ## Communication
 

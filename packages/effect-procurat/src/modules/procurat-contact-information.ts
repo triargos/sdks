@@ -3,6 +3,7 @@ import { ProcuratHttpClient } from '../http-client';
 import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
 import { ContactInformationSchema, CreateContactInformationSchema } from '../schema/contact-information-schema';
 import {
+  AddressNotFound,
   ContactInformationValidationError,
   PersonNotFound,
   ProcuratBadRequestError,
@@ -94,7 +95,33 @@ export class ProcuratContactInformation extends Effect.Service<ProcuratContactIn
         );
       });
 
-      return { findAll, create, findByPerson };
+      const findByAddress: (args: {
+        addressId: number;
+      }) => Effect.Effect<
+        ReadonlyArray<ContactInformationSchema>,
+        | AddressNotFound
+        | ProcuratUnauthorizedError
+        | ProcuratServerError
+        | ProcuratBadRequestError
+        | UnknownProcuratError
+      > = Effect.fn('contactInformation.findByAddress')(function* ({
+        addressId,
+      }: {
+        addressId: number;
+      }) {
+        return yield* HttpClientRequest.get(`/contactinformation/address/${addressId}`).pipe(
+          http.execute,
+          Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(ContactInformationSchema))),
+          Effect.catchTag('ProcuratNotFoundError', () => new AddressNotFound({ addressId })),
+          Effect.catchTags({
+            RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          }),
+        );
+      });
+
+      return { findAll, create, findByPerson, findByAddress };
     }),
   },
 ) {}

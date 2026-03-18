@@ -1,5 +1,14 @@
 # @triargos/effect-procurat
 
+## 0.5.0-beta.5
+
+### Minor Changes
+
+- e44193d: feat(contact-information): add findById method
+  - Add `findById` method to `ProcuratContactInformation` service
+  - Query a single contact information record via `GET /contactinformation/{contactInformationId}`
+  - Add `ContactInformationNotFound` domain error, mapped from `ProcuratNotFoundError`
+
 ## 0.5.0-beta.4
 
 ### Minor Changes

@@ -4,6 +4,7 @@ import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
 import { ContactInformationSchema, CreateContactInformationSchema } from '../schema/contact-information-schema';
 import {
   AddressNotFound,
+  ContactInformationNotFound,
   ContactInformationValidationError,
   PersonNotFound,
   ProcuratBadRequestError,
@@ -29,6 +30,31 @@ export class ProcuratContactInformation extends Effect.Service<ProcuratContactIn
       > = Effect.fn('contactInformation.findAll')(function* () {
         return yield* http.get('/contactinformation/person').pipe(
           Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(ContactInformationSchema))),
+          Effect.catchTags({
+            RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+            ParseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
+          }),
+        );
+      });
+
+      const findById: (args: {
+        contactInformationId: number;
+      }) => Effect.Effect<
+        ContactInformationSchema,
+        | ContactInformationNotFound
+        | ProcuratUnauthorizedError
+        | ProcuratServerError
+        | ProcuratBadRequestError
+        | UnknownProcuratError
+      > = Effect.fn('contactInformation.findById')(function* ({
+        contactInformationId,
+      }: {
+        contactInformationId: number;
+      }) {
+        return yield* http.get(`/contactinformation/${contactInformationId}`).pipe(
+          Effect.flatMap(HttpClientResponse.schemaBodyJson(ContactInformationSchema)),
+          Effect.catchTag('ProcuratNotFoundError', () => new ContactInformationNotFound({ contactInformationId })),
           Effect.catchTags({
             RequestError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
             ResponseError: (e) => new UnknownProcuratError({ message: e.message, cause: e }),
@@ -121,7 +147,7 @@ export class ProcuratContactInformation extends Effect.Service<ProcuratContactIn
         );
       });
 
-      return { findAll, create, findByPerson, findByAddress };
+      return { findAll, findById, create, findByPerson, findByAddress };
     }),
   },
 ) {}

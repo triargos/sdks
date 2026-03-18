@@ -38,6 +38,13 @@ export class GroupMembershipNotFound extends Schema.TaggedError<GroupMembershipN
   },
 ) {}
 
+export class ContactInformationNotFound extends Schema.TaggedError<ContactInformationNotFound>()(
+  'ContactInformationNotFound',
+  {
+    contactInformationId: Schema.Number,
+  },
+) {}
+
 // --- ValidationError errors (one per entity with create/update) ---
 
 export class PersonValidationError extends Schema.TaggedError<PersonValidationError>()(

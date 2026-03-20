@@ -8,6 +8,7 @@
   },
   "changesets": [
     "add-address-find-residents",
+    "add-communication-mapping-crud",
     "add-contact-information-find-by-address",
     "add-contact-information-find-by-id",
     "add-contact-information-findall",

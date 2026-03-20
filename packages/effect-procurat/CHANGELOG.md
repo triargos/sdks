@@ -1,5 +1,14 @@
 # @triargos/effect-procurat
 
+## 0.5.0-beta.6
+
+### Minor Changes
+
+- dc47904: feat(communication): add contact information mapping CRUD methods
+  - Add findContactInformationMappings, createContactInformationMapping, and deleteContactInformationMapping for managing contact info mappings per person
+  - Add findContactPersonMappings and deleteContactPerson for managing contact person mappings
+  - Add ContactInformationMappingSchema and ContactInformationMappingCreationSchema
+
 ## 0.5.0-beta.5
 
 ### Minor Changes

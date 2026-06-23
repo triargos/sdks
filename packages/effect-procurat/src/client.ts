@@ -12,6 +12,7 @@ import { ProcuratReligion } from './modules/procurat-religion';
 import { ProcuratLookupTable } from './modules/procurat-lookup-table';
 import { ProcuratCommunication } from './modules/procurat-communication';
 import { ProcuratFile } from './modules/procurat-file';
+import { ProcuratAbsence } from './modules/procurat-absence';
 
 export class ProcuratClient extends Effect.Service<ProcuratClient>()('ProcuratClient', {
   dependencies: [
@@ -27,6 +28,7 @@ export class ProcuratClient extends Effect.Service<ProcuratClient>()('ProcuratCl
     ProcuratLookupTable.Default,
     ProcuratCommunication.Default,
     ProcuratFile.Default,
+    ProcuratAbsence.Default,
   ],
   effect: Effect.gen(function* () {
     const person = yield* ProcuratPerson;
@@ -41,8 +43,9 @@ export class ProcuratClient extends Effect.Service<ProcuratClient>()('ProcuratCl
     const lookupTable = yield* ProcuratLookupTable;
     const communication = yield* ProcuratCommunication;
     const file = yield* ProcuratFile;
+    const absence = yield* ProcuratAbsence;
 
-    return { person, address, groupMember, contactInformation, relationship, group, country, county, religion, lookupTable, communication, file };
+    return { person, address, groupMember, contactInformation, relationship, group, country, county, religion, lookupTable, communication, file, absence };
   }),
 }) {
   static layer({ apiKey, baseUrl }: { apiKey: string; baseUrl: string }) {

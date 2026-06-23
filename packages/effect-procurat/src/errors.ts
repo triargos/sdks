@@ -45,6 +45,10 @@ export class ContactInformationNotFound extends Schema.TaggedError<ContactInform
   },
 ) {}
 
+export class AbsenceNotFound extends Schema.TaggedError<AbsenceNotFound>()('AbsenceNotFound', {
+  absenceId: Schema.Number,
+}) {}
+
 // --- ValidationError errors (one per entity with create/update) ---
 
 export class PersonValidationError extends Schema.TaggedError<PersonValidationError>()(
@@ -92,6 +96,15 @@ export class RelationshipValidationError extends Schema.TaggedError<Relationship
     kind: Schema.Literal('addChildToParent', 'addParentToChild'),
     personToAddId: Schema.Number,
     basePersonId: Schema.Number,
+  },
+) {}
+
+export class AbsenceValidationError extends Schema.TaggedError<AbsenceValidationError>()(
+  'AbsenceValidationError',
+  {
+    message: Schema.String,
+    code: Schema.Number,
+    input: Schema.Unknown,
   },
 ) {}
 

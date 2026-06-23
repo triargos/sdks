@@ -26,3 +26,5 @@ export * from './schema/communication-schema';
 export * from './schema/file-schema';
 //Group Supervisor schema
 export * from './schema/group-supervisor-schema';
+//Absence schema
+export * from './schema/absence-schema';

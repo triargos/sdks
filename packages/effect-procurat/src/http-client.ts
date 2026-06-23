@@ -24,16 +24,13 @@ export class ProcuratHttpClient extends Effect.Service<ProcuratHttpClient>()('Pr
           const status = error.response.status;
           const endpoint = error.request.url;
 
-          const json = yield* error.response.json.pipe(
+          const errorDetails = yield* error.response.json.pipe(
             Effect.flatMap(Schema.decodeUnknown(ProcuratErrorSchema)),
-            Effect.orDie,
+            Effect.map((json) => ({ message: json.error, code: json.code, endpoint, status })),
+            Effect.orElse(() =>
+              Effect.succeed({ message: `HTTP ${status}`, code: status, endpoint, status }),
+            ),
           );
-          const errorDetails = {
-            message: json.error,
-            code: json.code,
-            endpoint,
-            status,
-          };
           switch (status) {
             case 400: {
               return yield* new ProcuratBadRequestError(errorDetails);

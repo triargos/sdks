@@ -7,6 +7,7 @@
     "@triargos/procurat-node": "0.0.0-semantic-release"
   },
   "changesets": [
+    "add-absence-crud",
     "add-address-find-residents",
     "add-communication-mapping-crud",
     "add-contact-information-find-by-address",
@@ -15,6 +16,7 @@
     "add-group-find-supervisors",
     "add-person-find-roles",
     "consolidate-errors",
+    "restructure-per-domain",
     "ten-falcons-judge"
   ]
 }

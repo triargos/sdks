@@ -1,5 +1,32 @@
 # @triargos/effect-procurat
 
+## 0.5.0-beta.7
+
+### Minor Changes
+
+- 94cec6e: feat(absence): add absence CRUD methods
+  - Add `ProcuratAbsence` module with `findAll`, `findById`, `findByPerson`, `findByGroup`, `create`, `update`, and `delete`
+  - Add `AbsenceSchema`, `CreateAbsenceSchema`, `UpdateAbsenceSchema`, and `AbsenceQueryTypeSchema`
+  - Support the `type` query filter (`all`, `today`, `schoolyear`) on list operations
+  - Add `AbsenceNotFound` and `AbsenceValidationError` domain errors
+  - Map 404 to `AbsenceNotFound` / `PersonNotFound` / `GroupNotFound` and 400 to `AbsenceValidationError`
+  - Wire `absence` into `ProcuratClient`
+
+- 7f399af: refactor: restructure into per-domain modules, collapse error model, migrate to Context.Tag
+
+  **BREAKING (error surface):** the four per-status transport errors `ProcuratNotFoundError`,
+  `ProcuratUnauthorizedError`, `ProcuratServerError`, and `ProcuratBadRequestError` are removed and
+  replaced by a single `ProcuratError { status, code, message, endpoint }`. Discriminate on `status`
+  instead of catching four separate tags. `UnknownProcuratError` and all domain errors
+  (`*NotFound` / `*ValidationError`) are unchanged.
+  - Every method's error channel now reads `... | ProcuratError | UnknownProcuratError` instead of the
+    four transport tags. GET/list operations no longer leak `ProcuratBadRequestError`.
+  - Source is reorganized by domain: `src/domains/<entity>/{<entity>-schema, <entity>-errors, procurat-<entity>}.ts`,
+    with cross-cutting infrastructure in `src/shared/{errors,http-client}.ts`. The `./schemas` and `./errors`
+    package entrypoints are unchanged (barrels re-export from the new locations).
+  - All services migrated from `Effect.Service` to `Context.Tag` with a `static layer`.
+  - No change to method names, signatures, URLs, or runtime behavior.
+
 ## 0.5.0-beta.6
 
 ### Minor Changes

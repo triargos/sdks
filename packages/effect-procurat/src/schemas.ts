@@ -1,30 +1,15 @@
-//Address schema
-export * from './schema/address-schema';
-//Contact Information schema
-export * from './schema/contact-information-schema';
-//Group Member schema
-export * from './schema/group-member-schema';
-//Group UDF schema
-export * from './schema/group-udf-schema';
-//Lookup Table schema
-export * from './schema/lookup-table-schema';
-//Person schema
-export * from './schema/person-schema';
-//Relationship schema
-export * from './schema/group-schema';
-//Group schema
-export * from './schema/relationship-schema';
-//Religion schema
-export * from './schema/religion-schema';
-//Country schema
-export * from './schema/country-schema';
-//County schema
-export * from './schema/county-schema';
-//Communication schema
-export * from './schema/communication-schema';
-//File schema
-export * from './schema/file-schema';
-//Group Supervisor schema
-export * from './schema/group-supervisor-schema';
-//Absence schema
-export * from './schema/absence-schema';
+export * from './domains/absence/absence-schema';
+export * from './domains/address/address-schema';
+export * from './domains/communication/communication-schema';
+export * from './domains/contact-information/contact-information-schema';
+export * from './domains/country/country-schema';
+export * from './domains/county/county-schema';
+export * from './domains/file/file-schema';
+export * from './domains/group-member/group-member-schema';
+export * from './domains/group/group-schema';
+export * from './domains/group/group-supervisor-schema';
+export * from './domains/group/group-udf-schema';
+export * from './domains/lookup-table/lookup-table-schema';
+export * from './domains/person/person-schema';
+export * from './domains/relationship/relationship-schema';
+export * from './domains/religion/religion-schema';

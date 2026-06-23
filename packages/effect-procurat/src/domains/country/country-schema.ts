@@ -5,4 +5,4 @@ export class CountrySchema extends Schema.Class<CountrySchema>("CountrySchema")(
   idx: Schema.String,
   iso: Schema.String,
   name: Schema.String
-}) {} 
+}) {}

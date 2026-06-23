@@ -43,8 +43,6 @@ export class CreatePersonSchema extends Schema.Class<CreatePersonSchema>('Create
   birthPlace: Schema.NullOr(Schema.String),
   birthCountryId: Schema.NullOr(Schema.Number),
   nationalityId: Schema.NullOr(Schema.Number),
-
-
 }) {}
 
 export class UpdatePersonSchema extends Schema.Class<UpdatePersonSchema>('UpdatePersonSchema')({

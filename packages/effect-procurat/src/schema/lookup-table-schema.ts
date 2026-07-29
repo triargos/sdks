@@ -1,12 +1,12 @@
 import { Schema } from 'effect';
 
-export class LookupTableSchema extends Schema.Class<LookupTableSchema>('LookupTableSchema')({
+export class LookupTable extends Schema.Class<LookupTable>('LookupTable')({
   id: Schema.Number,
   label: Schema.String,
   value: Schema.String,
 }) {}
 
-export class MunicipalityCodeSchema extends Schema.Class<MunicipalityCodeSchema>('MunicipalityCodeSchema')({
+export class MunicipalityCode extends Schema.Class<MunicipalityCode>('MunicipalityCode')({
   id: Schema.Number,
   label: Schema.String,
   value: Schema.String,
@@ -14,7 +14,7 @@ export class MunicipalityCodeSchema extends Schema.Class<MunicipalityCodeSchema>
   asvIds: Schema.Array(Schema.String),
 }) {}
 
-export class MunicipalitySchema extends Schema.Class<MunicipalitySchema>('MunicipalitySchema')({
+export class Municipality extends Schema.Class<Municipality>('Municipality')({
   id: Schema.Number,
   label: Schema.String,
   municipalityCode: Schema.String,
@@ -23,27 +23,27 @@ export class MunicipalitySchema extends Schema.Class<MunicipalitySchema>('Munici
   postalCode: Schema.NullOr(Schema.String),
 }) {}
 
-export class SchoolSchema extends Schema.Class<SchoolSchema>('SchoolSchema')({
+export class School extends Schema.Class<School>('School')({
   id: Schema.Number,
   label: Schema.String,
   value: Schema.String,
   schoolTypeId: Schema.Number,
 }) {}
 
-export const SchoolTypeSchema = Schema.Literal('GY', 'RS', 'GMS', 'FS', 'BS', 'BFS', 'FOS', 'BOS', 'IGS', 'WS', 'FZ');
+export const SchoolType = Schema.Literals(['GY', 'RS', 'GMS', 'FS', 'BS', 'BFS', 'FOS', 'BOS', 'IGS', 'WS', 'FZ']);
 
-export class BavarianSchoolSchema extends Schema.Class<BavarianSchoolSchema>('BavarianSchoolSchema')({
+export class BavarianSchool extends Schema.Class<BavarianSchool>('BavarianSchool')({
   id: Schema.Number,
   label: Schema.String,
   value: Schema.String,
-  schoolType: SchoolTypeSchema,
+  schoolType: SchoolType,
   street: Schema.String,
   building: Schema.String,
   city: Schema.String,
   postalCode: Schema.String,
 }) {}
 
-export class CareTypeSchema extends Schema.Class<CareTypeSchema>('CareTypeSchema')({
+export class CareType extends Schema.Class<CareType>('CareType')({
   id: Schema.Number,
   label: Schema.String,
   value: Schema.String,
@@ -51,7 +51,7 @@ export class CareTypeSchema extends Schema.Class<CareTypeSchema>('CareTypeSchema
   description: Schema.NullOr(Schema.String),
 }) {}
 
-export class CostBearerSchema extends Schema.Class<CostBearerSchema>('CostBearerSchema')({
+export class CostBearer extends Schema.Class<CostBearer>('CostBearer')({
   id: Schema.Number,
   label: Schema.String,
   value: Schema.String,

@@ -1,6 +1,6 @@
 import { Schema } from 'effect';
 
-export const GroupUdfFieldType = Schema.Literal(
+export const GroupUdfFieldType = Schema.Literals([
   'audit',
   'selection',
   'date',
@@ -22,11 +22,11 @@ export const GroupUdfFieldType = Schema.Literal(
   'text',
   'view',
   'valueSelection',
-);
+]);
 
-export const GroupUdfUsage = Schema.Literal('address', 'group', 'person', 'groupMember');
+export const GroupUdfUsage = Schema.Literals(['address', 'group', 'person', 'groupMember']);
 
-export class GroupUdfSchema extends Schema.Class<GroupUdfSchema>('GroupUdfSchema')({
+export class GroupUdf extends Schema.Class<GroupUdf>('GroupUdf')({
   id: Schema.Number,
   groupId: Schema.Number,
   groupType: Schema.NullOr(Schema.String),

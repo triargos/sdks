@@ -1,78 +1,48 @@
-import { Effect, Schema } from 'effect';
+import { Context, Effect, Layer, Schema } from 'effect';
+import { HttpClientRequest } from 'effect/unstable/http';
 import { ProcuratHttpClient } from '../http-client';
-import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
-import { CreatePersonSchema, PersonSchema, SuccessResponseSchema, UpdatePersonSchema } from '../schema/person-schema';
-import { removeUnrecoverableErrors } from '../utils/error-parsing';
-import { CreatePersonError, FindPersonError, ListPersonsError, PersonNotFoundError, UpdatePersonError } from '../error/person-errors';
+import { decodeJson } from '../internal/decode';
+import { operation } from '../internal/operation';
+import { CreatePerson, Person, UpdatePerson } from '../schema/person-schema';
 
-export class ProcuratPerson extends Effect.Service<ProcuratPerson>()('ProcuratPerson', {
-  effect: Effect.gen(function* () {
+export class ProcuratPerson extends Context.Service<ProcuratPerson>()('ProcuratPerson', {
+  make: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
 
-    const findAll = Effect.fn('person.findAll')(function* () {
-      return yield* http.get('/persons').pipe(
-        Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(PersonSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratNotFoundError', 'ProcuratBadRequestError', Effect.die),
-        Effect.catchTags({
-          ProcuratServerError: (cause) => new ListPersonsError({ cause }),
-        }),
-      );
-    });
+    const findAll = operation('person.findAll', () =>
+      http.get('/persons').pipe(Effect.flatMap(decodeJson(Schema.Array(Person)))),
+    );
 
-    const findById = Effect.fn('persons.findById')(function* ({ id }: { id: number }) {
-      return yield* http.get(`/persons/${id}`).pipe(
-        Effect.flatMap(HttpClientResponse.schemaBodyJson(PersonSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', Effect.die),
-        Effect.catchTags({
-          ProcuratServerError: (cause) => new FindPersonError({ personId: id, cause }),
-          ProcuratNotFoundError: (cause) => new PersonNotFoundError({ personId: id, cause }),
-        }),
-      );
-    });
+    const findById = operation('person.findById', (params: { id: number }) =>
+      http.get(`/persons/${params.id}`).pipe(Effect.flatMap(decodeJson(Person))),
+    );
 
-    const findByFamilyId = Effect.fn('persons.findByFamilyId')(function* ({ familyId }: { familyId: number }) {
-      return yield* http.get(`/persons/family/${familyId}`).pipe(
-        Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(PersonSchema))),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratNotFoundError', 'ProcuratBadRequestError', Effect.die),
-        Effect.catchTags({
-          ProcuratServerError: (cause) => new ListPersonsError({ cause }),
-        }),
-      );
-    });
+    const findByFamilyId = operation('person.findByFamilyId', (params: { familyId: number }) =>
+      http.get(`/persons/family/${params.familyId}`).pipe(Effect.flatMap(decodeJson(Schema.Array(Person)))),
+    );
 
-    const create = Effect.fn('person.create')(function* (person: CreatePersonSchema) {
-      return yield* HttpClientRequest.post('/persons').pipe(
-        HttpClientRequest.schemaBodyJson(CreatePersonSchema)(person),
+    const create = operation('person.create', (params: { person: CreatePerson }) =>
+      HttpClientRequest.post('/persons').pipe(
+        HttpClientRequest.schemaBodyJson(CreatePerson)(params.person),
+        // Encoding only fails on a value that satisfies the type but not the codec
+        // (`new Date('nonsense')`) — a programmer bug with no recovery.
+        Effect.orDie,
         Effect.flatMap(http.execute),
-        Effect.flatMap(HttpClientResponse.schemaBodyJson(PersonSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratNotFoundError', 'HttpBodyError', Effect.die),
-        Effect.catchTag(
-          'ProcuratServerError',
-          'ProcuratBadRequestError',
-          (cause) => new CreatePersonError({ cause, data: new CreatePersonSchema(person) }),
-        ),
-      );
-    });
+        Effect.flatMap(decodeJson(Person)),
+      ),
+    );
 
-    const update = Effect.fn('person.update')(function* (person: UpdatePersonSchema) {
-      return yield* HttpClientRequest.put(`/persons/${person.id}`).pipe(
-        HttpClientRequest.schemaBodyJson(UpdatePersonSchema)(person),
+    const update = operation('person.update', (params: { person: UpdatePerson }) =>
+      HttpClientRequest.put(`/persons/${params.person.id}`).pipe(
+        HttpClientRequest.schemaBodyJson(UpdatePerson)(params.person),
+        Effect.orDie,
         Effect.flatMap(http.execute),
-        Effect.flatMap(HttpClientResponse.schemaBodyJson(SuccessResponseSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTag('HttpBodyError', Effect.die),
-        Effect.catchTags({
-          ProcuratNotFoundError: (cause) => new PersonNotFoundError({ personId: person.id, cause }),
-          ProcuratServerError: (cause) => new UpdatePersonError({ cause, data: person }),
-          ProcuratBadRequestError: (cause) => new UpdatePersonError({ cause, data: person }),
-        }),
-      );
-    });
+        Effect.asVoid,
+      ),
+    );
 
     return { findAll, findById, findByFamilyId, create, update };
   }),
-}) {}
+}) {
+  static readonly layer = Layer.effect(this)(this.make);
+}

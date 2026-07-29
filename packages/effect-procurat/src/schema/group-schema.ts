@@ -1,6 +1,6 @@
 import { Schema } from 'effect';
 
-export class GroupSchema extends Schema.Class<GroupSchema>("GroupSchema")({
+export class Group extends Schema.Class<Group>('Group')({
   id: Schema.Number,
   parentGroupId: Schema.NullOr(Schema.Number),
   name: Schema.String,

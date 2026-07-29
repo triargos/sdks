@@ -14,5 +14,5 @@ export default defineConfig({
   minify: false,
   treeshake: true,
   outDir: 'dist',
-  external: ['effect', '@effect/platform']
+  external: ['effect']
 })

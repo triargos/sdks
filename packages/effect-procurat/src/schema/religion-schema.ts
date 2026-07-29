@@ -1,7 +1,7 @@
-import { Schema } from "effect";
+import { Schema } from 'effect';
 
-export class ReligionSchema extends Schema.Class<ReligionSchema>("ReligionSchema")({
+export class Religion extends Schema.Class<Religion>('Religion')({
   id: Schema.Number,
   name: Schema.String,
-  lookupVal: Schema.NullOr(Schema.Number)
+  lookupVal: Schema.NullOr(Schema.Number),
 }) {}

@@ -1,68 +1,36 @@
-import { Effect } from 'effect';
+import { Context, Effect, Layer } from 'effect';
+import { HttpClientRequest } from 'effect/unstable/http';
 import { ProcuratHttpClient } from '../http-client';
-import { AddMemberToGroupSchema, GroupMemberSchema, UpdateGroupMembershipSchema } from '../schema/group-member-schema';
-import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
-import { removeUnrecoverableErrors } from '../utils/error-parsing';
-import {
-  AddGroupMemberError,
-  GroupMembershipNotFoundError,
-  UpdateGroupMembershipError,
-} from '../error/group-member-errors';
-import { GroupNotFoundError } from '../error/group-errors';
+import { decodeJson } from '../internal/decode';
+import { operation } from '../internal/operation';
+import { AddMemberToGroup, GroupMember, UpdateGroupMembership } from '../schema/group-member-schema';
 
-export class ProcuratGroupMember extends Effect.Service<ProcuratGroupMember>()('ProcuratGroupMember', {
-  effect: Effect.gen(function* () {
+export class ProcuratGroupMember extends Context.Service<ProcuratGroupMember>()('ProcuratGroupMember', {
+  make: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
 
-    const addToGroup = Effect.fn('groupMember.addToGroup')(function* (groupId: number, member: AddMemberToGroupSchema) {
-      return yield* HttpClientRequest.post(`/groups/${groupId}/members`).pipe(
-        HttpClientRequest.schemaBodyJson(AddMemberToGroupSchema)(member),
+    const addToGroup = operation('groupMember.addToGroup', (params: { groupId: number; member: AddMemberToGroup }) =>
+      HttpClientRequest.post(`/groups/${params.groupId}/members`).pipe(
+        HttpClientRequest.schemaBodyJson(AddMemberToGroup)(params.member),
+        Effect.orDie,
         Effect.flatMap(http.execute),
-        Effect.flatMap(HttpClientResponse.schemaBodyJson(GroupMemberSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTag(
-          'ProcuratServerError',
-          'ProcuratBadRequestError',
-          (cause) =>
-            new AddGroupMemberError({
-              groupId,
-              memberId: member.personId,
-              cause,
-            }),
-        ),
-        Effect.catchTags({
-          HttpBodyError: Effect.die,
-          ProcuratNotFoundError: (cause) => new GroupNotFoundError({ groupId, cause }),
-        }),
-      );
-    });
+        Effect.flatMap(decodeJson(GroupMember)),
+      ),
+    );
 
-    const updateMembership = Effect.fn('groupMember.updateMembership')(function* (
-      groupId: number,
-      { personId, membership }: { personId: number; membership: UpdateGroupMembershipSchema },
-    ) {
-      return yield* HttpClientRequest.put(`/groups/${groupId}/members/${personId}`).pipe(
-        HttpClientRequest.schemaBodyJson(UpdateGroupMembershipSchema)(membership),
-        Effect.flatMap(http.execute),
-        Effect.flatMap(HttpClientResponse.schemaBodyJson(GroupMemberSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTags({
-          HttpBodyError: Effect.die,
-          ProcuratNotFoundError: (cause) => new GroupMembershipNotFoundError({ groupId, cause, personId }),
-        }),
-        Effect.catchTag(
-          'ProcuratBadRequestError',
-          'ProcuratServerError',
-          (cause) =>
-            new UpdateGroupMembershipError({
-              groupId,
-              personId,
-              data: new UpdateGroupMembershipSchema({...membership}),
-              cause,
-            }),
+    const updateMembership = operation(
+      'groupMember.updateMembership',
+      (params: { groupId: number; personId: number; membership: UpdateGroupMembership }) =>
+        HttpClientRequest.put(`/groups/${params.groupId}/members/${params.personId}`).pipe(
+          HttpClientRequest.schemaBodyJson(UpdateGroupMembership)(params.membership),
+          Effect.orDie,
+          Effect.flatMap(http.execute),
+          Effect.flatMap(decodeJson(GroupMember)),
         ),
-      );
-    });
+    );
+
     return { addToGroup, updateMembership };
   }),
-}) {}
+}) {
+  static readonly layer = Layer.effect(this)(this.make);
+}

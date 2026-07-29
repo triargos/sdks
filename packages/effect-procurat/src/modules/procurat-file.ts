@@ -1,173 +1,86 @@
-import { Effect, Stream } from 'effect';
+import { Context, Effect, Layer, Stream } from 'effect';
+import { HttpClientRequest } from 'effect/unstable/http';
 import { ProcuratHttpClient } from '../http-client';
-import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
-import { DirectoryContentSchema } from '../schema/file-schema';
-import { removeUnrecoverableErrors } from '../utils/error-parsing';
-import { ListFilesError, DownloadFileError, UploadFileError } from '../error/file-errors';
+import { decodeJson, streamBody } from '../internal/decode';
+import { operation } from '../internal/operation';
+import { DirectoryContent } from '../schema/file-schema';
 
-// Encode path segments while preserving directory structure
+/** Encodes each segment while preserving the directory separators. */
 const encodePath = (path: string) => path.split('/').map(encodeURIComponent).join('/');
 
-// Convert Effect stream to Blob for multipart upload
+/**
+ * The upload endpoint takes multipart and `FormData` needs a materialized `Blob`,
+ * so the stream is buffered. The content type is set on the `Response` so `.blob()`
+ * returns it directly instead of costing a second full copy.
+ * Failure here means the runtime could not allocate the body — a defect, not a
+ * condition a caller can recover from.
+ */
 const streamToBlob = (stream: Stream.Stream<Uint8Array>, contentType: string) =>
-  Effect.promise(() => new Response(Stream.toReadableStream(stream)).blob()).pipe(
-    Effect.map((blob) => new Blob([blob], { type: contentType })),
+  Effect.promise(() =>
+    new Response(Stream.toReadableStream(stream), {
+      headers: { 'content-type': contentType },
+    }).blob(),
   );
 
-export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile', {
-  effect: Effect.gen(function* () {
+export interface UploadParams {
+  readonly personId: number;
+  readonly path: string;
+  readonly fileName: string;
+  readonly stream: Stream.Stream<Uint8Array>;
+  readonly contentType?: string;
+}
+
+export class ProcuratFile extends Context.Service<ProcuratFile>()('ProcuratFile', {
+  make: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
 
-    // List operations
-    const listManagementFiles = Effect.fn('file.listManagementFiles')(function* ({
-      personId,
-      path,
-    }: {
-      personId: number;
-      path?: string;
-    }) {
-      return yield* http.get(`/files/person/${personId}/management/${encodePath(path ?? '')}`).pipe(
-        Effect.flatMap(HttpClientResponse.schemaBodyJson(DirectoryContentSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
-        Effect.catchTags({
-          ProcuratServerError: (cause) => new ListFilesError({ cause }),
-        }),
-      );
-    });
+    const list = (path: string) => http.get(path).pipe(Effect.flatMap(decodeJson(DirectoryContent)));
 
-    const listFinanceFiles = Effect.fn('file.listFinanceFiles')(function* ({
-      personId,
-      path,
-    }: {
-      personId: number;
-      path?: string;
-    }) {
-      return yield* http.get(`/files/person/${personId}/finance/${encodePath(path ?? '')}`).pipe(
-        Effect.flatMap(HttpClientResponse.schemaBodyJson(DirectoryContentSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
-        Effect.catchTags({
-          ProcuratServerError: (cause) => new ListFilesError({ cause }),
-        }),
-      );
-    });
+    const download = (path: string) => http.get(path).pipe(Effect.flatMap(streamBody));
 
-    const listPublicFiles = Effect.fn('file.listPublicFiles')(function* ({ path }: { path?: string }) {
-      return yield* http.get(`/files/shared/${encodePath(path ?? '')}`).pipe(
-        Effect.flatMap(HttpClientResponse.schemaBodyJson(DirectoryContentSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
-        Effect.catchTags({
-          ProcuratServerError: (cause) => new ListFilesError({ cause }),
-        }),
-      );
-    });
+    const upload = (path: string, params: UploadParams) =>
+      Effect.gen(function* () {
+        const blob = yield* streamToBlob(params.stream, params.contentType ?? 'application/octet-stream');
+        const formData = new FormData();
+        formData.append('file', blob, params.fileName);
+        return yield* http
+          .execute(HttpClientRequest.post(path).pipe(HttpClientRequest.bodyFormData(formData)))
+          .pipe(Effect.asVoid);
+      });
 
-    // Download operations (stream-based)
-    const downloadManagementFile = Effect.fn('file.downloadManagementFile')(function* ({
-      personId,
-      path,
-    }: {
-      personId: number;
-      path: string;
-    }) {
-      return yield* http.get(`/files/person/${personId}/management/download/${encodePath(path)}`).pipe(
-        Effect.map((response) => response.stream),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
-        Effect.catchTags({
-          ProcuratServerError: (cause) => new DownloadFileError({ cause }),
-        }),
-      );
-    });
+    const listManagementFiles = operation('file.listManagementFiles', (params: { personId: number; path?: string }) =>
+      list(`/files/person/${params.personId}/management/${encodePath(params.path ?? '')}`),
+    );
 
-    const downloadFinanceFile = Effect.fn('file.downloadFinanceFile')(function* ({
-      personId,
-      path,
-    }: {
-      personId: number;
-      path: string;
-    }) {
-      return yield* http.get(`/files/person/${personId}/finance/download/${encodePath(path)}`).pipe(
-        Effect.map((response) => response.stream),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
-        Effect.catchTags({
-          ProcuratServerError: (cause) => new DownloadFileError({ cause }),
-        }),
-      );
-    });
+    const listFinanceFiles = operation('file.listFinanceFiles', (params: { personId: number; path?: string }) =>
+      list(`/files/person/${params.personId}/finance/${encodePath(params.path ?? '')}`),
+    );
 
-    const downloadPublicFile = Effect.fn('file.downloadPublicFile')(function* ({ path }: { path: string }) {
-      return yield* http.get(`/files/shared/download/${encodePath(path)}`).pipe(
-        Effect.map((response) => response.stream),
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
-        Effect.catchTags({
-          ProcuratServerError: (cause) => new DownloadFileError({ cause }),
-        }),
-      );
-    });
+    const listPublicFiles = operation('file.listPublicFiles', (params: { path?: string }) =>
+      list(`/files/shared/${encodePath(params.path ?? '')}`),
+    );
 
-    // Upload operations (stream API, multipart internally)
-    const uploadManagementFile = Effect.fn('file.uploadManagementFile')(function* ({
-      personId,
-      path,
-      fileName,
-      stream,
-      contentType = 'application/octet-stream',
-    }: {
-      personId: number;
-      path: string;
-      fileName: string;
-      stream: Stream.Stream<Uint8Array>;
-      contentType?: string;
-    }) {
-      const blob = yield* streamToBlob(stream, contentType);
-      const formData = new FormData();
-      formData.append('file', blob, fileName);
-      const request = HttpClientRequest.post(`/files/person/${personId}/management/${encodePath(path)}`).pipe(
-        HttpClientRequest.bodyFormData(formData),
-      );
-      return yield* http.execute(request).pipe(
-        Effect.asVoid,
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
-        Effect.catchTags({
-          ProcuratServerError: (cause) => new UploadFileError({ cause, path: `${path}/${fileName}` }),
-        }),
-      );
-    });
+    const downloadManagementFile = operation(
+      'file.downloadManagementFile',
+      (params: { personId: number; path: string }) =>
+        download(`/files/person/${params.personId}/management/download/${encodePath(params.path)}`),
+    );
 
-    const uploadFinanceFile = Effect.fn('file.uploadFinanceFile')(function* ({
-      personId,
-      path,
-      fileName,
-      stream,
-      contentType = 'application/octet-stream',
-    }: {
-      personId: number;
-      path: string;
-      fileName: string;
-      stream: Stream.Stream<Uint8Array>;
-      contentType?: string;
-    }) {
-      const blob = yield* streamToBlob(stream, contentType);
-      const formData = new FormData();
-      formData.append('file', blob, fileName);
-      const request = HttpClientRequest.post(`/files/person/${personId}/finance/${encodePath(path)}`).pipe(
-        HttpClientRequest.bodyFormData(formData),
-      );
-      return yield* http.execute(request).pipe(
-        Effect.asVoid,
-        removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
-        Effect.catchTags({
-          ProcuratServerError: (cause) => new UploadFileError({ cause, path: `${path}/${fileName}` }),
-        }),
-      );
-    });
+    const downloadFinanceFile = operation('file.downloadFinanceFile', (params: { personId: number; path: string }) =>
+      download(`/files/person/${params.personId}/finance/download/${encodePath(params.path)}`),
+    );
+
+    const downloadPublicFile = operation('file.downloadPublicFile', (params: { path: string }) =>
+      download(`/files/shared/download/${encodePath(params.path)}`),
+    );
+
+    const uploadManagementFile = operation('file.uploadManagementFile', (params: UploadParams) =>
+      upload(`/files/person/${params.personId}/management/${encodePath(params.path)}`, params),
+    );
+
+    const uploadFinanceFile = operation('file.uploadFinanceFile', (params: UploadParams) =>
+      upload(`/files/person/${params.personId}/finance/${encodePath(params.path)}`, params),
+    );
 
     return {
       listManagementFiles,
@@ -180,4 +93,6 @@ export class ProcuratFile extends Effect.Service<ProcuratFile>()('ProcuratFile',
       uploadFinanceFile,
     };
   }),
-}) {}
+}) {
+  static readonly layer = Layer.effect(this)(this.make);
+}

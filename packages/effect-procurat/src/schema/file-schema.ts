@@ -1,18 +1,19 @@
 import { Schema } from 'effect';
 
-export class FileSchema extends Schema.Class<FileSchema>('FileSchema')({
+/** Named `FileEntry` rather than `File` to stay clear of the platform `File` global. */
+export class FileEntry extends Schema.Class<FileEntry>('FileEntry')({
   fileName: Schema.String,
   fileSize: Schema.Number,
   lastModified: Schema.String,
 }) {}
 
-export class DirectorySchema extends Schema.Class<DirectorySchema>('DirectorySchema')({
+export class Directory extends Schema.Class<Directory>('Directory')({
   name: Schema.String,
-  files: Schema.Array(FileSchema),
+  files: Schema.Array(FileEntry),
 }) {}
 
-export class DirectoryContentSchema extends Schema.Class<DirectoryContentSchema>('DirectoryContentSchema')({
+export class DirectoryContent extends Schema.Class<DirectoryContent>('DirectoryContent')({
   name: Schema.String,
-  directories: Schema.Array(DirectorySchema),
-  files: Schema.Array(FileSchema),
+  directories: Schema.Array(Directory),
+  files: Schema.Array(FileEntry),
 }) {}

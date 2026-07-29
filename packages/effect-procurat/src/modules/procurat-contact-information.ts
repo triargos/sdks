@@ -1,13 +1,9 @@
 import { Context, Effect, Layer, Schema } from 'effect';
+import { HttpClientRequest } from 'effect/unstable/http';
 import { ProcuratHttpClient } from '../http-client';
-import { HttpClientRequest, HttpClientResponse } from 'effect/unstable/http';
-import { ContactInformationSchema, CreateContactInformationSchema } from '../schema/contact-information-schema';
-import { removeUnrecoverableErrors } from '../utils/error-parsing';
-import {
-  CreateContactInformationError,
-  FindContactInformationByPersonError,
-} from '../error/contact-information-errors';
-import { PersonNotFoundError, ProcuratCommonErrors } from '../errors';
+import { decodeJson } from '../internal/decode';
+import { operation } from '../internal/operation';
+import { ContactInformation, CreateContactInformation } from '../schema/contact-information-schema';
 
 export class ProcuratContactInformation extends Context.Service<ProcuratContactInformation>()(
   'ProcuratContactInformation',
@@ -15,45 +11,26 @@ export class ProcuratContactInformation extends Context.Service<ProcuratContactI
     make: Effect.gen(function* () {
       const http = yield* ProcuratHttpClient;
 
-      const create: (
-        contactInformation: CreateContactInformationSchema,
-      ) => Effect.Effect<ContactInformationSchema, CreateContactInformationError | ProcuratCommonErrors> = Effect.fn(
+      const create = operation(
         'contactInformation.create',
-      )(function* (contactInformation: CreateContactInformationSchema) {
-        return yield* HttpClientRequest.post('/contactinformation').pipe(
-          HttpClientRequest.schemaBodyJson(CreateContactInformationSchema)(contactInformation),
-          Effect.flatMap(http.execute),
-          Effect.flatMap(HttpClientResponse.schemaBodyJson(ContactInformationSchema)),
-          removeUnrecoverableErrors,
-          Effect.catchTag(['HttpBodyError', 'ProcuratNotFoundError'], Effect.die),
-          Effect.catchTag(
-            ['ProcuratBadRequestError', 'ProcuratServerError'],
-            (cause) => new CreateContactInformationError({ cause, data: contactInformation }),
+        (params: { contactInformation: CreateContactInformation }) =>
+          HttpClientRequest.post('/contactinformation').pipe(
+            HttpClientRequest.schemaBodyJson(CreateContactInformation)(params.contactInformation),
+            Effect.orDie,
+            Effect.flatMap(http.execute),
+            Effect.flatMap(decodeJson(ContactInformation)),
           ),
-        );
-      });
+      );
 
-      const findByPerson: (args: {
-        personId: number;
-      }) => Effect.Effect<
-        ReadonlyArray<ContactInformationSchema>,
-        PersonNotFoundError | FindContactInformationByPersonError | ProcuratCommonErrors
-      > = Effect.fn('contactInformation.findByPerson')(function* ({ personId }) {
-        return yield* HttpClientRequest.get(`/contactinformation/person/${personId}`).pipe(
-          http.execute,
-          Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(ContactInformationSchema))),
-          removeUnrecoverableErrors,
-          Effect.catchTags({
-            ProcuratBadRequestError: Effect.die,
-            ProcuratServerError: (cause) => new FindContactInformationByPersonError({ personId, cause }),
-            ProcuratNotFoundError: (cause) => new PersonNotFoundError({ personId, cause }),
-          }),
-        );
-      });
+      const findByPerson = operation('contactInformation.findByPerson', (params: { personId: number }) =>
+        http
+          .get(`/contactinformation/person/${params.personId}`)
+          .pipe(Effect.flatMap(decodeJson(Schema.Array(ContactInformation)))),
+      );
 
       return { create, findByPerson };
     }),
   },
 ) {
-  static readonly layer = Layer.effect(this, this.make);
+  static readonly layer = Layer.effect(this)(this.make);
 }

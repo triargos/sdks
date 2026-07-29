@@ -1,6 +1,6 @@
 import { Schema } from 'effect';
 
-export class AddressSchema extends Schema.Class<AddressSchema>('AddressSchema')({
+export class Address extends Schema.Class<Address>('Address')({
   id: Schema.Number,
   street: Schema.NullOr(Schema.String),
   zip: Schema.NullOr(Schema.String),
@@ -14,16 +14,17 @@ export class AddressSchema extends Schema.Class<AddressSchema>('AddressSchema')(
   countryId: Schema.NullOr(Schema.Number),
 }) {}
 
-export const CreateAddressSchema = Schema.Struct({
-  street: Schema.String,
-  city: Schema.String,
-  zip: Schema.String,
-  countryId: Schema.Number,
-  additional: Schema.NullOr(Schema.String),
-  nameline2: Schema.NullOr(Schema.String),
-  district: Schema.NullOr(Schema.String),
-  poBoxZip: Schema.NullOr(Schema.String),
-  poBox: Schema.NullOr(Schema.String),
-  countyId: Schema.NullOr(Schema.Number),
-});
-export type CreateAddressSchema = typeof CreateAddressSchema.Type;
+export class CreateAddress extends Schema.Opaque<CreateAddress>()(
+  Schema.Struct({
+    street: Schema.String,
+    city: Schema.String,
+    zip: Schema.String,
+    countryId: Schema.Number,
+    additional: Schema.NullOr(Schema.String),
+    nameline2: Schema.NullOr(Schema.String),
+    district: Schema.NullOr(Schema.String),
+    poBoxZip: Schema.NullOr(Schema.String),
+    poBox: Schema.NullOr(Schema.String),
+    countyId: Schema.NullOr(Schema.Number),
+  }),
+) {}

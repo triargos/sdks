@@ -1,36 +1,27 @@
 import { Context, Effect, Layer } from 'effect';
-import { HttpClientRequest, HttpClientResponse } from 'effect/unstable/http';
-import { CreateContactPersonError } from '../error/communication-errors';
-import { ProcuratCommonErrors } from '../error/procurat-errors';
+import { HttpClientRequest } from 'effect/unstable/http';
 import { ProcuratHttpClient } from '../http-client';
-import { ContactPersonCreationSchema, ContactPersonSchema } from '../schema/communication-schema';
-import { removeUnrecoverableErrors } from '../utils/error-parsing';
+import { decodeJson } from '../internal/decode';
+import { operation } from '../internal/operation';
+import { ContactPerson, CreateContactPerson } from '../schema/communication-schema';
 
 export class ProcuratCommunication extends Context.Service<ProcuratCommunication>()('ProcuratCommunication', {
   make: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
 
-    const createContactPerson: (
-      personId: number,
-      data: ContactPersonCreationSchema,
-    ) => Effect.Effect<ContactPersonSchema, CreateContactPersonError | ProcuratCommonErrors> = Effect.fn(
+    const createContactPerson = operation(
       'communication.createContactPerson',
-    )(function* (personId: number, data: ContactPersonCreationSchema) {
-      return yield* HttpClientRequest.post(`/communication/person/${personId}/contacts`).pipe(
-        HttpClientRequest.schemaBodyJson(ContactPersonCreationSchema)(data),
-        Effect.flatMap(http.execute),
-        Effect.flatMap(HttpClientResponse.schemaBodyJson(ContactPersonSchema)),
-        removeUnrecoverableErrors,
-        Effect.catchTag(['HttpBodyError', 'ProcuratNotFoundError'], Effect.die),
-        Effect.catchTag(
-          ['ProcuratServerError', 'ProcuratBadRequestError'],
-          (cause) => new CreateContactPersonError({ cause, data }),
+      (params: { personId: number; contactPerson: CreateContactPerson }) =>
+        HttpClientRequest.post(`/communication/person/${params.personId}/contacts`).pipe(
+          HttpClientRequest.schemaBodyJson(CreateContactPerson)(params.contactPerson),
+          Effect.orDie,
+          Effect.flatMap(http.execute),
+          Effect.flatMap(decodeJson(ContactPerson)),
         ),
-      );
-    });
+    );
 
     return { createContactPerson };
   }),
 }) {
-  static readonly layer = Layer.effect(this, this.make);
+  static readonly layer = Layer.effect(this)(this.make);
 }

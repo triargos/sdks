@@ -1,54 +1,58 @@
 import { Schema } from 'effect';
 
-export const ContactInformationMediumSchema = Schema.Literals(['telephone', 'email', 'mobile', 'fax']);
+export const ContactInformationMedium = Schema.Literals(['telephone', 'email', 'mobile', 'fax']);
 
-export const ContactInformationTypeSchema = Schema.Literals(['private', 'address', 'work', 'external']);
+export const ContactInformationType = Schema.Literals(['private', 'address', 'work', 'external']);
 
-export const ContactInformationBaseSchema = Schema.Struct({
-  medium: ContactInformationMediumSchema,
+const ContactInformationBase = Schema.Struct({
+  medium: ContactInformationMedium,
   externalName: Schema.Null,
   content: Schema.String,
   comment: Schema.NullOr(Schema.String),
   secret: Schema.NullOr(Schema.Boolean),
 });
 
-export const CreatePersonalContactInformationSchema = Schema.Struct({
-  type: ContactInformationTypeSchema.pick(['private', 'work']),
-  addressId: Schema.Null,
-  personId: Schema.Number,
-  ...ContactInformationBaseSchema.fields,
-});
-export type CreatePersonalContactInformationSchema = typeof CreatePersonalContactInformationSchema.Type;
+export class CreatePersonalContactInformation extends Schema.Opaque<CreatePersonalContactInformation>()(
+  Schema.Struct({
+    type: ContactInformationType.pick(['private', 'work']),
+    addressId: Schema.Null,
+    personId: Schema.Number,
+    ...ContactInformationBase.fields,
+  }),
+) {}
 
-export const CreateAddressContactInformationSchema = Schema.Struct({
-  type: ContactInformationTypeSchema.pick(['address']),
-  addressId: Schema.Number,
-  personId: Schema.Null,
-  ...ContactInformationBaseSchema.fields,
-});
-export type CreateAddressContactInformationSchema = typeof CreateAddressContactInformationSchema.Type;
+export class CreateAddressContactInformation extends Schema.Opaque<CreateAddressContactInformation>()(
+  Schema.Struct({
+    type: ContactInformationType.pick(['address']),
+    addressId: Schema.Number,
+    personId: Schema.Null,
+    ...ContactInformationBase.fields,
+  }),
+) {}
 
-export const CreateExternalContactInformationSchema = Schema.Struct({
-  type: ContactInformationTypeSchema.pick(['external']),
-  personId: Schema.Null,
-  addressId: Schema.Null,
-  ...ContactInformationBaseSchema.fields,
-  externalName: Schema.String,
-});
-export type CreateExternalContactInformationSchema = typeof CreateExternalContactInformationSchema.Type;
+export class CreateExternalContactInformation extends Schema.Opaque<CreateExternalContactInformation>()(
+  Schema.Struct({
+    type: ContactInformationType.pick(['external']),
+    personId: Schema.Null,
+    addressId: Schema.Null,
+    ...ContactInformationBase.fields,
+    externalName: Schema.String,
+  }),
+) {}
 
-export const CreateContactInformationSchema = Schema.Union([
-  CreatePersonalContactInformationSchema,
-  CreateAddressContactInformationSchema,
-  CreateExternalContactInformationSchema,
+/** A union of three shapes, so it stays a schema value plus alias — `Opaque` needs a single object type. */
+export const CreateContactInformation = Schema.Union([
+  CreatePersonalContactInformation,
+  CreateAddressContactInformation,
+  CreateExternalContactInformation,
 ]);
-export type CreateContactInformationSchema = typeof CreateContactInformationSchema.Type;
+export type CreateContactInformation = typeof CreateContactInformation.Type;
 
-export class ContactInformationSchema extends Schema.Class<ContactInformationSchema>('ContactInformationSchema')({
+export class ContactInformation extends Schema.Class<ContactInformation>('ContactInformation')({
   id: Schema.Number,
   order: Schema.Number,
-  type: ContactInformationTypeSchema,
-  medium: ContactInformationMediumSchema,
+  type: ContactInformationType,
+  medium: ContactInformationMedium,
   personId: Schema.NullOr(Schema.Number),
   addressId: Schema.NullOr(Schema.Number),
   externalName: Schema.NullOr(Schema.String),

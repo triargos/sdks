@@ -1,75 +1,42 @@
-import { Context, Effect, Layer, Schema } from 'effect';
+import { Context, Effect, Layer, Option, Redacted } from 'effect';
 import { HttpClient, HttpClientRequest } from 'effect/unstable/http';
-import {
-  ProcuratBadRequestError,
-  ProcuratErrorSchema,
-  ProcuratNotFoundError,
-  ProcuratServerError,
-  ProcuratTransportError,
-  ProcuratUnauthorizedError,
-} from './error/procurat-errors';
-
-type ProcuratHttpErrors =
-  | ProcuratBadRequestError
-  | ProcuratUnauthorizedError
-  | ProcuratNotFoundError
-  | ProcuratServerError
-  | ProcuratTransportError;
+import type { ProcuratError } from './error/procurat-errors';
+import { matchError } from './internal/match-error';
+import { ProcuratRetry } from './retry';
 
 export class ProcuratHttpClient extends Context.Service<
   ProcuratHttpClient,
-  HttpClient.HttpClient.With<ProcuratHttpErrors>
+  HttpClient.HttpClient.With<ProcuratError>
 >()('ProcuratHttpClient') {
   static layer({
     baseUrl,
     apiKey,
   }: {
-    baseUrl: string;
-    apiKey: string;
+    readonly baseUrl: string;
+    readonly apiKey: Redacted.Redacted<string>;
   }): Layer.Layer<ProcuratHttpClient, never, HttpClient.HttpClient> {
-    return Layer.effect(
-      this,
+    return Layer.effect(this)(
       Effect.gen(function* () {
+        const policy = Option.getOrElse(yield* Effect.serviceOption(ProcuratRetry), () => ProcuratRetry.defaultPolicy);
+
         return (yield* HttpClient.HttpClient).pipe(
           HttpClient.mapRequest((request) =>
             request.pipe(
               HttpClientRequest.acceptJson,
               HttpClientRequest.prependUrl(baseUrl),
-              HttpClientRequest.setHeader('X-API-KEY', apiKey),
+              // `x-api-key` is in v4's default redacted-header set, so it stays out of logs.
+              HttpClientRequest.setHeader('X-API-KEY', Redacted.value(apiKey)),
             ),
           ),
           HttpClient.filterStatusOk,
-          HttpClient.catchTag('HttpClientError', (error) =>
-            Effect.gen(function* () {
-              const endpoint = error.request.url;
-              if (error.reason._tag !== 'StatusCodeError') {
-                return yield* new ProcuratTransportError({ cause: error, endpoint });
-              }
-
-              const response = error.reason.response;
-              const json = yield* response.json.pipe(
-                Effect.flatMap(Schema.decodeUnknownEffect(ProcuratErrorSchema)),
-                Effect.orDie,
-              );
-              const details = {
-                message: json.error,
-                code: json.code,
-                endpoint,
-                status: response.status,
-              };
-
-              switch (response.status) {
-                case 400:
-                  return yield* new ProcuratBadRequestError(details);
-                case 401:
-                  return yield* new ProcuratUnauthorizedError(details);
-                case 404:
-                  return yield* new ProcuratNotFoundError(details);
-                default:
-                  return yield* new ProcuratServerError(details);
-              }
-            }),
-          ),
+          // Must stay before retryTransient: the predicate reads the Procurat tag,
+          // which only exists once the platform error has been mapped.
+          HttpClient.catchTag('HttpClientError', matchError),
+          HttpClient.retryTransient({
+            while: policy.while,
+            schedule: policy.schedule,
+            times: policy.times,
+          }),
         );
       }),
     );

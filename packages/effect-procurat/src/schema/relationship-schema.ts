@@ -1,6 +1,6 @@
 import { Schema } from 'effect';
 
-export const ChildInRelationshipTypeSchema = Schema.Literals([
+export const ChildInRelationshipType = Schema.Literals([
   'son',
   'daughter',
   'child',
@@ -15,7 +15,8 @@ export const ChildInRelationshipTypeSchema = Schema.Literals([
   'fosterdaughter',
   'other',
 ]);
-export const ParentInRelationshipTypeSchema = Schema.Literals([
+
+export const ParentInRelationshipType = Schema.Literals([
   'father',
   'mother',
   'grandfather',
@@ -29,32 +30,34 @@ export const ParentInRelationshipTypeSchema = Schema.Literals([
   'other',
 ]);
 
-const BaseRelationshipFieldSchema = Schema.Struct({
-  childRelationshipType: ChildInRelationshipTypeSchema,
-  parentRelationshipType: ParentInRelationshipTypeSchema,
+const BaseRelationshipFields = Schema.Struct({
+  childRelationshipType: ChildInRelationshipType,
+  parentRelationshipType: ParentInRelationshipType,
   physical: Schema.Boolean,
   custody: Schema.Boolean,
   realParent: Schema.Boolean,
   notes: Schema.NullOr(Schema.String),
 });
 
-export const AddParentToChildSchema = Schema.Struct({
-  parentId: Schema.Number,
-  ...BaseRelationshipFieldSchema.fields,
-});
-export type AddParentToChildSchema = typeof AddParentToChildSchema.Type;
+export class AddParentToChild extends Schema.Opaque<AddParentToChild>()(
+  Schema.Struct({
+    parentId: Schema.Number,
+    ...BaseRelationshipFields.fields,
+  }),
+) {}
 
-export const AddChildToParentSchema = Schema.Struct({
-  childId: Schema.Number,
-  ...BaseRelationshipFieldSchema.fields,
-});
-export type AddChildToParentSchema = typeof AddChildToParentSchema.Type;
+export class AddChildToParent extends Schema.Opaque<AddChildToParent>()(
+  Schema.Struct({
+    childId: Schema.Number,
+    ...BaseRelationshipFields.fields,
+  }),
+) {}
 
-export class CreatedRelationShipSchema extends Schema.Class<CreatedRelationShipSchema>('CreatedRelationshipSchema')({
+export class CreatedRelationship extends Schema.Class<CreatedRelationship>('CreatedRelationship')({
   id: Schema.Number,
 }) {}
 
-export const RelationshipTypeSchema = Schema.Literals([
+export const RelationshipType = Schema.Literals([
   'father',
   'son',
   'mother',
@@ -80,9 +83,9 @@ export const RelationshipTypeSchema = Schema.Literals([
   'other',
 ]);
 
-export class RelationshipSchema extends Schema.Class<RelationshipSchema>('RelationshipSchema')({
+export class Relationship extends Schema.Class<Relationship>('Relationship')({
   personId: Schema.Number,
-  relationshipType: RelationshipTypeSchema,
+  relationshipType: RelationshipType,
   custody: Schema.Boolean,
   physical: Schema.Boolean,
   realParent: Schema.Boolean,

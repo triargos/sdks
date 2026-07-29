@@ -1,6 +1,6 @@
 import { Effect, Schema, Stream } from 'effect';
 import type { HttpClientResponse } from 'effect/unstable/http/HttpClientResponse';
-import { ProcuratDecodeError, ProcuratUnavailableError } from '../error/procurat-errors';
+import { ProcuratDecodeError, ProcuratUnavailableError } from '../shared/errors';
 import { CurrentOperation } from './operation';
 
 /** Reads the body once so `ProcuratDecodeError` can carry it. */

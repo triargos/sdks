@@ -1,4 +1,13 @@
 import { Schema } from 'effect';
+import { membersOf } from '../../shared/literals';
+
+export const GroupMemberStatus = Schema.Literals(['ACTIVE', 'INACTIVE', 'ALL']);
+export type GroupMemberStatus = typeof GroupMemberStatus.Type;
+export const GroupMemberStatuses = membersOf(GroupMemberStatus)({
+  Active: 'ACTIVE',
+  Inactive: 'INACTIVE',
+  All: 'ALL',
+});
 
 const JsonData = Schema.Record(Schema.String, Schema.Unknown);
 

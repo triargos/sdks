@@ -1,7 +1,21 @@
 import { Schema } from 'effect';
+import { membersOf } from '../../shared/literals';
 
 export const Gender = Schema.Literals(['male', 'female', 'other']);
+export type Gender = typeof Gender.Type;
+export const Genders = membersOf(Gender)({ Male: 'male', Female: 'female', Other: 'other' });
+
 export const FamilyRole = Schema.Literals(['father', 'mother', 'child', 'etc', 'parent', 'son', 'daughter']);
+export type FamilyRole = typeof FamilyRole.Type;
+export const FamilyRoles = membersOf(FamilyRole)({
+  Father: 'father',
+  Mother: 'mother',
+  Child: 'child',
+  Etc: 'etc',
+  Parent: 'parent',
+  Son: 'son',
+  Daughter: 'daughter',
+});
 
 export class Person extends Schema.Class<Person>('Person')({
   id: Schema.Number,

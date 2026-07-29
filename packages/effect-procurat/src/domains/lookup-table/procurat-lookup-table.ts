@@ -1,7 +1,7 @@
 import { Context, Effect, Layer, Schema } from 'effect';
-import { ProcuratHttpClient } from '../http-client';
-import { decodeJson } from '../internal/decode';
-import { operation } from '../internal/operation';
+import { decodeJson } from '../../internal/decode';
+import { operation } from '../../internal/operation';
+import { ProcuratHttpClient } from '../../shared/http-client';
 import {
   BavarianSchool,
   CareType,
@@ -10,7 +10,7 @@ import {
   Municipality,
   MunicipalityCode,
   School,
-} from '../schema/lookup-table-schema';
+} from './lookup-table-schema';
 
 export class ProcuratLookupTable extends Context.Service<ProcuratLookupTable>()('ProcuratLookupTable', {
   make: Effect.gen(function* () {

@@ -1,9 +1,9 @@
 import { Context, Effect, Layer, Schema } from 'effect';
 import { HttpClientRequest } from 'effect/unstable/http';
-import { ProcuratHttpClient } from '../http-client';
-import { decodeJson } from '../internal/decode';
-import { operation } from '../internal/operation';
-import { AddChildToParent, AddParentToChild, CreatedRelationship, Relationship } from '../schema/relationship-schema';
+import { decodeJson } from '../../internal/decode';
+import { operation } from '../../internal/operation';
+import { ProcuratHttpClient } from '../../shared/http-client';
+import { AddChildToParent, AddParentToChild, CreatedRelationship, Relationship } from './relationship-schema';
 
 export class ProcuratRelationship extends Context.Service<ProcuratRelationship>()('ProcuratRelationship', {
   make: Effect.gen(function* () {

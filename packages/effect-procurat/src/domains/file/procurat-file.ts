@@ -1,9 +1,9 @@
 import { Context, Effect, Layer, Stream } from 'effect';
 import { HttpClientRequest } from 'effect/unstable/http';
-import { ProcuratHttpClient } from '../http-client';
-import { decodeJson, streamBody } from '../internal/decode';
-import { operation } from '../internal/operation';
-import { DirectoryContent } from '../schema/file-schema';
+import { decodeJson, streamBody } from '../../internal/decode';
+import { operation } from '../../internal/operation';
+import { ProcuratHttpClient } from '../../shared/http-client';
+import { DirectoryContent } from './file-schema';
 
 /** Encodes each segment while preserving the directory separators. */
 const encodePath = (path: string) => path.split('/').map(encodeURIComponent).join('/');

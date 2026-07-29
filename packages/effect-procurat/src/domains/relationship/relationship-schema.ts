@@ -1,4 +1,5 @@
 import { Schema } from 'effect';
+import { membersOf } from '../../shared/literals';
 
 export const ChildInRelationshipType = Schema.Literals([
   'son',
@@ -15,6 +16,22 @@ export const ChildInRelationshipType = Schema.Literals([
   'fosterdaughter',
   'other',
 ]);
+export type ChildInRelationshipType = typeof ChildInRelationshipType.Type;
+export const ChildInRelationshipTypes = membersOf(ChildInRelationshipType)({
+  Son: 'son',
+  Daughter: 'daughter',
+  Child: 'child',
+  Grandson: 'grandson',
+  Granddaughter: 'granddaughter',
+  Grandchild: 'grandchild',
+  GuestChild: 'guestchild',
+  GuestSon: 'guestson',
+  GuestDaughter: 'guestdaughter',
+  FosterChild: 'fosterchild',
+  FosterSon: 'fosterson',
+  FosterDaughter: 'fosterdaughter',
+  Other: 'other',
+});
 
 export const ParentInRelationshipType = Schema.Literals([
   'father',
@@ -29,6 +46,20 @@ export const ParentInRelationshipType = Schema.Literals([
   'fostermother',
   'other',
 ]);
+export type ParentInRelationshipType = typeof ParentInRelationshipType.Type;
+export const ParentInRelationshipTypes = membersOf(ParentInRelationshipType)({
+  Father: 'father',
+  Mother: 'mother',
+  Grandfather: 'grandfather',
+  Grandmother: 'grandmother',
+  Grandparents: 'grandparents',
+  GuestFather: 'guestfather',
+  GuestMother: 'guestmother',
+  FosterParent: 'fosterparent',
+  FosterFather: 'fosterfather',
+  FosterMother: 'fostermother',
+  Other: 'other',
+});
 
 const BaseRelationshipFields = Schema.Struct({
   childRelationshipType: ChildInRelationshipType,
@@ -82,6 +113,32 @@ export const RelationshipType = Schema.Literals([
   'fosterdaughter',
   'other',
 ]);
+export type RelationshipType = typeof RelationshipType.Type;
+export const RelationshipTypes = membersOf(RelationshipType)({
+  Father: 'father',
+  Son: 'son',
+  Mother: 'mother',
+  Daughter: 'daughter',
+  Child: 'child',
+  Grandfather: 'grandfather',
+  Grandmother: 'grandmother',
+  Grandparents: 'grandparents',
+  Grandson: 'grandson',
+  Granddaughter: 'granddaughter',
+  Grandchild: 'grandchild',
+  GuestFather: 'guestfather',
+  GuestMother: 'guestmother',
+  GuestChild: 'guestchild',
+  GuestSon: 'guestson',
+  GuestDaughter: 'guestdaughter',
+  FosterParent: 'fosterparent',
+  FosterFather: 'fosterfather',
+  FosterMother: 'fostermother',
+  FosterChild: 'fosterchild',
+  FosterSon: 'fosterson',
+  FosterDaughter: 'fosterdaughter',
+  Other: 'other',
+});
 
 export class Relationship extends Schema.Class<Relationship>('Relationship')({
   personId: Schema.Number,

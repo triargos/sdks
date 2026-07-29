@@ -1,5 +1,5 @@
 import { Effect, Schema } from 'effect';
-import { ProcuratHttpClient } from '../http-client';
+import { ProcuratHttpClient } from '../shared/http-client';
 import { decodeJson } from './decode';
 import { operation } from './operation';
 

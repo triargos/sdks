@@ -1,8 +1,23 @@
 import { Schema } from 'effect';
+import { membersOf } from '../../shared/literals';
 
 export const ContactInformationMedium = Schema.Literals(['telephone', 'email', 'mobile', 'fax']);
+export type ContactInformationMedium = typeof ContactInformationMedium.Type;
+export const ContactInformationMedia = membersOf(ContactInformationMedium)({
+  Telephone: 'telephone',
+  Email: 'email',
+  Mobile: 'mobile',
+  Fax: 'fax',
+});
 
 export const ContactInformationType = Schema.Literals(['private', 'address', 'work', 'external']);
+export type ContactInformationType = typeof ContactInformationType.Type;
+export const ContactInformationTypes = membersOf(ContactInformationType)({
+  Private: 'private',
+  Address: 'address',
+  Work: 'work',
+  External: 'external',
+});
 
 const ContactInformationBase = Schema.Struct({
   medium: ContactInformationMedium,

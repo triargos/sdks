@@ -6,4 +6,4 @@ export {
   type ProcuratFailure,
   ProcuratNotFoundError,
   ProcuratUnavailableError,
-} from './error/procurat-errors';
+} from './shared/errors';

@@ -1,9 +1,10 @@
 import { Context, Effect, Layer, Schema } from 'effect';
 import { HttpClientRequest } from 'effect/unstable/http';
-import { ProcuratHttpClient } from '../http-client';
-import { decodeJson } from '../internal/decode';
-import { operation } from '../internal/operation';
-import { CreatePerson, Person, UpdatePerson } from '../schema/person-schema';
+import { decodeJson } from '../../internal/decode';
+import { operation } from '../../internal/operation';
+import { ProcuratHttpClient } from '../../shared/http-client';
+import { GroupSupervisor } from '../group/group-supervisor-schema';
+import { CreatePerson, Person, UpdatePerson } from './person-schema';
 
 export class ProcuratPerson extends Context.Service<ProcuratPerson>()('ProcuratPerson', {
   make: Effect.gen(function* () {
@@ -19,6 +20,10 @@ export class ProcuratPerson extends Context.Service<ProcuratPerson>()('ProcuratP
 
     const findByFamilyId = operation('person.findByFamilyId', (params: { familyId: number }) =>
       http.get(`/persons/family/${params.familyId}`).pipe(Effect.flatMap(decodeJson(Schema.Array(Person)))),
+    );
+
+    const findRolesInGroups = operation('person.findRolesInGroups', (params: { id: number }) =>
+      http.get(`/persons/${params.id}/roles`).pipe(Effect.flatMap(decodeJson(Schema.Array(GroupSupervisor)))),
     );
 
     const create = operation('person.create', (params: { person: CreatePerson }) =>
@@ -41,7 +46,7 @@ export class ProcuratPerson extends Context.Service<ProcuratPerson>()('ProcuratP
       ),
     );
 
-    return { findAll, findById, findByFamilyId, create, update };
+    return { findAll, findById, findByFamilyId, findRolesInGroups, create, update };
   }),
 }) {
   static readonly layer = Layer.effect(this)(this.make);

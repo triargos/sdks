@@ -1,9 +1,10 @@
 import { Context, Effect, Layer, Schema } from 'effect';
 import { HttpClientRequest } from 'effect/unstable/http';
-import { ProcuratHttpClient } from '../http-client';
-import { decodeJson } from '../internal/decode';
-import { operation } from '../internal/operation';
-import { Address, CreateAddress } from '../schema/address-schema';
+import { decodeJson } from '../../internal/decode';
+import { operation } from '../../internal/operation';
+import { ProcuratHttpClient } from '../../shared/http-client';
+import { Person } from '../person/person-schema';
+import { Address, CreateAddress } from './address-schema';
 
 export class ProcuratAddress extends Context.Service<ProcuratAddress>()('ProcuratAddress', {
   make: Effect.gen(function* () {
@@ -26,7 +27,11 @@ export class ProcuratAddress extends Context.Service<ProcuratAddress>()('Procura
       ),
     );
 
-    return { findAll, findById, create };
+    const findResidents = operation('address.findResidents', (params: { addressId: number }) =>
+      http.get(`/addresses/${params.addressId}/residents`).pipe(Effect.flatMap(decodeJson(Schema.Array(Person)))),
+    );
+
+    return { findAll, findById, create, findResidents };
   }),
 }) {
   static readonly layer = Layer.effect(this)(this.make);

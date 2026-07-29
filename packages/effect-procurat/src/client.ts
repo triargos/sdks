@@ -1,21 +1,23 @@
 import { Config, Context, Effect, Layer, type Redacted } from 'effect';
 import type { HttpClient } from 'effect/unstable/http';
-import { ProcuratHttpClient } from './http-client';
-import { ProcuratAddress } from './modules/procurat-address';
-import { ProcuratCommunication } from './modules/procurat-communication';
-import { ProcuratContactInformation } from './modules/procurat-contact-information';
-import { ProcuratCountry } from './modules/procurat-country';
-import { ProcuratCounty } from './modules/procurat-county';
-import { ProcuratFile } from './modules/procurat-file';
-import { ProcuratGroup } from './modules/procurat-group';
-import { ProcuratGroupMember } from './modules/procurat-group-member';
-import { ProcuratLookupTable } from './modules/procurat-lookup-table';
-import { ProcuratPerson } from './modules/procurat-person';
-import { ProcuratRelationship } from './modules/procurat-relationship';
-import { ProcuratReligion } from './modules/procurat-religion';
+import { ProcuratAbsence } from './domains/absence/procurat-absence';
+import { ProcuratAddress } from './domains/address/procurat-address';
+import { ProcuratCommunication } from './domains/communication/procurat-communication';
+import { ProcuratContactInformation } from './domains/contact-information/procurat-contact-information';
+import { ProcuratCountry } from './domains/country/procurat-country';
+import { ProcuratCounty } from './domains/county/procurat-county';
+import { ProcuratFile } from './domains/file/procurat-file';
+import { ProcuratGroupMember } from './domains/group-member/procurat-group-member';
+import { ProcuratGroup } from './domains/group/procurat-group';
+import { ProcuratLookupTable } from './domains/lookup-table/procurat-lookup-table';
+import { ProcuratPerson } from './domains/person/procurat-person';
+import { ProcuratRelationship } from './domains/relationship/procurat-relationship';
+import { ProcuratReligion } from './domains/religion/procurat-religion';
+import { ProcuratHttpClient } from './shared/http-client';
 
 const modules = Layer.mergeAll(
   ProcuratPerson.layer,
+  ProcuratAbsence.layer,
   ProcuratAddress.layer,
   ProcuratGroupMember.layer,
   ProcuratContactInformation.layer,
@@ -32,6 +34,7 @@ const modules = Layer.mergeAll(
 export class ProcuratClient extends Context.Service<ProcuratClient>()('ProcuratClient', {
   make: Effect.gen(function* () {
     const person = yield* ProcuratPerson;
+    const absence = yield* ProcuratAbsence;
     const address = yield* ProcuratAddress;
     const groupMember = yield* ProcuratGroupMember;
     const contactInformation = yield* ProcuratContactInformation;
@@ -46,6 +49,7 @@ export class ProcuratClient extends Context.Service<ProcuratClient>()('ProcuratC
 
     return {
       person,
+      absence,
       address,
       groupMember,
       contactInformation,

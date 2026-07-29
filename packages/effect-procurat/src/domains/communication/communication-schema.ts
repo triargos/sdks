@@ -18,3 +18,22 @@ export class ContactPerson extends Schema.Class<ContactPerson>('ContactPerson')(
   includeAddressOnList: Schema.NullOr(Schema.Boolean),
   includeHomePhoneOnList: Schema.NullOr(Schema.Boolean),
 }) {}
+
+export class CreateContactInformationAssignment extends Schema.Opaque<CreateContactInformationAssignment>()(
+  Schema.Struct({
+    personId: Schema.Number,
+    contactInfoId: Schema.Number,
+    emergencyPriority: Schema.NullOr(Schema.Number),
+    isOnList: Schema.NullOr(Schema.Boolean),
+  }),
+) {}
+
+export class ContactInformationAssignment extends Schema.Class<ContactInformationAssignment>(
+  'ContactInformationAssignment',
+)({
+  id: Schema.Number,
+  personId: Schema.Number,
+  contactInfoId: Schema.Number,
+  emergencyPriority: Schema.NullOr(Schema.Number),
+  isOnList: Schema.Boolean,
+}) {}

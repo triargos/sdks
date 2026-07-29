@@ -8,7 +8,7 @@ import {
   type ProcuratError,
   ProcuratNotFoundError,
   ProcuratUnavailableError,
-} from '../error/procurat-errors';
+} from '../shared/errors';
 import { ProcuratErrorSchema } from './error-schema';
 import { CurrentOperation } from './operation';
 

@@ -1,15 +1,25 @@
 import { Context, Effect, Layer, Schema } from 'effect';
 import { HttpClientRequest } from 'effect/unstable/http';
-import { ProcuratHttpClient } from '../http-client';
-import { decodeJson } from '../internal/decode';
-import { operation } from '../internal/operation';
-import { ContactInformation, CreateContactInformation } from '../schema/contact-information-schema';
+import { decodeJson } from '../../internal/decode';
+import { operation } from '../../internal/operation';
+import { ProcuratHttpClient } from '../../shared/http-client';
+import { ContactInformation, CreateContactInformation } from './contact-information-schema';
 
 export class ProcuratContactInformation extends Context.Service<ProcuratContactInformation>()(
   'ProcuratContactInformation',
   {
     make: Effect.gen(function* () {
       const http = yield* ProcuratHttpClient;
+
+      const findAll = operation('contactInformation.findAll', () =>
+        http.get('/contactinformation/person').pipe(Effect.flatMap(decodeJson(Schema.Array(ContactInformation)))),
+      );
+
+      const findById = operation('contactInformation.findById', (params: { contactInformationId: number }) =>
+        http
+          .get(`/contactinformation/${params.contactInformationId}`)
+          .pipe(Effect.flatMap(decodeJson(ContactInformation))),
+      );
 
       const create = operation(
         'contactInformation.create',
@@ -28,7 +38,13 @@ export class ProcuratContactInformation extends Context.Service<ProcuratContactI
           .pipe(Effect.flatMap(decodeJson(Schema.Array(ContactInformation)))),
       );
 
-      return { create, findByPerson };
+      const findByAddress = operation('contactInformation.findByAddress', (params: { addressId: number }) =>
+        http
+          .get(`/contactinformation/address/${params.addressId}`)
+          .pipe(Effect.flatMap(decodeJson(Schema.Array(ContactInformation)))),
+      );
+
+      return { findAll, findById, create, findByPerson, findByAddress };
     }),
   },
 ) {

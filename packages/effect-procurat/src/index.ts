@@ -1,3 +1,3 @@
 export { ProcuratClient, type ProcuratClientShape } from './client';
-export { ProcuratHttpClient } from './http-client';
-export { ProcuratRetry, type ProcuratRetryPolicy } from './retry';
+export { ProcuratHttpClient } from './shared/http-client';
+export { ProcuratRetry, type ProcuratRetryPolicy } from './shared/retry';

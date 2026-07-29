@@ -1,5 +1,5 @@
 import { Context, Layer, Schedule } from 'effect';
-import type { ProcuratError } from './error/procurat-errors';
+import type { ProcuratError } from './errors';
 
 export interface ProcuratRetryPolicy {
   readonly while: (error: ProcuratError) => boolean;

@@ -1,7 +1,7 @@
 import { Context, Effect, Layer, Option, Redacted } from 'effect';
 import { HttpClient, HttpClientRequest } from 'effect/unstable/http';
-import type { ProcuratError } from './error/procurat-errors';
-import { matchError } from './internal/match-error';
+import { matchError } from '../internal/match-error';
+import type { ProcuratError } from './errors';
 import { ProcuratRetry } from './retry';
 
 export class ProcuratHttpClient extends Context.Service<

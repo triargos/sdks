@@ -1,9 +1,6 @@
 import { Schema } from 'effect';
 
-const JsonDataSchema = Schema.Record({
-  key: Schema.String,
-  value: Schema.Unknown,
-})
+const JsonDataSchema = Schema.Record(Schema.String, Schema.Unknown);
 
 export class GroupMemberSchema extends Schema.Class<GroupMemberSchema>('GroupMemberSchema')({
   id: Schema.Number,
@@ -11,17 +8,18 @@ export class GroupMemberSchema extends Schema.Class<GroupMemberSchema>('GroupMem
   personId: Schema.Number,
   entryDate: Schema.DateFromString,
   exitDate: Schema.NullOr(Schema.DateFromString),
-  //TODO: We're missing JSON Data here
   jsonData: Schema.NullOr(JsonDataSchema),
   grade: Schema.NullOr(Schema.Number),
 }) {}
 
-export class AddMemberToGroupSchema extends Schema.Class<AddMemberToGroupSchema>('AddMemberToGroupSchema')({
+export const AddMemberToGroupSchema = Schema.Struct({
   personId: Schema.Number,
-  entryDate: Schema.NullOr(Schema.Date),
+  entryDate: Schema.NullOr(Schema.DateFromString),
   grade: Schema.NullOr(Schema.Number),
-}) {}
+});
+export type AddMemberToGroupSchema = typeof AddMemberToGroupSchema.Type;
 
-export class UpdateGroupMembershipSchema extends Schema.Class<UpdateGroupMembershipSchema>('UpdateGroupMembershipSchema')({
-  jsonData: JsonDataSchema
-}) {}
+export const UpdateGroupMembershipSchema = Schema.Struct({
+  jsonData: JsonDataSchema,
+});
+export type UpdateGroupMembershipSchema = typeof UpdateGroupMembershipSchema.Type;

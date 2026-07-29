@@ -30,7 +30,19 @@ export class SchoolSchema extends Schema.Class<SchoolSchema>('SchoolSchema')({
   schoolTypeId: Schema.Number,
 }) {}
 
-export const SchoolTypeSchema = Schema.Literal('GY', 'RS', 'GMS', 'FS', 'BS', 'BFS', 'FOS', 'BOS', 'IGS', 'WS', 'FZ');
+export const SchoolTypeSchema = Schema.Literals([
+  'GY',
+  'RS',
+  'GMS',
+  'FS',
+  'BS',
+  'BFS',
+  'FOS',
+  'BOS',
+  'IGS',
+  'WS',
+  'FZ',
+]);
 
 export class BavarianSchoolSchema extends Schema.Class<BavarianSchoolSchema>('BavarianSchoolSchema')({
   id: Schema.Number,

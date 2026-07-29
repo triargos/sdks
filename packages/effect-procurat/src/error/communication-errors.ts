@@ -1,11 +1,8 @@
-import { Schema } from 'effect';
-import { ContactPersonCreationSchema } from '../schema/communication-schema';
+import { Data } from 'effect';
+import type { ContactPersonCreationSchema } from '../schema/communication-schema';
 import { ProcuratBadRequestError, ProcuratServerError } from './procurat-errors';
 
-export class CreateContactPersonError extends Schema.TaggedError<CreateContactPersonError>()(
-  'CreateContactPersonError',
-  {
-    cause: Schema.Union(ProcuratBadRequestError, ProcuratServerError),
-    data: Schema.Unknown,
-  },
-) {}
+export class CreateContactPersonError extends Data.TaggedError('CreateContactPersonError')<{
+  readonly cause: ProcuratBadRequestError | ProcuratServerError;
+  readonly data: ContactPersonCreationSchema;
+}> {}

@@ -1,10 +1,6 @@
-.idea
 */**/coverage
-packages/**/dist/**
+/**/dist/**
 *.iml
-node_modules
-packages/**/node_modules
-packages/**/.yarn
-.yarn
-.DS_Store
+**/**/node_modules
 */**/.DS_Store
+plans/**

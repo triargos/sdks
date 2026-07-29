@@ -43,13 +43,11 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "@effect/platform": "^0.92.1",
-    "effect": "^3.18.4"
+    "effect": "^4.0.0-beta.0"
   },
   "devDependencies": {
-    "@effect/platform": "^0.92.1",
     "@types/node": "^20.0.0",
-    "effect": "^3.18.4",
+    "effect": "^4.0.0-beta.0",
     "prettier": "^3.2.5",
     "tsup": "^8.0.0",
     "typescript": "^5.0.0"

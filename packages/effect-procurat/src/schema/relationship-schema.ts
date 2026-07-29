@@ -1,6 +1,6 @@
 import { Schema } from 'effect';
 
-export const ChildInRelationshipTypeSchema = Schema.Literal(
+export const ChildInRelationshipTypeSchema = Schema.Literals([
   'son',
   'daughter',
   'child',
@@ -14,8 +14,8 @@ export const ChildInRelationshipTypeSchema = Schema.Literal(
   'fosterson',
   'fosterdaughter',
   'other',
-);
-export const ParentInRelationshipTypeSchema = Schema.Literal(
+]);
+export const ParentInRelationshipTypeSchema = Schema.Literals([
   'father',
   'mother',
   'grandfather',
@@ -27,7 +27,7 @@ export const ParentInRelationshipTypeSchema = Schema.Literal(
   'fosterfather',
   'fostermother',
   'other',
-);
+]);
 
 const BaseRelationshipFieldSchema = Schema.Struct({
   childRelationshipType: ChildInRelationshipTypeSchema,
@@ -38,21 +38,23 @@ const BaseRelationshipFieldSchema = Schema.Struct({
   notes: Schema.NullOr(Schema.String),
 });
 
-export class AddParentToChildSchema extends Schema.Class<AddParentToChildSchema>('AddParentToChildSchema')({
+export const AddParentToChildSchema = Schema.Struct({
   parentId: Schema.Number,
   ...BaseRelationshipFieldSchema.fields,
-}) {}
+});
+export type AddParentToChildSchema = typeof AddParentToChildSchema.Type;
 
-export class AddChildToParentSchema extends Schema.Class<AddChildToParentSchema>('AddChildToParentSchema')({
+export const AddChildToParentSchema = Schema.Struct({
   childId: Schema.Number,
   ...BaseRelationshipFieldSchema.fields,
-}) {}
+});
+export type AddChildToParentSchema = typeof AddChildToParentSchema.Type;
 
 export class CreatedRelationShipSchema extends Schema.Class<CreatedRelationShipSchema>('CreatedRelationshipSchema')({
   id: Schema.Number,
 }) {}
 
-export const RelationshipTypeSchema = Schema.Literal(
+export const RelationshipTypeSchema = Schema.Literals([
   'father',
   'son',
   'mother',
@@ -76,7 +78,7 @@ export const RelationshipTypeSchema = Schema.Literal(
   'fosterson',
   'fosterdaughter',
   'other',
-);
+]);
 
 export class RelationshipSchema extends Schema.Class<RelationshipSchema>('RelationshipSchema')({
   personId: Schema.Number,

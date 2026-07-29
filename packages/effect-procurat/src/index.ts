@@ -1,1 +1,1 @@
-export { ProcuratClient } from './client'
+export { ProcuratClient } from './client';

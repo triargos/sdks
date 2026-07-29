@@ -1,17 +1,16 @@
-import { Schema } from "effect";
-import { ProcuratNotFoundError, ProcuratServerError } from "./procurat-errors";
+import { Data } from 'effect';
+import { ProcuratNotFoundError, ProcuratServerError } from './procurat-errors';
 
+export class ListReligionsError extends Data.TaggedError('ListReligionsError')<{
+  readonly cause: ProcuratServerError;
+}> {}
 
-export class ListReligionsError extends Schema.TaggedError<ListReligionsError>()("ListReligionsError", {
-  cause: ProcuratServerError
-}) {}
+export class ReligionNotFoundError extends Data.TaggedError('ReligionNotFoundError')<{
+  readonly cause: ProcuratNotFoundError;
+  readonly religionId: number;
+}> {}
 
-export class ReligionNotFoundError extends Schema.TaggedError<ReligionNotFoundError>()("ReligionNotFoundError", {
-  cause: ProcuratNotFoundError,
-  religionId: Schema.Number
-}) {}
-
-export class FindReligionError extends Schema.TaggedError<FindReligionError>()("FindReligionError", {
-  cause: ProcuratServerError,
-  religionId: Schema.Number
-}) {}
+export class FindReligionError extends Data.TaggedError('FindReligionError')<{
+  readonly cause: ProcuratServerError;
+  readonly religionId: number;
+}> {}

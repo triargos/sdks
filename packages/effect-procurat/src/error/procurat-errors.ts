@@ -1,35 +1,28 @@
-import { Schema } from 'effect';
-import { RequestError } from '@effect/platform/HttpClientError';
+import { Data, Schema } from 'effect';
+import type { HttpClientError } from 'effect/unstable/http/HttpClientError';
 
-export class ProcuratErrorSchema extends Schema.Class<ProcuratErrorSchema>('ProcuratErrorSchema')({
+export const ProcuratErrorSchema = Schema.Struct({
   code: Schema.Number,
   error: Schema.String,
-}) {}
-
-export const ProcuratErrorDetailsSchema = Schema.Struct({
-  status: Schema.Number,
-  message: Schema.String,
-  endpoint: Schema.String,
 });
 
-export class ProcuratNotFoundError extends Schema.TaggedError<ProcuratNotFoundError>()(
-  'ProcuratNotFoundError',
-  ProcuratErrorDetailsSchema,
-) {}
+interface ProcuratErrorDetails {
+  readonly status: number;
+  readonly message: string;
+  readonly endpoint: string;
+}
 
-export class ProcuratUnauthorizedError extends Schema.TaggedError<ProcuratUnauthorizedError>()(
-  'ProcuratUnauthorizedError',
-  ProcuratErrorDetailsSchema,
-) {}
+export class ProcuratNotFoundError extends Data.TaggedError('ProcuratNotFoundError')<ProcuratErrorDetails> {}
 
-export class ProcuratServerError extends Schema.TaggedError<ProcuratServerError>()(
-  'ProcuratServerError',
-  ProcuratErrorDetailsSchema,
-) {}
+export class ProcuratUnauthorizedError extends Data.TaggedError('ProcuratUnauthorizedError')<ProcuratErrorDetails> {}
 
-export class ProcuratBadRequestError extends Schema.TaggedError<ProcuratBadRequestError>()(
-  'ProcuratBadRequestError',
-  ProcuratErrorDetailsSchema,
-) {}
+export class ProcuratServerError extends Data.TaggedError('ProcuratServerError')<ProcuratErrorDetails> {}
 
-export type ProcuratCommonErrors = RequestError | ProcuratUnauthorizedError;
+export class ProcuratBadRequestError extends Data.TaggedError('ProcuratBadRequestError')<ProcuratErrorDetails> {}
+
+export class ProcuratTransportError extends Data.TaggedError('ProcuratTransportError')<{
+  readonly cause: HttpClientError;
+  readonly endpoint: string;
+}> {}
+
+export type ProcuratCommonErrors = ProcuratTransportError | ProcuratUnauthorizedError;

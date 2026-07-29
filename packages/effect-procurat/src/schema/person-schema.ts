@@ -1,7 +1,7 @@
 import { Schema } from 'effect';
 
-export const GenderSchema = Schema.Literal('male', 'female', 'other');
-export const FamilyRoleSchema = Schema.Literal('father', 'mother', 'child', 'etc', 'parent', 'son', 'daughter');
+export const GenderSchema = Schema.Literals(['male', 'female', 'other']);
+export const FamilyRoleSchema = Schema.Literals(['father', 'mother', 'child', 'etc', 'parent', 'son', 'daughter']);
 
 export class PersonSchema extends Schema.Class<PersonSchema>('PersonSchema')({
   id: Schema.Number,
@@ -31,7 +31,7 @@ export class PersonSchema extends Schema.Class<PersonSchema>('PersonSchema')({
   deathDate: Schema.NullOr(Schema.DateFromString),
 }) {}
 
-export class CreatePersonSchema extends Schema.Class<CreatePersonSchema>('CreatePersonSchema')({
+export const CreatePersonSchema = Schema.Struct({
   firstName: Schema.String,
   lastName: Schema.String,
   allFirstNames: Schema.NullOr(Schema.String),
@@ -43,11 +43,10 @@ export class CreatePersonSchema extends Schema.Class<CreatePersonSchema>('Create
   birthPlace: Schema.NullOr(Schema.String),
   birthCountryId: Schema.NullOr(Schema.Number),
   nationalityId: Schema.NullOr(Schema.Number),
+});
+export type CreatePersonSchema = typeof CreatePersonSchema.Type;
 
-
-}) {}
-
-export class UpdatePersonSchema extends Schema.Class<UpdatePersonSchema>('UpdatePersonSchema')({
+export const UpdatePersonSchema = Schema.Struct({
   id: Schema.Number,
   firstName: Schema.NullOr(Schema.String),
   lastName: Schema.NullOr(Schema.String),
@@ -55,7 +54,7 @@ export class UpdatePersonSchema extends Schema.Class<UpdatePersonSchema>('Update
   addressId: Schema.NullOr(Schema.Number),
   familyId: Schema.NullOr(Schema.Number),
   familyRole: Schema.NullOr(FamilyRoleSchema),
-  birthDate: Schema.NullOr(Schema.Date),
+  birthDate: Schema.NullOr(Schema.DateFromString),
   birthPlace: Schema.NullOr(Schema.String),
   birthCountryId: Schema.NullOr(Schema.Number),
   languageId: Schema.NullOr(Schema.Number),
@@ -71,8 +70,9 @@ export class UpdatePersonSchema extends Schema.Class<UpdatePersonSchema>('Update
   comment: Schema.NullOr(Schema.String),
   nationalityId: Schema.NullOr(Schema.Number),
   maritalStatus: Schema.NullOr(Schema.String),
-  deathDate: Schema.NullOr(Schema.Date),
-}) {}
+  deathDate: Schema.NullOr(Schema.DateFromString),
+});
+export type UpdatePersonSchema = typeof UpdatePersonSchema.Type;
 
 export class SuccessResponseSchema extends Schema.Class<SuccessResponseSchema>('SuccessResponseSchema')({
   code: Schema.Number,

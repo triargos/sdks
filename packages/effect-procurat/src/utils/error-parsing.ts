@@ -1,7 +1,7 @@
 import { Effect } from 'effect';
-import { ResponseError } from '@effect/platform/HttpClientError';
-import { ParseError } from 'effect/ParseResult';
+import type { SchemaError } from 'effect/SchemaError';
+import type { HttpClientError } from 'effect/unstable/http/HttpClientError';
 
-export function removeUnrecoverableErrors<A, E>(effect: Effect.Effect<A, E | ResponseError | ParseError>) {
-  return effect.pipe(Effect.catchTag('ParseError', 'ResponseError', Effect.die));
+export function removeUnrecoverableErrors<A, E>(effect: Effect.Effect<A, E | HttpClientError | SchemaError>) {
+  return effect.pipe(Effect.catchTag(['SchemaError', 'HttpClientError'], Effect.die));
 }

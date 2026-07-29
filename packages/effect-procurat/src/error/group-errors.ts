@@ -1,27 +1,26 @@
-import { Schema } from 'effect';
-
+import { Data } from 'effect';
 import { ProcuratNotFoundError, ProcuratServerError } from './procurat-errors';
 
-export class ListGroupsError extends Schema.TaggedError<ListGroupsError>()("ListGroupsError", {
-  cause: ProcuratServerError
-}) {}
+export class ListGroupsError extends Data.TaggedError('ListGroupsError')<{
+  readonly cause: ProcuratServerError;
+}> {}
 
-export class GroupNotFoundError extends Schema.TaggedError<GroupNotFoundError>()("GroupNotFoundError", {
-  groupId: Schema.Number,
-  cause: ProcuratNotFoundError
-}) {}
+export class GroupNotFoundError extends Data.TaggedError('GroupNotFoundError')<{
+  readonly groupId: number;
+  readonly cause: ProcuratNotFoundError;
+}> {}
 
-export class FindGroupError extends Schema.TaggedError<FindGroupError>()("FindGroupError", {
-  groupId: Schema.Number,
-  cause: ProcuratServerError
-}) {}
+export class FindGroupError extends Data.TaggedError('FindGroupError')<{
+  readonly groupId: number;
+  readonly cause: ProcuratServerError;
+}> {}
 
-export class FindGroupMembersError extends Schema.TaggedError<FindGroupMembersError>()("FindGroupMembersError", {
-  groupId: Schema.Number,
-  cause: ProcuratServerError
-}) {}
+export class FindGroupMembersError extends Data.TaggedError('FindGroupMembersError')<{
+  readonly groupId: number;
+  readonly cause: ProcuratServerError;
+}> {}
 
-export class ListCustomFieldsError extends Schema.TaggedError<ListCustomFieldsError>()("ListCustomFieldsError", {
-  groupId: Schema.Number,
-  cause: ProcuratServerError
-}) {}
+export class ListCustomFieldsError extends Data.TaggedError('ListCustomFieldsError')<{
+  readonly groupId: number;
+  readonly cause: ProcuratServerError;
+}> {}

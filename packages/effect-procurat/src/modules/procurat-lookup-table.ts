@@ -1,6 +1,6 @@
-import { Effect, Schema } from 'effect';
+import { Context, Effect, Layer, Schema } from 'effect';
 import { ProcuratHttpClient } from '../http-client';
-import { HttpClientResponse } from '@effect/platform';
+import { HttpClientResponse } from 'effect/unstable/http';
 import {
   BavarianSchoolSchema,
   CareTypeSchema,
@@ -13,15 +13,15 @@ import {
 import { removeUnrecoverableErrors } from '../utils/error-parsing';
 import { ListLookupsError } from '../error/lookup-table-errors';
 
-export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('ProcuratLookupTable', {
-  effect: Effect.gen(function* () {
+export class ProcuratLookupTable extends Context.Service<ProcuratLookupTable>()('ProcuratLookupTable', {
+  make: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
 
     const listTransitions = Effect.fn('lookupTable.listTransitions')(function* () {
       return yield* http.get('/lookups/transition').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'transitions' }),
         }),
@@ -32,7 +32,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/special-support').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'special-support-types' }),
         }),
@@ -43,7 +43,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/school').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(SchoolSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'schools' }),
         }),
@@ -54,7 +54,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/school-type').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'school-types' }),
         }),
@@ -65,7 +65,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/school-graduation').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'school-graduations' }),
         }),
@@ -76,7 +76,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/repetition-reason').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'repetition-reasons' }),
         }),
@@ -87,7 +87,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/relocation').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'relocation-reasons' }),
         }),
@@ -98,7 +98,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/religious-education').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'religious-educations' }),
         }),
@@ -109,7 +109,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/religion').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'religions' }),
         }),
@@ -120,7 +120,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/previous-school').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'previous-schools' }),
         }),
@@ -131,7 +131,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/person-type').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'person-types' }),
         }),
@@ -142,7 +142,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/origin-grade-level').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'origin-grade-levels' }),
         }),
@@ -153,7 +153,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/municipality').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(MunicipalitySchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'municipalities' }),
         }),
@@ -164,7 +164,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/municipality-code').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(MunicipalityCodeSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'municipality-codes' }),
         }),
@@ -175,7 +175,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/guest-student-type').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'guest-student-types' }),
         }),
@@ -186,7 +186,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/grade-level').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'grade-levels' }),
         }),
@@ -197,7 +197,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/foreign-language').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'foreign-languages' }),
         }),
@@ -208,7 +208,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/exit-reason').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'exit-reasons' }),
         }),
@@ -219,7 +219,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/enrollment-type').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'enrollment-types' }),
         }),
@@ -230,7 +230,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/disorder-weakness').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'disorders-and-weaknesses' }),
         }),
@@ -241,7 +241,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/departure-reason').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'departure-reasons' }),
         }),
@@ -252,7 +252,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/cost-bearer').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(CostBearerSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'cost-bearers' }),
         }),
@@ -263,7 +263,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/compulsory-education').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'compulsory-educations' }),
         }),
@@ -274,7 +274,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/common-language').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'common-languages' }),
         }),
@@ -285,7 +285,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/class-goal').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'class-goals' }),
         }),
@@ -296,7 +296,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/care').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'care-programs' }),
         }),
@@ -307,7 +307,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/care-type').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(CareTypeSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'care-types' }),
         }),
@@ -318,7 +318,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/bavarian-schools').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(BavarianSchoolSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'bavarian-schools' }),
         }),
@@ -329,7 +329,7 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       return yield* http.get('/lookups/admission-authorization').pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(LookupTableSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListLookupsError({ cause, lookupType: 'admission-authorizations' }),
         }),
@@ -368,4 +368,6 @@ export class ProcuratLookupTable extends Effect.Service<ProcuratLookupTable>()('
       listAdmissionAuthorizations,
     };
   }),
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make);
+}

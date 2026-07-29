@@ -1,5 +1,5 @@
-import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
-import { Effect, Schema } from 'effect';
+import { Context, Effect, Layer, Schema } from 'effect';
+import { HttpClientRequest, HttpClientResponse } from 'effect/unstable/http';
 import { CreateRelationshipError, ListRelationshipsError } from '../error/relationship-errors';
 import { PersonNotFoundError, ProcuratCommonErrors } from '../errors';
 import { ProcuratHttpClient } from '../http-client';
@@ -11,8 +11,8 @@ import {
 } from '../schema/relationship-schema';
 import { removeUnrecoverableErrors } from '../utils/error-parsing';
 
-export class ProcuratRelationship extends Effect.Service<ProcuratRelationship>()('ProcuratRelationship', {
-  effect: Effect.gen(function* () {
+export class ProcuratRelationship extends Context.Service<ProcuratRelationship>()('ProcuratRelationship', {
+  make: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
 
     const addParentToChild: (
@@ -26,10 +26,9 @@ export class ProcuratRelationship extends Effect.Service<ProcuratRelationship>()
         Effect.flatMap(http.execute),
         Effect.flatMap(HttpClientResponse.schemaBodyJson(CreatedRelationShipSchema)),
         removeUnrecoverableErrors,
-        Effect.catchTag('HttpBodyError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['HttpBodyError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTag(
-          'ProcuratServerError',
-          'ProcuratBadRequestError',
+          ['ProcuratServerError', 'ProcuratBadRequestError'],
           (cause) =>
             new CreateRelationshipError({
               kind: 'addParentToChild',
@@ -52,10 +51,9 @@ export class ProcuratRelationship extends Effect.Service<ProcuratRelationship>()
         Effect.flatMap(http.execute),
         Effect.flatMap(HttpClientResponse.schemaBodyJson(CreatedRelationShipSchema)),
         removeUnrecoverableErrors,
-        Effect.catchTag('HttpBodyError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['HttpBodyError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTag(
-          'ProcuratServerError',
-          'ProcuratBadRequestError',
+          ['ProcuratServerError', 'ProcuratBadRequestError'],
           (cause) =>
             new CreateRelationshipError({
               kind: 'addChildToParent',
@@ -67,12 +65,14 @@ export class ProcuratRelationship extends Effect.Service<ProcuratRelationship>()
       );
     });
 
-    const findRelationshipsForPerson: (
-      {personId}: {personId: number},
-    ) => Effect.Effect<
+    const findRelationshipsForPerson: ({
+      personId,
+    }: {
+      personId: number;
+    }) => Effect.Effect<
       ReadonlyArray<RelationshipSchema>,
       PersonNotFoundError | ListRelationshipsError | ProcuratCommonErrors
-    > = Effect.fn('relationship.findRelationshipsForPerson')(function* ({personId}) {
+    > = Effect.fn('relationship.findRelationshipsForPerson')(function* ({ personId }) {
       return yield* HttpClientRequest.get(`/relationships/person/${personId}`).pipe(
         http.execute,
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(RelationshipSchema))),
@@ -87,4 +87,6 @@ export class ProcuratRelationship extends Effect.Service<ProcuratRelationship>()
 
     return { addParentToChild, addChildToParent, findRelationshipsForPerson };
   }),
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make);
+}

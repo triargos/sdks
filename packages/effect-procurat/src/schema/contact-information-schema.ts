@@ -1,8 +1,8 @@
 import { Schema } from 'effect';
 
-export const ContactInformationMediumSchema = Schema.Literal('telephone', 'email', 'mobile', 'fax');
+export const ContactInformationMediumSchema = Schema.Literals(['telephone', 'email', 'mobile', 'fax']);
 
-export const ContactInformationTypeSchema = Schema.Literal('private', 'address', 'work', 'external');
+export const ContactInformationTypeSchema = Schema.Literals(['private', 'address', 'work', 'external']);
 
 export const ContactInformationBaseSchema = Schema.Struct({
   medium: ContactInformationMediumSchema,
@@ -12,40 +12,37 @@ export const ContactInformationBaseSchema = Schema.Struct({
   secret: Schema.NullOr(Schema.Boolean),
 });
 
-export class CreatePersonalContactInformationSchema extends Schema.Class<CreatePersonalContactInformationSchema>(
-  'CreatePersonalContactInformationSchema',
-)({
-  type: ContactInformationTypeSchema.pipe(Schema.pickLiteral('private', 'work')),
+export const CreatePersonalContactInformationSchema = Schema.Struct({
+  type: ContactInformationTypeSchema.pick(['private', 'work']),
   addressId: Schema.Null,
   personId: Schema.Number,
   ...ContactInformationBaseSchema.fields,
-}) {}
+});
+export type CreatePersonalContactInformationSchema = typeof CreatePersonalContactInformationSchema.Type;
 
-export class CreateAddressContactInformationSchema extends Schema.Class<CreateAddressContactInformationSchema>(
-  'CreateAddressContactInformationSchema',
-)({
-  type: ContactInformationTypeSchema.pipe(Schema.pickLiteral('address')),
+export const CreateAddressContactInformationSchema = Schema.Struct({
+  type: ContactInformationTypeSchema.pick(['address']),
   addressId: Schema.Number,
   personId: Schema.Null,
   ...ContactInformationBaseSchema.fields,
-}) {}
+});
+export type CreateAddressContactInformationSchema = typeof CreateAddressContactInformationSchema.Type;
 
-export class CreateExternalContactInformationSchema extends Schema.Class<CreateExternalContactInformationSchema>(
-  'CreateExternalContactInformationSchema',
-)({
-  type: ContactInformationTypeSchema.pipe(Schema.pickLiteral('external')),
+export const CreateExternalContactInformationSchema = Schema.Struct({
+  type: ContactInformationTypeSchema.pick(['external']),
   personId: Schema.Null,
   addressId: Schema.Null,
   ...ContactInformationBaseSchema.fields,
   externalName: Schema.String,
-}) {}
+});
+export type CreateExternalContactInformationSchema = typeof CreateExternalContactInformationSchema.Type;
 
-export const CreateContactInformationSchema = Schema.Union(
+export const CreateContactInformationSchema = Schema.Union([
   CreatePersonalContactInformationSchema,
   CreateAddressContactInformationSchema,
   CreateExternalContactInformationSchema,
-);
-export type CreateContactInformationSchema = Schema.Schema.Type<typeof CreateContactInformationSchema>;
+]);
+export type CreateContactInformationSchema = typeof CreateContactInformationSchema.Type;
 
 export class ContactInformationSchema extends Schema.Class<ContactInformationSchema>('ContactInformationSchema')({
   id: Schema.Number,

@@ -1,14 +1,14 @@
-import { Schema } from 'effect';
+import { Data } from 'effect';
 import { ProcuratBadRequestError, ProcuratServerError } from './procurat-errors';
 
-export class CreateRelationshipError extends Schema.TaggedError<CreateRelationshipError>()("CreateRelationshipError", {
-  cause: Schema.Union(ProcuratServerError, ProcuratBadRequestError),
-  kind: Schema.Literal("addChildToParent", "addParentToChild"),
-  personToAddId: Schema.Number,
-  basePersonId: Schema.Number,
-}) {}
+export class CreateRelationshipError extends Data.TaggedError('CreateRelationshipError')<{
+  readonly cause: ProcuratServerError | ProcuratBadRequestError;
+  readonly kind: 'addChildToParent' | 'addParentToChild';
+  readonly personToAddId: number;
+  readonly basePersonId: number;
+}> {}
 
-export class ListRelationshipsError extends Schema.TaggedError<ListRelationshipsError>()("ListRelationshipsError", {
-  cause: Schema.Union(ProcuratServerError, ProcuratBadRequestError),
-  personId: Schema.Number,
-}) {}
+export class ListRelationshipsError extends Data.TaggedError('ListRelationshipsError')<{
+  readonly cause: ProcuratServerError | ProcuratBadRequestError;
+  readonly personId: number;
+}> {}

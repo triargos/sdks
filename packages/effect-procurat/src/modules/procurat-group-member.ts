@@ -1,7 +1,7 @@
-import { Effect } from 'effect';
+import { Context, Effect, Layer } from 'effect';
 import { ProcuratHttpClient } from '../http-client';
 import { AddMemberToGroupSchema, GroupMemberSchema, UpdateGroupMembershipSchema } from '../schema/group-member-schema';
-import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
+import { HttpClientRequest, HttpClientResponse } from 'effect/unstable/http';
 import { removeUnrecoverableErrors } from '../utils/error-parsing';
 import {
   AddGroupMemberError,
@@ -10,8 +10,8 @@ import {
 } from '../error/group-member-errors';
 import { GroupNotFoundError } from '../error/group-errors';
 
-export class ProcuratGroupMember extends Effect.Service<ProcuratGroupMember>()('ProcuratGroupMember', {
-  effect: Effect.gen(function* () {
+export class ProcuratGroupMember extends Context.Service<ProcuratGroupMember>()('ProcuratGroupMember', {
+  make: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
 
     const addToGroup = Effect.fn('groupMember.addToGroup')(function* (groupId: number, member: AddMemberToGroupSchema) {
@@ -21,8 +21,7 @@ export class ProcuratGroupMember extends Effect.Service<ProcuratGroupMember>()('
         Effect.flatMap(HttpClientResponse.schemaBodyJson(GroupMemberSchema)),
         removeUnrecoverableErrors,
         Effect.catchTag(
-          'ProcuratServerError',
-          'ProcuratBadRequestError',
+          ['ProcuratServerError', 'ProcuratBadRequestError'],
           (cause) =>
             new AddGroupMemberError({
               groupId,
@@ -51,13 +50,12 @@ export class ProcuratGroupMember extends Effect.Service<ProcuratGroupMember>()('
           ProcuratNotFoundError: (cause) => new GroupMembershipNotFoundError({ groupId, cause, personId }),
         }),
         Effect.catchTag(
-          'ProcuratBadRequestError',
-          'ProcuratServerError',
+          ['ProcuratBadRequestError', 'ProcuratServerError'],
           (cause) =>
             new UpdateGroupMembershipError({
               groupId,
               personId,
-              data: new UpdateGroupMembershipSchema({...membership}),
+              data: membership,
               cause,
             }),
         ),
@@ -65,4 +63,6 @@ export class ProcuratGroupMember extends Effect.Service<ProcuratGroupMember>()('
     });
     return { addToGroup, updateMembership };
   }),
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make);
+}

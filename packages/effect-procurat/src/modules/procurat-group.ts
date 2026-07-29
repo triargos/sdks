@@ -1,6 +1,12 @@
-import { HttpClientRequest, HttpClientResponse } from '@effect/platform';
-import { Effect, Schema } from 'effect';
-import { FindGroupError, FindGroupMembersError, GroupNotFoundError, ListCustomFieldsError, ListGroupsError } from '../error/group-errors';
+import { Context, Effect, Layer, Schema } from 'effect';
+import { HttpClientRequest, HttpClientResponse } from 'effect/unstable/http';
+import {
+  FindGroupError,
+  FindGroupMembersError,
+  GroupNotFoundError,
+  ListCustomFieldsError,
+  ListGroupsError,
+} from '../error/group-errors';
 import { ProcuratHttpClient } from '../http-client';
 import { GroupMemberSchema } from '../schema/group-member-schema';
 import { GroupSchema } from '../schema/group-schema';
@@ -8,29 +14,17 @@ import { GroupUdfSchema } from '../schema/group-udf-schema';
 import { removeUnrecoverableErrors } from '../utils/error-parsing';
 import { ProcuratCommonErrors } from '../error/procurat-errors';
 
-type GroupMemberStatus = 'ACTIVE' | 'INACTIVE' | 'ALL';
-
-interface FindGroupMembersOptions {
-  status?: GroupMemberStatus;
-  includeUdfs?: boolean;
-}
-
-interface ListCustomFieldsOptions {
-  includeParentGroups?: boolean;
-}
-
-export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGroup', {
-  effect: Effect.gen(function* () {
+export class ProcuratGroup extends Context.Service<ProcuratGroup>()('ProcuratGroup', {
+  make: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
 
-    const findAll: () => Effect.Effect<
-      ReadonlyArray<GroupSchema>,
-      ListGroupsError | ProcuratCommonErrors
-    > = Effect.fn('group.findAll')(function* () {
+    const findAll: () => Effect.Effect<ReadonlyArray<GroupSchema>, ListGroupsError | ProcuratCommonErrors> = Effect.fn(
+      'group.findAll',
+    )(function* () {
       return yield* http.get(`/groups`).pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(Schema.Array(GroupSchema))),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', 'ProcuratNotFoundError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError', 'ProcuratNotFoundError'], Effect.die),
         Effect.catchTags({
           ProcuratServerError: (cause) => new ListGroupsError({ cause }),
         }),
@@ -39,14 +33,14 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
 
     const findById: (params: {
       groupId: number;
-    }) => Effect.Effect<GroupSchema, GroupNotFoundError | FindGroupError | ProcuratCommonErrors> = Effect.fn('group.findById')(function* ({
-      groupId,
-    }) {
+    }) => Effect.Effect<GroupSchema, GroupNotFoundError | FindGroupError | ProcuratCommonErrors> = Effect.fn(
+      'group.findById',
+    )(function* ({ groupId }) {
       yield* Effect.annotateCurrentSpan({ groupId });
       return yield* http.get(`/groups/${groupId}`).pipe(
         Effect.flatMap(HttpClientResponse.schemaBodyJson(GroupSchema)),
         removeUnrecoverableErrors,
-        Effect.catchTag('ProcuratBadRequestError', Effect.die),
+        Effect.catchTag(['ProcuratBadRequestError'], Effect.die),
         Effect.catchTags({
           ProcuratNotFoundError: (cause) => new GroupNotFoundError({ groupId, cause }),
           ProcuratServerError: (cause) => new FindGroupError({ groupId, cause }),
@@ -56,7 +50,10 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
 
     const findMembers: (params: {
       id: number;
-      options?: FindGroupMembersOptions;
+      options?: {
+        status?: 'ACTIVE' | 'INACTIVE' | 'ALL';
+        includeUdfs?: boolean;
+      };
     }) => Effect.Effect<
       ReadonlyArray<GroupMemberSchema>,
       GroupNotFoundError | FindGroupMembersError | ProcuratCommonErrors
@@ -83,7 +80,9 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
 
     const listCustomFields: (params: {
       groupId: number;
-      options?: ListCustomFieldsOptions;
+      options?: {
+        includeParentGroups?: boolean;
+      };
     }) => Effect.Effect<
       ReadonlyArray<GroupUdfSchema>,
       GroupNotFoundError | ListCustomFieldsError | ProcuratCommonErrors
@@ -109,4 +108,6 @@ export class ProcuratGroup extends Effect.Service<ProcuratGroup>()('ProcuratGrou
 
     return { findAll, findById, findMembers, listCustomFields };
   }),
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make);
+}

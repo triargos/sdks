@@ -1,8 +1,8 @@
-import { Schema } from "effect";
+import { Schema } from 'effect';
 
-export class CountrySchema extends Schema.Class<CountrySchema>("CountrySchema")({
+export class CountrySchema extends Schema.Class<CountrySchema>('CountrySchema')({
   id: Schema.Number,
   idx: Schema.String,
   iso: Schema.String,
-  name: Schema.String
-}) {} 
+  name: Schema.String,
+}) {}

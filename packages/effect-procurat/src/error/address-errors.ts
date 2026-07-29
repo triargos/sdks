@@ -1,22 +1,22 @@
-import { Schema } from 'effect';
-import { CreateAddressSchema } from '../schema/address-schema';
+import { Data } from 'effect';
+import type { CreateAddressSchema } from '../schema/address-schema';
 import { ProcuratBadRequestError, ProcuratNotFoundError, ProcuratServerError } from './procurat-errors';
 
-export class ListAddressesError extends Schema.TaggedError<ListAddressesError>()('ListAddressesError', {
-  cause: ProcuratServerError,
-}) {}
+export class ListAddressesError extends Data.TaggedError('ListAddressesError')<{
+  readonly cause: ProcuratServerError;
+}> {}
 
-export class AddressNotFoundError extends Schema.TaggedError<AddressNotFoundError>()('AddressNotFoundError', {
-  cause: ProcuratNotFoundError,
-  addressId: Schema.Number,
-}) {}
+export class AddressNotFoundError extends Data.TaggedError('AddressNotFoundError')<{
+  readonly cause: ProcuratNotFoundError;
+  readonly addressId: number;
+}> {}
 
-export class FindAddressError extends Schema.TaggedError<FindAddressError>()('FindAddressError', {
-  cause: ProcuratServerError,
-  addressId: Schema.Number,
-}) {}
+export class FindAddressError extends Data.TaggedError('FindAddressError')<{
+  readonly cause: ProcuratServerError;
+  readonly addressId: number;
+}> {}
 
-export class CreateAddressError extends Schema.TaggedError<CreateAddressSchema>()("CreatAddressError", {
-  cause: Schema.Union(ProcuratServerError, ProcuratBadRequestError),
-  data: CreateAddressSchema
-}) {}
+export class CreateAddressError extends Data.TaggedError('CreatAddressError')<{
+  readonly cause: ProcuratServerError | ProcuratBadRequestError;
+  readonly data: CreateAddressSchema;
+}> {}

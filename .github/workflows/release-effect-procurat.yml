@@ -40,6 +40,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      # A v3 failure blocks the whole release: one version must mean the same SDK
+      # on both the `.` and the `/v3` subpath.
+      - name: Check v3 compatibility
+        run: pnpm --filter @triargos/effect-procurat v3:check
+
       - name: Build effect-procurat
         run: pnpm --filter @triargos/effect-procurat build
 

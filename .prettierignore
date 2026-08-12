@@ -1,3 +1,4 @@
 .github
 dist
 coverage
+packages/effect-procurat/v3/generated

@@ -10,6 +10,28 @@ pnpm add @triargos/effect-procurat effect
 
 `effect@^4.0.0-beta.0` is a peer dependency.
 
+### On Effect v3
+
+Import from the `/v3` subpath and add `@effect/platform`:
+
+```sh
+pnpm add @triargos/effect-procurat effect@^3.18.5 @effect/platform@^0.92.1
+```
+
+```ts
+import { ProcuratClient } from '@triargos/effect-procurat/v3';
+import { CreatePerson, Person } from '@triargos/effect-procurat/v3/schemas';
+import type { ProcuratError } from '@triargos/effect-procurat/v3/errors';
+```
+
+The subpath carries the same API, the same errors and the same schemas as the v4 entry
+points. Two spelling differences follow Effect itself: the transport comes from
+`@effect/platform` instead of `effect/unstable/http`, and a request schema such as
+`CreatePerson` is a value plus a type rather than a class.
+
+Every release ships both. The v3 build is generated from the v4 sources and blocks the
+release if it does not typecheck and pass its tests — see `v3/README.md`.
+
 ## Provide a transport
 
 The SDK does not ship an HTTP transport. Pick one from `effect/unstable/http` and provide it

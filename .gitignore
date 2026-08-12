@@ -4,3 +4,4 @@
 **/**/node_modules
 */**/.DS_Store
 plans/**
+packages/effect-procurat/v3/generated

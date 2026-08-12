@@ -20,18 +20,33 @@
     "./errors": {
       "import": "./dist/errors.js",
       "types": "./dist/errors.d.ts"
+    },
+    "./v3": {
+      "import": "./dist/v3/index.js",
+      "types": "./dist/v3/index.d.ts"
+    },
+    "./v3/schemas": {
+      "import": "./dist/v3/schemas.js",
+      "types": "./dist/v3/schemas.d.ts"
+    },
+    "./v3/errors": {
+      "import": "./dist/v3/errors.js",
+      "types": "./dist/v3/errors.d.ts"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "pnpm run clean && tsup",
+    "build": "pnpm run clean && tsup && pnpm run v3:build",
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
     "release": "pnpm build && changeset publish",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm run build",
+    "v3:generate": "tsx v3/codemod/main.ts generate",
+    "v3:build": "tsx v3/codemod/main.ts build",
+    "v3:check": "tsx v3/codemod/main.ts check",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -43,13 +58,21 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "effect": "^4.0.0-beta.0"
+    "@effect/platform": "^0.92.1",
+    "effect": "^3.18.5 || ^4.0.0-beta.0"
+  },
+  "peerDependenciesMeta": {
+    "@effect/platform": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "effect": "^4.0.0-beta.0",
     "prettier": "^3.2.5",
+    "ts-morph": "^28.0.0",
     "tsup": "^8.0.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.0.0"
   }
 }

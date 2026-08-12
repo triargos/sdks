@@ -23,14 +23,18 @@ export const IsoDate = Object.assign(isoDate, {
   toDate: (iso: IsoDate): Date => new Date(`${iso}T00:00:00.000Z`),
 });
 
+const berlin = DateTime.zoneMakeNamedUnsafe('Europe/Berlin');
+
 /**
- * Both wire formats decode, whichever the installation runs. A timestamp keeps its
- * UTC day; anything else passes through and `IsoDate` rejects it if it is garbage.
+ * Both wire formats decode, whichever the installation runs. A timestamp becomes
+ * its Berlin day — Procurat stores Berlin midnights as UTC, so `2024-12-09T23:00:00Z`
+ * means the 10th. Anything else passes through and `IsoDate` rejects it if it is garbage.
  */
 const isoDatePart = (wire: string): string => {
   if (!wire.includes('T')) return wire;
   const parsed = new Date(wire);
-  return Number.isNaN(parsed.getTime()) ? wire : parsed.toISOString().slice(0, 10);
+  if (Number.isNaN(parsed.getTime())) return wire;
+  return DateTime.formatIsoDate(DateTime.setZone(DateTime.fromDateUnsafe(parsed), berlin));
 };
 
 export type DateCodec = Schema.Codec<IsoDate, string>;

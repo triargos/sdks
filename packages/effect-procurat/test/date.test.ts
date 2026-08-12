@@ -38,9 +38,12 @@ describe('ProcuratDate', () => {
     expect(decode('2024-05-01')).toBe('2024-05-01');
   });
 
-  it('decodes a timestamp to its UTC day', () => {
+  it('decodes a timestamp to its Berlin day', () => {
     expect(decode('2024-05-01T00:00:00.000Z')).toBe('2024-05-01');
     expect(decode('2024-05-01T23:30:00.000+02:00')).toBe('2024-05-01');
+    // Berlin midnight stored as UTC: 23:00Z in winter, 22:00Z in summer.
+    expect(decode('2024-12-09T23:00:00Z')).toBe('2024-12-10');
+    expect(decode('2024-06-09T22:00:00Z')).toBe('2024-06-10');
   });
 
   it('rejects a string that is neither', () => {

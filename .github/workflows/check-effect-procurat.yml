@@ -1,0 +1,44 @@
+name: Check Effect Procurat
+
+on:
+  pull_request:
+    paths:
+      - 'packages/effect-procurat/**'
+      - '.github/workflows/check-effect-procurat.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Typecheck and v3 compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Typecheck v4 sources
+        run: pnpm --filter @triargos/effect-procurat typecheck
+
+      # Generates the v3 sources, fails on any v4 construct no rule claims, then
+      # typechecks, builds and smoke-tests them against a real effect@3 install.
+      - name: Check v3 compatibility
+        run: pnpm --filter @triargos/effect-procurat v3:check

@@ -1,2 +1,5 @@
 packages:
   - 'packages/*'
+  # Standalone effect@3 env for the generated /v3 subpath. Its own npm install,
+  # its own lockfile — inside the workspace it would collide with effect@4.
+  - '!packages/effect-procurat/v3'

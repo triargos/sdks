@@ -2,11 +2,11 @@ import { Schema } from 'effect';
 import { describe, expect, it } from 'vitest';
 
 import { createAbsenceFields } from '../src/domains/absence/absence-schema';
-import { IsoDate, ProcuratDate, ProcuratDateLegacy, wireDate } from '../src/shared/date';
+import { IsoDate, ProcuratDate, ProcuratTimestamp, wireDate } from '../src/shared/date';
 
 const decode = Schema.decodeUnknownSync(ProcuratDate);
 const encode = Schema.encodeSync(ProcuratDate);
-const encodeLegacy = Schema.encodeSync(ProcuratDateLegacy);
+const encodeTimestamp = Schema.encodeSync(ProcuratTimestamp);
 
 describe('IsoDate', () => {
   it('makes a value from a well-formed day', () => {
@@ -56,23 +56,23 @@ describe('ProcuratDate', () => {
   });
 });
 
-describe('ProcuratDateLegacy', () => {
+describe('ProcuratTimestamp', () => {
   it('encodes a midnight-UTC timestamp', () => {
-    expect(encodeLegacy(IsoDate.make('2024-05-01'))).toBe('2024-05-01T00:00:00.000Z');
+    expect(encodeTimestamp(IsoDate.make('2024-05-01'))).toBe('2024-05-01T00:00:00.000Z');
   });
 
   it('decodes both wire formats, like ProcuratDate', () => {
-    const decodeLegacy = Schema.decodeUnknownSync(ProcuratDateLegacy);
+    const decodeTimestamp = Schema.decodeUnknownSync(ProcuratTimestamp);
 
-    expect(decodeLegacy('2024-05-01')).toBe('2024-05-01');
-    expect(decodeLegacy('2024-05-01T00:00:00.000Z')).toBe('2024-05-01');
+    expect(decodeTimestamp('2024-05-01')).toBe('2024-05-01');
+    expect(decodeTimestamp('2024-05-01T00:00:00.000Z')).toBe('2024-05-01');
   });
 });
 
 describe('wireDate', () => {
   it('picks the codec the installation expects', () => {
     expect(wireDate('iso-date')).toBe(ProcuratDate);
-    expect(wireDate('timestamp')).toBe(ProcuratDateLegacy);
+    expect(wireDate('timestamp')).toBe(ProcuratTimestamp);
   });
 });
 

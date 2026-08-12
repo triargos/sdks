@@ -48,7 +48,7 @@ export const ProcuratDate: DateCodec = Schema.transform(Schema.String, IsoDate, 
 // factories; `ProcuratDate` alone stays. The public surface does not change.
 
 /** Encodes `2024-05-01T00:00:00.000Z`, the only format the old API accepts. */
-export const ProcuratDateLegacy: DateCodec = Schema.transform(Schema.String, IsoDate, {
+export const ProcuratTimestamp: DateCodec = Schema.transform(Schema.String, IsoDate, {
   strict: false,
   decode: isoDatePart,
   encode: (iso: string) => `${iso}T00:00:00.000Z`,
@@ -67,7 +67,7 @@ export class ProcuratDateFormat extends Context.Tag('ProcuratDateFormat')<Procur
 }
 
 export const wireDate = (format: DateFormat): DateCodec =>
-  format === 'timestamp' ? ProcuratDateLegacy : ProcuratDate;
+  format === 'timestamp' ? ProcuratTimestamp : ProcuratDate;
 
 /** Read once per module, at layer construction — not per request. */
 export const currentDateCodec: Effect.Effect<DateCodec> = Effect.serviceOption(ProcuratDateFormat).pipe(

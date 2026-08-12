@@ -1,5 +1,69 @@
 # @triargos/effect-procurat
 
+## 2.1.0
+
+### Minor Changes
+
+- 24cc9a9: Add a `dateFormat` option for installations still on the old Procurat API.
+
+  Procurat writes date-only strings (`2024-05-01`) from now on, but an installation
+  that has not moved yet only accepts timestamps. Pass `dateFormat: 'timestamp'` to
+  `ProcuratClient.layer` or `layerConfig` and the SDK writes the old format:
+
+  ```ts
+  ProcuratClient.layer({ apiKey, baseUrl, dateFormat: 'timestamp' });
+  ```
+
+  The option defaults to `'iso-date'`. Reading never needs it — a response in
+  either format decodes to the same `IsoDate`. The option goes away once the
+  rollover is over.
+
+- ba44cd2: Add `procurat.health.determineDateStyle()`.
+
+  It reads the installation's build number and answers which wire format that build
+  accepts on write — `'iso-date'` above build 726, `'timestamp'` at or below it:
+
+  ```ts
+  const dateFormat = yield * procurat.health.determineDateStyle();
+  ```
+
+  Temporary. It goes away with the `dateFormat` option once the rollover is over.
+
+- 24cc9a9: Date fields are ISO date strings (`IsoDate`) instead of `Date`.
+
+  The Procurat API is moving from timestamps (`2024-05-01T00:00:00.000Z`) to
+  date-only strings (`2024-05-01`). Every date on the SDK surface — `birthDate`,
+  `startDate`, `entryDate` and the rest — is now an `IsoDate`: a branded
+  `YYYY-MM-DD` string that carries no time and no zone, so a date can no longer
+  shift a day when it crosses a timezone.
+
+  Build one with `IsoDate.make('2024-05-01')` or, from a `Date`,
+  `IsoDate.fromDate(value, 'local' | 'utc')` — the zone is the caller's decision
+  and is now visible at the call site. `IsoDate.toDate(iso)` returns midnight UTC.
+
+  Decoding accepts both wire formats, so responses from an installation on either
+  API version read the same.
+
+- bf2d1af: Add `procurat.health.get()` for `GET /health`.
+
+  It answers with a `Health` schema, so the build and database version of an
+  installation are readable without a raw request:
+
+  ```ts
+  const health = yield * procurat.health.get();
+  health.build; // 4711
+  ```
+
+  The three `lastUpdate*` fields stay raw strings: the API declares them as plain
+  strings and names no format.
+
+- f91762b: Add an Effect v3 build on the `/v3`, `/v3/schemas` and `/v3/errors` subpaths.
+
+  The v4 sources stay the only source of truth. A codemod with a closed rule table
+  generates the v3 build at release time, so both subpaths always describe the same
+  SDK. `@effect/platform` is now an optional peer dependency, needed only by v3
+  consumers.
+
 ## 2.0.0
 
 ### Major Changes

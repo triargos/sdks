@@ -7,6 +7,7 @@ import { ProcuratContactInformation } from './domains/contact-information/procur
 import { ProcuratCountry } from './domains/country/procurat-country';
 import { ProcuratCounty } from './domains/county/procurat-county';
 import { ProcuratFile } from './domains/file/procurat-file';
+import { ProcuratFollowUp } from './domains/follow-up/procurat-follow-up';
 import { ProcuratGroupMember } from './domains/group-member/procurat-group-member';
 import { ProcuratGroup } from './domains/group/procurat-group';
 import { ProcuratHealth } from './domains/health/procurat-health';
@@ -31,6 +32,7 @@ const modules = Layer.mergeAll(
   ProcuratLookupTable.layer,
   ProcuratCommunication.layer,
   ProcuratFile.layer,
+  ProcuratFollowUp.layer,
   ProcuratHealth.layer,
 );
 
@@ -49,6 +51,7 @@ export class ProcuratClient extends Context.Service<ProcuratClient>()('ProcuratC
     const lookupTable = yield* ProcuratLookupTable;
     const communication = yield* ProcuratCommunication;
     const file = yield* ProcuratFile;
+    const followUp = yield* ProcuratFollowUp;
     const health = yield* ProcuratHealth;
 
     return {
@@ -65,6 +68,7 @@ export class ProcuratClient extends Context.Service<ProcuratClient>()('ProcuratC
       lookupTable,
       communication,
       file,
+      followUp,
       health,
     };
   }),

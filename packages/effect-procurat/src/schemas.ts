@@ -6,6 +6,7 @@ export * from './domains/contact-information/contact-information-schema';
 export * from './domains/country/country-schema';
 export * from './domains/county/county-schema';
 export * from './domains/file/file-schema';
+export * from './domains/follow-up/follow-up-schema';
 export * from './domains/group-member/group-member-schema';
 export * from './domains/group/group-schema';
 export * from './domains/group/group-supervisor-schema';

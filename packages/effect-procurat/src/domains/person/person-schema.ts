@@ -1,5 +1,5 @@
 import { Schema } from 'effect';
-import { ProcuratDate } from '../../shared/date';
+import { type DateCodec, ProcuratDate } from '../../shared/date';
 import { membersOf } from '../../shared/literals';
 
 export const Gender = Schema.Literals(['male', 'female', 'other']);
@@ -46,7 +46,8 @@ export class Person extends Schema.Class<Person>('Person')({
   deathDate: Schema.NullOr(ProcuratDate),
 }) {}
 
-export class CreatePerson extends Schema.Opaque<CreatePerson>()(
+/** The codec is a parameter only while the API rolls over. See `shared/date`. */
+export const createPersonFields = (date: DateCodec) =>
   Schema.Struct({
     firstName: Schema.String,
     lastName: Schema.String,
@@ -55,14 +56,15 @@ export class CreatePerson extends Schema.Opaque<CreatePerson>()(
     addressId: Schema.Number,
     familyId: Schema.NullOr(Schema.Number),
     familyRole: FamilyRole,
-    birthDate: Schema.NullOr(ProcuratDate),
+    birthDate: Schema.NullOr(date),
     birthPlace: Schema.NullOr(Schema.String),
     birthCountryId: Schema.NullOr(Schema.Number),
     nationalityId: Schema.NullOr(Schema.Number),
-  }),
-) {}
+  });
 
-export class UpdatePerson extends Schema.Opaque<UpdatePerson>()(
+export class CreatePerson extends Schema.Opaque<CreatePerson>()(createPersonFields(ProcuratDate)) {}
+
+export const updatePersonFields = (date: DateCodec) =>
   Schema.Struct({
     id: Schema.Number,
     firstName: Schema.NullOr(Schema.String),
@@ -71,7 +73,7 @@ export class UpdatePerson extends Schema.Opaque<UpdatePerson>()(
     addressId: Schema.NullOr(Schema.Number),
     familyId: Schema.NullOr(Schema.Number),
     familyRole: Schema.NullOr(FamilyRole),
-    birthDate: Schema.NullOr(ProcuratDate),
+    birthDate: Schema.NullOr(date),
     birthPlace: Schema.NullOr(Schema.String),
     birthCountryId: Schema.NullOr(Schema.Number),
     languageId: Schema.NullOr(Schema.Number),
@@ -87,6 +89,7 @@ export class UpdatePerson extends Schema.Opaque<UpdatePerson>()(
     comment: Schema.NullOr(Schema.String),
     nationalityId: Schema.NullOr(Schema.Number),
     maritalStatus: Schema.NullOr(Schema.String),
-    deathDate: Schema.NullOr(ProcuratDate),
-  }),
-) {}
+    deathDate: Schema.NullOr(date),
+  });
+
+export class UpdatePerson extends Schema.Opaque<UpdatePerson>()(updatePersonFields(ProcuratDate)) {}

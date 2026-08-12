@@ -13,6 +13,7 @@ import { ProcuratLookupTable } from './domains/lookup-table/procurat-lookup-tabl
 import { ProcuratPerson } from './domains/person/procurat-person';
 import { ProcuratRelationship } from './domains/relationship/procurat-relationship';
 import { ProcuratReligion } from './domains/religion/procurat-religion';
+import { type DateFormat, ProcuratDateFormat } from './shared/date';
 import { ProcuratHttpClient } from './shared/http-client';
 
 const modules = Layer.mergeAll(
@@ -64,23 +65,30 @@ export class ProcuratClient extends Context.Service<ProcuratClient>()('ProcuratC
     };
   }),
 }) {
+  /** `dateFormat` is `'iso-date'` unless the installation still runs the old API. */
   static layer(options: {
     readonly apiKey: Redacted.Redacted<string>;
     readonly baseUrl: string;
+    readonly dateFormat?: DateFormat;
   }): Layer.Layer<ProcuratClient, never, HttpClient.HttpClient> {
-    return Layer.effect(this)(this.make).pipe(Layer.provide(modules), Layer.provide(ProcuratHttpClient.layer(options)));
+    return Layer.effect(this)(this.make).pipe(
+      Layer.provide(modules),
+      Layer.provide(ProcuratHttpClient.layer(options)),
+      Layer.provide(Layer.succeed(ProcuratDateFormat)(options.dateFormat ?? ProcuratDateFormat.defaultFormat)),
+    );
   }
 
   /** Reads `PROCURAT_API_KEY` and `PROCURAT_BASE_URL` unless given other configs. */
   static layerConfig(options?: {
     readonly apiKey?: Config.Config<Redacted.Redacted<string>>;
     readonly baseUrl?: Config.Config<string>;
+    readonly dateFormat?: DateFormat;
   }): Layer.Layer<ProcuratClient, Config.ConfigError, HttpClient.HttpClient> {
     return Layer.unwrap(
       Effect.gen(function* () {
         const apiKey = yield* options?.apiKey ?? Config.redacted('PROCURAT_API_KEY');
         const baseUrl = yield* options?.baseUrl ?? Config.string('PROCURAT_BASE_URL');
-        return ProcuratClient.layer({ apiKey, baseUrl });
+        return ProcuratClient.layer({ apiKey, baseUrl, dateFormat: options?.dateFormat });
       }),
     );
   }

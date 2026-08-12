@@ -1,5 +1,5 @@
 import { Schema } from 'effect';
-import { ProcuratDate } from '../../shared/date';
+import { type DateCodec, ProcuratDate } from '../../shared/date';
 import { membersOf } from '../../shared/literals';
 
 export const GroupMemberStatus = Schema.Literals(['ACTIVE', 'INACTIVE', 'ALL']);
@@ -22,13 +22,15 @@ export class GroupMember extends Schema.Class<GroupMember>('GroupMember')({
   grade: Schema.NullOr(Schema.Number),
 }) {}
 
-export class AddMemberToGroup extends Schema.Opaque<AddMemberToGroup>()(
+/** The codec is a parameter only while the API rolls over. See `shared/date`. */
+export const addMemberToGroupFields = (date: DateCodec) =>
   Schema.Struct({
     personId: Schema.Number,
-    entryDate: Schema.NullOr(ProcuratDate),
+    entryDate: Schema.NullOr(date),
     grade: Schema.NullOr(Schema.Number),
-  }),
-) {}
+  });
+
+export class AddMemberToGroup extends Schema.Opaque<AddMemberToGroup>()(addMemberToGroupFields(ProcuratDate)) {}
 
 export class UpdateGroupMembership extends Schema.Opaque<UpdateGroupMembership>()(
   Schema.Struct({

@@ -1,10 +1,12 @@
 import { Schema } from 'effect';
 import { describe, expect, it } from 'vitest';
 
-import { IsoDate, ProcuratDate } from '../src/shared/date';
+import { createAbsenceFields } from '../src/domains/absence/absence-schema';
+import { IsoDate, ProcuratDate, ProcuratDateLegacy, wireDate } from '../src/shared/date';
 
 const decode = Schema.decodeUnknownSync(ProcuratDate);
 const encode = Schema.encodeSync(ProcuratDate);
+const encodeLegacy = Schema.encodeSync(ProcuratDateLegacy);
 
 describe('IsoDate', () => {
   it('makes a value from a well-formed day', () => {
@@ -51,5 +53,52 @@ describe('ProcuratDate', () => {
 
   it('encodes a date-only string', () => {
     expect(encode(IsoDate.make('2024-05-01'))).toBe('2024-05-01');
+  });
+});
+
+describe('ProcuratDateLegacy', () => {
+  it('encodes a midnight-UTC timestamp', () => {
+    expect(encodeLegacy(IsoDate.make('2024-05-01'))).toBe('2024-05-01T00:00:00.000Z');
+  });
+
+  it('decodes both wire formats, like ProcuratDate', () => {
+    const decodeLegacy = Schema.decodeUnknownSync(ProcuratDateLegacy);
+
+    expect(decodeLegacy('2024-05-01')).toBe('2024-05-01');
+    expect(decodeLegacy('2024-05-01T00:00:00.000Z')).toBe('2024-05-01');
+  });
+});
+
+describe('wireDate', () => {
+  it('picks the codec the installation expects', () => {
+    expect(wireDate('iso-date')).toBe(ProcuratDate);
+    expect(wireDate('timestamp')).toBe(ProcuratDateLegacy);
+  });
+});
+
+describe('a schema built from a codec', () => {
+  const absence = {
+    personId: 1,
+    startDate: IsoDate.make('2024-05-01'),
+    endDate: IsoDate.make('2024-05-03'),
+    includeWeekend: false,
+    excused: true,
+    parentsInformed: true,
+    medicalCertificateReceived: IsoDate.make('2024-05-02'),
+    medicalCertificateRequired: false,
+  };
+
+  it('writes date-only strings on the new API', () => {
+    const body = Schema.encodeSync(createAbsenceFields(wireDate('iso-date')))(absence);
+
+    expect(body.startDate).toBe('2024-05-01');
+    expect(body.medicalCertificateReceived).toBe('2024-05-02');
+  });
+
+  it('writes timestamps on the old API', () => {
+    const body = Schema.encodeSync(createAbsenceFields(wireDate('timestamp')))(absence);
+
+    expect(body.startDate).toBe('2024-05-01T00:00:00.000Z');
+    expect(body.medicalCertificateReceived).toBe('2024-05-02T00:00:00.000Z');
   });
 });

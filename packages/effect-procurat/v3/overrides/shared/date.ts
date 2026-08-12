@@ -1,4 +1,4 @@
-import { Schema } from 'effect';
+import { Context, Effect, Option, Schema } from 'effect';
 
 const isoDate = Schema.String.pipe(Schema.pattern(/^\d{4}-\d{2}-\d{2}$/), Schema.brand('IsoDate'));
 
@@ -33,9 +33,43 @@ const isoDatePart = (wire: string): string => {
   return Number.isNaN(parsed.getTime()) ? wire : parsed.toISOString().slice(0, 10);
 };
 
+export type DateCodec = Schema.Schema<IsoDate, string>;
+
 /** Encodes `2024-05-01`. */
-export const ProcuratDate: Schema.Schema<IsoDate, string> = Schema.transform(Schema.String, IsoDate, {
+export const ProcuratDate: DateCodec = Schema.transform(Schema.String, IsoDate, {
   strict: false,
   decode: isoDatePart,
   encode: (iso) => iso,
 });
+
+// ─── Rollover ────────────────────────────────────────────────────────────────
+// Everything below serves installations still on the old API. Once they are all
+// migrated, delete this block, the `dateFormat` option, and the schema field
+// factories; `ProcuratDate` alone stays. The public surface does not change.
+
+/** Encodes `2024-05-01T00:00:00.000Z`, the only format the old API accepts. */
+export const ProcuratDateLegacy: DateCodec = Schema.transform(Schema.String, IsoDate, {
+  strict: false,
+  decode: isoDatePart,
+  encode: (iso: string) => `${iso}T00:00:00.000Z`,
+});
+
+/** The wire format an installation expects on write. Reads accept both. */
+export type DateFormat = 'iso-date' | 'timestamp';
+
+/**
+ * Optional. When absent the SDK writes `iso-date`, so installing this service is
+ * only needed to talk to an installation still on the old API. `ProcuratClient.layer`
+ * installs it from its `dateFormat` option.
+ */
+export class ProcuratDateFormat extends Context.Tag('ProcuratDateFormat')<ProcuratDateFormat, DateFormat>() {
+  static readonly defaultFormat: DateFormat = 'iso-date';
+}
+
+export const wireDate = (format: DateFormat): DateCodec =>
+  format === 'timestamp' ? ProcuratDateLegacy : ProcuratDate;
+
+/** Read once per module, at layer construction — not per request. */
+export const currentDateCodec: Effect.Effect<DateCodec> = Effect.serviceOption(ProcuratDateFormat).pipe(
+  Effect.map((format) => wireDate(Option.getOrElse(format, () => ProcuratDateFormat.defaultFormat))),
+);

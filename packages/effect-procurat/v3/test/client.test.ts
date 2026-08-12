@@ -1,7 +1,7 @@
 import { assert, describe, it } from '@effect/vitest';
 import { Effect, Layer, Redacted, Schedule } from 'effect';
 
-import { ProcuratClient, ProcuratRetry } from '../../dist/v3/index.js';
+import { IsoDate, ProcuratClient, type DateFormat, ProcuratRetry } from '../../dist/v3/index.js';
 import type { ProcuratError } from '../../dist/v3/errors.js';
 import { BASE_URL, stubHttpClient, type StubReply } from './stub-http-client.js';
 
@@ -21,11 +21,12 @@ const noRetry = ProcuratRetry.layer({
   times: 0,
 });
 
-const clientWith = (routes: Readonly<Record<string, StubReply>>) => {
+const clientWith = (routes: Readonly<Record<string, StubReply>>, dateFormat?: DateFormat) => {
   const stub = stubHttpClient(routes);
   const layer = ProcuratClient.layer({
     baseUrl: BASE_URL,
     apiKey: Redacted.make('test-key'),
+    dateFormat,
   }).pipe(Layer.provide(Layer.mergeAll(stub.layer, noRetry)));
   return { stub, layer };
 };
@@ -57,6 +58,28 @@ const createAddress = {
   poBoxZip: null,
   poBox: null,
   countyId: null,
+};
+
+const absenceWire = {
+  id: 5,
+  personId: 7,
+  date: '2024-05-01',
+  excused: true,
+  parentsInformed: true,
+  note: null,
+  medicalCertificateReceived: null,
+  medicalCertificateRequested: null,
+  medicalCertificateRequired: false,
+};
+
+const createAbsence = {
+  personId: 7,
+  startDate: IsoDate.make('2024-05-01'),
+  endDate: IsoDate.make('2024-05-03'),
+  includeWeekend: false,
+  excused: true,
+  parentsInformed: true,
+  medicalCertificateRequired: false,
 };
 
 const groupWire = {
@@ -99,6 +122,55 @@ describe('ProcuratClient over a v3 HttpClient', () => {
       assert.strictEqual(address.id, 42);
       assert.strictEqual(stub.sent[0]?.method, 'POST');
       assert.deepStrictEqual(stub.sent[0]?.body, createAddress);
+    }),
+  );
+});
+
+describe('the date format an installation expects', () => {
+  it.effect('writes date-only strings by default', () =>
+    Effect.gen(function* () {
+      const { layer, stub } = clientWith({ '/absences': { status: 200, body: absenceWire } });
+
+      const absence = yield* Effect.gen(function* () {
+        const client = yield* ProcuratClient;
+        return yield* client.absence.create({ absence: createAbsence });
+      }).pipe(Effect.provide(layer));
+
+      assert.strictEqual(absence.date, '2024-05-01');
+      assert.deepStrictEqual(stub.sent[0]?.body, { ...createAbsence });
+    }),
+  );
+
+  it.effect('writes timestamps when the installation still runs the old API', () =>
+    Effect.gen(function* () {
+      const { layer, stub } = clientWith({ '/absences': { status: 200, body: absenceWire } }, 'timestamp');
+
+      yield* Effect.gen(function* () {
+        const client = yield* ProcuratClient;
+        return yield* client.absence.create({ absence: createAbsence });
+      }).pipe(Effect.provide(layer));
+
+      assert.deepStrictEqual(stub.sent[0]?.body, {
+        ...createAbsence,
+        startDate: '2024-05-01T00:00:00.000Z',
+        endDate: '2024-05-03T00:00:00.000Z',
+      });
+    }),
+  );
+
+  it.effect('reads a timestamp response whatever the write format is', () =>
+    Effect.gen(function* () {
+      const { layer } = clientWith(
+        { '/absences/5': { status: 200, body: { ...absenceWire, date: '2024-05-01T00:00:00.000Z' } } },
+        'iso-date',
+      );
+
+      const absence = yield* Effect.gen(function* () {
+        const client = yield* ProcuratClient;
+        return yield* client.absence.findById({ id: 5 });
+      }).pipe(Effect.provide(layer));
+
+      assert.strictEqual(absence.date, '2024-05-01');
     }),
   );
 });

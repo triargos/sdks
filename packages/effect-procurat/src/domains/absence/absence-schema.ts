@@ -1,5 +1,5 @@
 import { Schema } from 'effect';
-import { ProcuratDate } from '../../shared/date';
+import { type DateCodec, ProcuratDate } from '../../shared/date';
 import { membersOf } from '../../shared/literals';
 
 export const AbsenceQueryType = Schema.Literals(['all', 'today', 'schoolyear']);
@@ -22,31 +22,34 @@ export class Absence extends Schema.Class<Absence>('Absence')({
   medicalCertificateRequired: Schema.Boolean,
 }) {}
 
-export class CreateAbsence extends Schema.Opaque<CreateAbsence>()(
+/** The codec is a parameter only while the API rolls over. See `shared/date`. */
+export const createAbsenceFields = (date: DateCodec) =>
   Schema.Struct({
     personId: Schema.Number,
-    startDate: ProcuratDate,
-    endDate: ProcuratDate,
+    startDate: date,
+    endDate: date,
     includeWeekend: Schema.Boolean,
     excused: Schema.Boolean,
     parentsInformed: Schema.Boolean,
     note: Schema.optionalKey(Schema.String),
-    medicalCertificateReceived: Schema.optionalKey(ProcuratDate),
-    medicalCertificateRequested: Schema.optionalKey(ProcuratDate),
+    medicalCertificateReceived: Schema.optionalKey(date),
+    medicalCertificateRequested: Schema.optionalKey(date),
     medicalCertificateRequired: Schema.Boolean,
-  }),
-) {}
+  });
 
-export class UpdateAbsence extends Schema.Opaque<UpdateAbsence>()(
+export class CreateAbsence extends Schema.Opaque<CreateAbsence>()(createAbsenceFields(ProcuratDate)) {}
+
+export const updateAbsenceFields = (date: DateCodec) =>
   Schema.Struct({
     id: Schema.Number,
     personId: Schema.Number,
-    date: ProcuratDate,
+    date,
     excused: Schema.Boolean,
     parentsInformed: Schema.Boolean,
     note: Schema.NullOr(Schema.String),
-    medicalCertificateReceived: Schema.NullOr(ProcuratDate),
-    medicalCertificateRequested: Schema.NullOr(ProcuratDate),
+    medicalCertificateReceived: Schema.NullOr(date),
+    medicalCertificateRequested: Schema.NullOr(date),
     medicalCertificateRequired: Schema.Boolean,
-  }),
-) {}
+  });
+
+export class UpdateAbsence extends Schema.Opaque<UpdateAbsence>()(updateAbsenceFields(ProcuratDate)) {}

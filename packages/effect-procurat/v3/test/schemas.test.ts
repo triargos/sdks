@@ -45,6 +45,7 @@ describe('the built v3 artifact', () => {
       'IsoDate',
       'ProcuratClient',
       'ProcuratDate',
+      'ProcuratDateFormat',
       'ProcuratHttpClient',
       'ProcuratRetry',
     ]);

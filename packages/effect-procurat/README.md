@@ -162,6 +162,15 @@ const ProcuratLive = ProcuratClient.layer({ apiKey, baseUrl, dateFormat: 'timest
 
 The option defaults to `'iso-date'` and disappears once every installation has moved.
 
+If you do not know which format an installation wants, ask it. `health.determineDateStyle()`
+reads the build number and answers `'iso-date'` or `'timestamp'`:
+
+```ts
+const dateFormat = yield* procurat.health.determineDateStyle();
+```
+
+This one is temporary too and goes away with the option.
+
 ## Schemas
 
 Response and request types live on `@triargos/effect-procurat/schemas` — `Person`, `CreatePerson`,
@@ -182,6 +191,9 @@ health.databaseLocked; // false
 ```
 
 The `lastUpdate*` fields stay raw strings, because the API names no format for them.
+
+The same service answers which date format the installation accepts on write — see
+[Dates](#dates).
 
 ## File uploads
 

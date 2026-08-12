@@ -132,6 +132,36 @@ const ProcuratLive = ProcuratClient.layer({ apiKey, baseUrl }).pipe(
 );
 ```
 
+## Dates
+
+Every date field is an `IsoDate`: a `YYYY-MM-DD` string with no time and no zone. It is
+display-ready, compares with `===`, and sorts with `<`. Build one with `IsoDate.make` or, from a
+`Date`, with `IsoDate.fromDate` — the zone is yours to pick, because a `Date` near midnight falls on
+a different day in UTC than it does locally.
+
+```ts
+import { IsoDate } from '@triargos/effect-procurat';
+
+yield * procurat.absence.create({
+  absence: {
+    personId: 42,
+    startDate: IsoDate.make('2024-05-01'),
+    endDate: IsoDate.fromDate(picker.value, 'local'),
+    // ...
+  },
+});
+```
+
+Procurat is moving from timestamps (`2024-05-01T00:00:00.000Z`) to date-only strings. Responses in
+either format decode the same, so reads need no configuration. Writes do: if your installation still
+runs the old API, ask for the old format.
+
+```ts
+const ProcuratLive = ProcuratClient.layer({ apiKey, baseUrl, dateFormat: 'timestamp' });
+```
+
+The option defaults to `'iso-date'` and disappears once every installation has moved.
+
 ## Schemas
 
 Response and request types live on `@triargos/effect-procurat/schemas` — `Person`, `CreatePerson`,

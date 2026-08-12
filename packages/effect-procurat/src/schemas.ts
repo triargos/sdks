@@ -1,3 +1,4 @@
+export { type DateFormat, IsoDate, ProcuratDate, ProcuratDateFormat } from './shared/date';
 export * from './domains/absence/absence-schema';
 export * from './domains/address/address-schema';
 export * from './domains/communication/communication-schema';

@@ -2,8 +2,16 @@ import { Context, Effect, Layer, Schema } from 'effect';
 import { HttpClientRequest } from 'effect/unstable/http';
 import { decodeJson } from '../../internal/decode';
 import { operation } from '../../internal/operation';
+import { currentDateCodec } from '../../shared/date';
 import { ProcuratHttpClient } from '../../shared/http-client';
-import { Absence, type AbsenceQueryType, CreateAbsence, UpdateAbsence } from './absence-schema';
+import {
+  Absence,
+  type AbsenceQueryType,
+  type CreateAbsence,
+  createAbsenceFields,
+  type UpdateAbsence,
+  updateAbsenceFields,
+} from './absence-schema';
 
 const queryParams = (type: AbsenceQueryType | undefined): { readonly type?: AbsenceQueryType } =>
   type === undefined ? {} : { type };
@@ -11,6 +19,7 @@ const queryParams = (type: AbsenceQueryType | undefined): { readonly type?: Abse
 export class ProcuratAbsence extends Context.Service<ProcuratAbsence>()('ProcuratAbsence', {
   make: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
+    const date = yield* currentDateCodec;
 
     const findAll = operation('absence.findAll', (params: { type?: AbsenceQueryType } = {}) =>
       HttpClientRequest.get('/absences').pipe(
@@ -42,7 +51,7 @@ export class ProcuratAbsence extends Context.Service<ProcuratAbsence>()('Procura
 
     const create = operation('absence.create', (params: { absence: CreateAbsence }) =>
       HttpClientRequest.post('/absences').pipe(
-        HttpClientRequest.schemaBodyJson(CreateAbsence)(params.absence),
+        HttpClientRequest.schemaBodyJson(createAbsenceFields(date))(params.absence),
         Effect.orDie,
         Effect.flatMap(http.execute),
         Effect.flatMap(decodeJson(Absence)),
@@ -51,7 +60,7 @@ export class ProcuratAbsence extends Context.Service<ProcuratAbsence>()('Procura
 
     const update = operation('absence.update', (params: { absence: UpdateAbsence }) =>
       HttpClientRequest.put(`/absences/${params.absence.id}`).pipe(
-        HttpClientRequest.schemaBodyJson(UpdateAbsence)(params.absence),
+        HttpClientRequest.schemaBodyJson(updateAbsenceFields(date))(params.absence),
         Effect.orDie,
         Effect.flatMap(http.execute),
         Effect.flatMap(decodeJson(Absence)),

@@ -2,16 +2,23 @@ import { Context, Effect, Layer } from 'effect';
 import { HttpClientRequest } from 'effect/unstable/http';
 import { decodeJson } from '../../internal/decode';
 import { operation } from '../../internal/operation';
+import { currentDateCodec } from '../../shared/date';
 import { ProcuratHttpClient } from '../../shared/http-client';
-import { AddMemberToGroup, GroupMember, UpdateGroupMembership } from './group-member-schema';
+import {
+  type AddMemberToGroup,
+  addMemberToGroupFields,
+  GroupMember,
+  UpdateGroupMembership,
+} from './group-member-schema';
 
 export class ProcuratGroupMember extends Context.Service<ProcuratGroupMember>()('ProcuratGroupMember', {
   make: Effect.gen(function* () {
     const http = yield* ProcuratHttpClient;
+    const date = yield* currentDateCodec;
 
     const addToGroup = operation('groupMember.addToGroup', (params: { groupId: number; member: AddMemberToGroup }) =>
       HttpClientRequest.post(`/groups/${params.groupId}/members`).pipe(
-        HttpClientRequest.schemaBodyJson(AddMemberToGroup)(params.member),
+        HttpClientRequest.schemaBodyJson(addMemberToGroupFields(date))(params.member),
         Effect.orDie,
         Effect.flatMap(http.execute),
         Effect.flatMap(decodeJson(GroupMember)),

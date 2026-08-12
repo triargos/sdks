@@ -40,8 +40,15 @@ const undefinedExports = (module: Record<string, unknown>) =>
     .map(([name]) => name);
 
 describe('the built v3 artifact', () => {
-  it('offers the same three entry points as the v4 build', () => {
-    assert.deepStrictEqual(Object.keys(entry).sort(), ['ProcuratClient', 'ProcuratHttpClient', 'ProcuratRetry']);
+  it('offers the same runtime exports as the v4 build', () => {
+    assert.deepStrictEqual(Object.keys(entry).sort(), [
+      'IsoDate',
+      'ProcuratClient',
+      'ProcuratDate',
+      'ProcuratDateFormat',
+      'ProcuratHttpClient',
+      'ProcuratRetry',
+    ]);
     assert.deepStrictEqual(undefinedExports(errors), []);
     assert.isAbove(Object.keys(errors).length, 4);
   });
@@ -57,18 +64,26 @@ describe('the built v3 artifact', () => {
 });
 
 describe('schema decoding on Effect v3', () => {
-  it.effect('decodes a person payload, turning the date string into a Date', () =>
+  it.effect('decodes a person payload, turning the timestamp into an ISO date', () =>
     Effect.gen(function* () {
       const person = yield* Schema.decodeUnknown(Person)(personWire);
 
       assert.strictEqual(person.firstName, 'Ada');
       assert.strictEqual(person.gender, 'female');
-      assert.deepStrictEqual(person.birthDate, new Date('1815-12-10T00:00:00.000Z'));
+      assert.strictEqual(person.birthDate, '1815-12-10');
       assert.strictEqual(person.deathDate, null);
     }),
   );
 
-  it.effect('round-trips CreatePerson through decode and encode unchanged', () =>
+  it.effect('decodes a date-only payload the same way', () =>
+    Effect.gen(function* () {
+      const person = yield* Schema.decodeUnknown(Person)({ ...personWire, birthDate: '1815-12-10' });
+
+      assert.strictEqual(person.birthDate, '1815-12-10');
+    }),
+  );
+
+  it.effect('round-trips CreatePerson through decode and encode as an ISO date', () =>
     Effect.gen(function* () {
       const wire: typeof CreatePerson.Encoded = {
         firstName: 'Ada',
@@ -87,7 +102,7 @@ describe('schema decoding on Effect v3', () => {
       const decoded = yield* Schema.decodeUnknown(CreatePerson)(wire);
       const encoded = yield* Schema.encode(CreatePerson)(decoded);
 
-      assert.deepStrictEqual(encoded, wire);
+      assert.deepStrictEqual(encoded, { ...wire, birthDate: '1815-12-10' });
     }),
   );
 

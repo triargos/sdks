@@ -168,6 +168,21 @@ Response and request types live on `@triargos/effect-procurat/schemas` — `Pers
 `Address`, `Group`, and so on. Request types are plain object shapes: pass an object literal, no
 constructor call.
 
+## Health
+
+`procurat.health.get()` reads `GET /health` — the build number, the database version, and what
+the installation is doing right now.
+
+```ts
+const health = yield* procurat.health.get();
+
+health.build; // 4711
+health.productionVersion; // '2024.1'
+health.databaseLocked; // false
+```
+
+The `lastUpdate*` fields stay raw strings, because the API names no format for them.
+
 ## File uploads
 
 `file.upload*` buffers the whole stream into memory before sending it, because the endpoint takes

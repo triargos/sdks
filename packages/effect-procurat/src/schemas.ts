@@ -10,6 +10,7 @@ export * from './domains/group-member/group-member-schema';
 export * from './domains/group/group-schema';
 export * from './domains/group/group-supervisor-schema';
 export * from './domains/group/group-udf-schema';
+export * from './domains/health/health-schema';
 export * from './domains/lookup-table/lookup-table-schema';
 export * from './domains/person/person-schema';
 export * from './domains/relationship/relationship-schema';

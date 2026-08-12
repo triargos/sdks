@@ -1,4 +1,5 @@
 import { Schema } from 'effect';
+import { ProcuratDate } from '../../shared/date';
 import { membersOf } from '../../shared/literals';
 
 export const Gender = Schema.Literals(['male', 'female', 'other']);
@@ -26,7 +27,7 @@ export class Person extends Schema.Class<Person>('Person')({
   addressId: Schema.NullOr(Schema.Number),
   familyId: Schema.NullOr(Schema.Number),
   familyRole: Schema.NullOr(FamilyRole),
-  birthDate: Schema.NullOr(Schema.DateFromString),
+  birthDate: Schema.NullOr(ProcuratDate),
   birthPlace: Schema.NullOr(Schema.String),
   birthCountryId: Schema.NullOr(Schema.Number),
   languageId: Schema.NullOr(Schema.Number),
@@ -42,7 +43,7 @@ export class Person extends Schema.Class<Person>('Person')({
   comment: Schema.NullOr(Schema.String),
   nationalityId: Schema.NullOr(Schema.Number),
   maritalStatus: Schema.NullOr(Schema.String),
-  deathDate: Schema.NullOr(Schema.DateFromString),
+  deathDate: Schema.NullOr(ProcuratDate),
 }) {}
 
 export class CreatePerson extends Schema.Opaque<CreatePerson>()(
@@ -54,7 +55,7 @@ export class CreatePerson extends Schema.Opaque<CreatePerson>()(
     addressId: Schema.Number,
     familyId: Schema.NullOr(Schema.Number),
     familyRole: FamilyRole,
-    birthDate: Schema.NullOr(Schema.DateFromString),
+    birthDate: Schema.NullOr(ProcuratDate),
     birthPlace: Schema.NullOr(Schema.String),
     birthCountryId: Schema.NullOr(Schema.Number),
     nationalityId: Schema.NullOr(Schema.Number),
@@ -70,7 +71,7 @@ export class UpdatePerson extends Schema.Opaque<UpdatePerson>()(
     addressId: Schema.NullOr(Schema.Number),
     familyId: Schema.NullOr(Schema.Number),
     familyRole: Schema.NullOr(FamilyRole),
-    birthDate: Schema.NullOr(Schema.DateFromString),
+    birthDate: Schema.NullOr(ProcuratDate),
     birthPlace: Schema.NullOr(Schema.String),
     birthCountryId: Schema.NullOr(Schema.Number),
     languageId: Schema.NullOr(Schema.Number),
@@ -86,6 +87,6 @@ export class UpdatePerson extends Schema.Opaque<UpdatePerson>()(
     comment: Schema.NullOr(Schema.String),
     nationalityId: Schema.NullOr(Schema.Number),
     maritalStatus: Schema.NullOr(Schema.String),
-    deathDate: Schema.NullOr(Schema.DateFromString),
+    deathDate: Schema.NullOr(ProcuratDate),
   }),
 ) {}

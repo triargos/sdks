@@ -1,4 +1,5 @@
 import { Schema } from 'effect';
+import { ProcuratDate } from '../../shared/date';
 import { membersOf } from '../../shared/literals';
 
 export const AbsenceQueryType = Schema.Literals(['all', 'today', 'schoolyear']);
@@ -12,26 +13,26 @@ export const AbsenceQueryTypes = membersOf(AbsenceQueryType)({
 export class Absence extends Schema.Class<Absence>('Absence')({
   id: Schema.Number,
   personId: Schema.Number,
-  date: Schema.DateFromString,
+  date: ProcuratDate,
   excused: Schema.Boolean,
   parentsInformed: Schema.Boolean,
   note: Schema.NullOr(Schema.String),
-  medicalCertificateReceived: Schema.NullOr(Schema.DateFromString),
-  medicalCertificateRequested: Schema.NullOr(Schema.DateFromString),
+  medicalCertificateReceived: Schema.NullOr(ProcuratDate),
+  medicalCertificateRequested: Schema.NullOr(ProcuratDate),
   medicalCertificateRequired: Schema.Boolean,
 }) {}
 
 export class CreateAbsence extends Schema.Opaque<CreateAbsence>()(
   Schema.Struct({
     personId: Schema.Number,
-    startDate: Schema.DateFromString,
-    endDate: Schema.DateFromString,
+    startDate: ProcuratDate,
+    endDate: ProcuratDate,
     includeWeekend: Schema.Boolean,
     excused: Schema.Boolean,
     parentsInformed: Schema.Boolean,
     note: Schema.optionalKey(Schema.String),
-    medicalCertificateReceived: Schema.optionalKey(Schema.DateFromString),
-    medicalCertificateRequested: Schema.optionalKey(Schema.DateFromString),
+    medicalCertificateReceived: Schema.optionalKey(ProcuratDate),
+    medicalCertificateRequested: Schema.optionalKey(ProcuratDate),
     medicalCertificateRequired: Schema.Boolean,
   }),
 ) {}
@@ -40,12 +41,12 @@ export class UpdateAbsence extends Schema.Opaque<UpdateAbsence>()(
   Schema.Struct({
     id: Schema.Number,
     personId: Schema.Number,
-    date: Schema.DateFromString,
+    date: ProcuratDate,
     excused: Schema.Boolean,
     parentsInformed: Schema.Boolean,
     note: Schema.NullOr(Schema.String),
-    medicalCertificateReceived: Schema.NullOr(Schema.DateFromString),
-    medicalCertificateRequested: Schema.NullOr(Schema.DateFromString),
+    medicalCertificateReceived: Schema.NullOr(ProcuratDate),
+    medicalCertificateRequested: Schema.NullOr(ProcuratDate),
     medicalCertificateRequired: Schema.Boolean,
   }),
 ) {}

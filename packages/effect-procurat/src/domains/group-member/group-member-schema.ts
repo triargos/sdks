@@ -1,4 +1,5 @@
 import { Schema } from 'effect';
+import { ProcuratDate } from '../../shared/date';
 import { membersOf } from '../../shared/literals';
 
 export const GroupMemberStatus = Schema.Literals(['ACTIVE', 'INACTIVE', 'ALL']);
@@ -15,8 +16,8 @@ export class GroupMember extends Schema.Class<GroupMember>('GroupMember')({
   id: Schema.Number,
   groupId: Schema.Number,
   personId: Schema.Number,
-  entryDate: Schema.DateFromString,
-  exitDate: Schema.NullOr(Schema.DateFromString),
+  entryDate: ProcuratDate,
+  exitDate: Schema.NullOr(ProcuratDate),
   jsonData: Schema.NullOr(JsonData),
   grade: Schema.NullOr(Schema.Number),
 }) {}
@@ -24,7 +25,7 @@ export class GroupMember extends Schema.Class<GroupMember>('GroupMember')({
 export class AddMemberToGroup extends Schema.Opaque<AddMemberToGroup>()(
   Schema.Struct({
     personId: Schema.Number,
-    entryDate: Schema.NullOr(Schema.DateFromString),
+    entryDate: Schema.NullOr(ProcuratDate),
     grade: Schema.NullOr(Schema.Number),
   }),
 ) {}

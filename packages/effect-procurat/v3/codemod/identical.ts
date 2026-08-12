@@ -14,7 +14,6 @@ export const identicalInV3: ReadonlyArray<Claim> = [
   'Schema.Array',
   'Schema.Boolean',
   'Schema.Class',
-  'Schema.DateFromString',
   'Schema.Null',
   'Schema.NullOr',
   'Schema.Number',

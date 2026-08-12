@@ -1,3 +1,4 @@
+export { IsoDate, ProcuratDate } from './shared/date';
 export * from './domains/absence/absence-schema';
 export * from './domains/address/address-schema';
 export * from './domains/communication/communication-schema';

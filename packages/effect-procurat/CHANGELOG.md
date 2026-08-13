@@ -1,5 +1,33 @@
 # @triargos/effect-procurat
 
+## 2.2.0
+
+### Minor Changes
+
+- f34865a: Add the follow-up module (`procurat.followUp`).
+
+  New operations against `/followups`:
+  - `followUp.findAll()` — all follow-ups
+  - `followUp.findById({ id })`
+  - `followUp.findByPerson({ personId })` — follow-ups that reference the person
+  - `followUp.findByAssignee({ personId })` — follow-ups assigned to the person
+  - `followUp.create({ followUp })`
+  - `followUp.update({ followUp })`
+  - `followUp.delete({ id })`
+
+  Follow-up timestamps decode to the Berlin calendar day.
+
+- 570abb0: Add the update and delete operations the SDK was missing on addresses and contact information.
+
+  New operations:
+  - `address.update({ address })` — `PUT /addresses/{id}`, takes the new `UpdateAddress` schema
+  - `contactInformation.update({ contactInformation })` — `PUT /contactinformation/{id}`, takes a `ContactInformation` so you can fetch, modify and send it back
+  - `contactInformation.delete({ contactInformationId })` — `DELETE /contactinformation/{id}`, returns void
+
+  `UpdateAddress` is a separate schema from the `Address` you get back on reads. Reads stay lenient about `street`, `zip` and `city` being null, but the API wants strings on write.
+
+  `CreateAddress` gains a `personId` field to match the API. It accepts `null`, but the field is required, so calls that build a `CreateAddress` need `personId: null` added.
+
 ## 2.1.0
 
 ### Minor Changes

@@ -10,8 +10,8 @@ export class Health extends Schema.Class<Health>('Health')({
   nightShiftManagerRunning: Schema.Boolean,
   isProduction: Schema.Boolean,
   centralSqlCommandEnabled: Schema.Boolean,
-  /** Kept raw: the API declares a plain string and names no format. */
-  lastUpdateStart: Schema.String,
-  lastUpdateEnd: Schema.String,
-  lastUpdateFailed: Schema.String,
+  /** Kept raw: the API declares a plain string and names no format. Null until a first update runs. */
+  lastUpdateStart: Schema.NullOr(Schema.String),
+  lastUpdateEnd: Schema.NullOr(Schema.String),
+  lastUpdateFailed: Schema.NullOr(Schema.String),
 }) {}

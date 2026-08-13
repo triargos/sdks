@@ -2,12 +2,13 @@ import { Schema } from 'effect';
 import { type DateCodec, ProcuratDate } from '../../shared/date';
 import { membersOf } from '../../shared/literals';
 
-export const GroupMemberStatus = Schema.Literals(['ACTIVE', 'INACTIVE', 'ALL']);
+/** Procurat silently treats any other value as `active` — keep these exact. */
+export const GroupMemberStatus = Schema.Literals(['active', 'inactive', 'future']);
 export type GroupMemberStatus = typeof GroupMemberStatus.Type;
 export const GroupMemberStatuses = membersOf(GroupMemberStatus)({
-  Active: 'ACTIVE',
-  Inactive: 'INACTIVE',
-  All: 'ALL',
+  Active: 'active',
+  Inactive: 'inactive',
+  Future: 'future',
 });
 
 const JsonData = Schema.Record(Schema.String, Schema.Unknown);

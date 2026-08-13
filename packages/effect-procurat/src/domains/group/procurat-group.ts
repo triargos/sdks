@@ -25,7 +25,7 @@ export class ProcuratGroup extends Context.Service<ProcuratGroup>()('ProcuratGro
       (params: { groupId: number; status?: GroupMemberStatus; includeUdfs?: boolean }) =>
         HttpClientRequest.get(`/groups/${params.groupId}/members`).pipe(
           HttpClientRequest.setUrlParams({
-            status: params.status ?? 'ACTIVE',
+            status: params.status ?? 'active',
             includeUdfs: params.includeUdfs ?? false,
           }),
           http.execute,

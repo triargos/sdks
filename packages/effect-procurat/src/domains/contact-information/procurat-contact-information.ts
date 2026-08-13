@@ -32,6 +32,25 @@ export class ProcuratContactInformation extends Context.Service<ProcuratContactI
           ),
       );
 
+      /** Body reuses the read class — it matches `ContactInformationDTO` field-for-field. Fetch, modify, update. */
+      const update = operation(
+        'contactInformation.update',
+        (params: { contactInformation: ContactInformation }) =>
+          HttpClientRequest.put(`/contactinformation/${params.contactInformation.id}`).pipe(
+            HttpClientRequest.schemaBodyJson(ContactInformation)(params.contactInformation),
+            Effect.orDie,
+            Effect.flatMap(http.execute),
+            Effect.flatMap(decodeJson(ContactInformation)),
+          ),
+      );
+
+      // Named `remove` because `delete` is a reserved word; exposed as `delete`.
+      const remove = operation('contactInformation.delete', (params: { contactInformationId: number }) =>
+        http
+          .execute(HttpClientRequest.delete(`/contactinformation/${params.contactInformationId}`))
+          .pipe(Effect.asVoid),
+      );
+
       const findByPerson = operation('contactInformation.findByPerson', (params: { personId: number }) =>
         http
           .get(`/contactinformation/person/${params.personId}`)
@@ -44,7 +63,7 @@ export class ProcuratContactInformation extends Context.Service<ProcuratContactI
           .pipe(Effect.flatMap(decodeJson(Schema.Array(ContactInformation)))),
       );
 
-      return { findAll, findById, create, findByPerson, findByAddress };
+      return { findAll, findById, create, update, delete: remove, findByPerson, findByAddress };
     }),
   },
 ) {

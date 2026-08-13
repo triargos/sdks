@@ -48,6 +48,7 @@ const addressWire = {
 };
 
 const createAddress = {
+  personId: null,
   street: 'Baker Street',
   city: 'London',
   zip: 'NW1 6XE',

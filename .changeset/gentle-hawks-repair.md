@@ -1,5 +1,5 @@
 ---
-'@triargos/effect-procurat': major
+'@triargos/effect-procurat': minor
 ---
 
 Fix `GroupMemberStatus` to the values Procurat actually accepts: `active`, `inactive`, and `future`.

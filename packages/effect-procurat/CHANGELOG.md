@@ -1,5 +1,35 @@
 # @triargos/effect-procurat
 
+## 2.3.0
+
+### Minor Changes
+
+- 2080ec6: Fix `GroupMemberStatus` to the values Procurat actually accepts: `active`, `inactive`, and `future`.
+
+  The old `ACTIVE`, `INACTIVE`, and `ALL` values never worked — Procurat silently treats any unknown status as `active`. So `group.findMembers` with `INACTIVE` or `ALL` returned active members.
+
+  Breaking changes:
+  - `GroupMemberStatuses.All` is gone. Procurat has no "all" — fetch per status if you need everyone.
+  - `GroupMemberStatuses.Future` is new (`'future'`).
+  - The literal values are now lowercase. Code that passed raw `'ACTIVE'`/`'INACTIVE'`/`'ALL'` strings no longer compiles — which is the fix, because those calls silently returned the wrong members.
+
+- eb02c47: Add the update and delete operations the SDK was missing on addresses and contact information.
+
+  New operations:
+  - `address.update({ address })` — `PUT /addresses/{id}`, takes the new `UpdateAddress` schema
+  - `contactInformation.update({ contactInformation })` — `PUT /contactinformation/{id}`, takes a `ContactInformation` so you can fetch, modify and send it back
+  - `contactInformation.delete({ contactInformationId })` — `DELETE /contactinformation/{id}`, returns void
+
+  `UpdateAddress` is a separate schema from the `Address` you get back on reads. Reads stay lenient about `street`, `zip` and `city` being null, but the API wants strings on write.
+
+  `CreateAddress` gains a `personId` field to match the API. It accepts `null`, but the field is required, so calls that build a `CreateAddress` need `personId: null` added.
+
+### Patch Changes
+
+- 2080ec6: Allow `null` for `lastUpdateStart`, `lastUpdateEnd`, and `lastUpdateFailed` in the `Health` schema.
+
+  The health endpoint returns `null` for these fields until a first update runs. The strict string schema made every `Health` decode fail on such instances, which also broke `health.determineDateStyle` and every operation that calls it first (for example person queries).
+
 ## 2.2.0
 
 ### Minor Changes

@@ -1,7 +1,8 @@
-import { Context, Effect, Layer, Stream } from 'effect';
-import { HttpClientRequest } from 'effect/unstable/http';
+import { Context, Effect, Layer, Option, Stream } from 'effect';
+import { Headers, HttpClientRequest } from 'effect/unstable/http';
 import { decodeJson, streamBody } from '../../internal/decode';
 import { operation } from '../../internal/operation';
+import type { ProcuratUnavailableError } from '../../shared/errors';
 import { ProcuratHttpClient } from '../../shared/http-client';
 import { DirectoryContent } from './file-schema';
 
@@ -22,6 +23,16 @@ const streamToBlob = (stream: Stream.Stream<Uint8Array>, contentType: string) =>
     }).blob(),
   );
 
+/**
+ * The endpoints stream arbitrary bytes, so the type is only knowable from the response.
+ * An absent `Content-Type` yields `application/octet-stream` — what HTTP already means by
+ * an unlabeled body, and what `upload` sends when the caller names no type.
+ */
+export interface FileDownload {
+  readonly contentType: string;
+  readonly stream: Stream.Stream<Uint8Array, ProcuratUnavailableError>;
+}
+
 export interface UploadParams {
   readonly personId: number;
   readonly path: string;
@@ -36,7 +47,22 @@ export class ProcuratFile extends Context.Service<ProcuratFile>()('ProcuratFile'
 
     const list = (path: string) => http.get(path).pipe(Effect.flatMap(decodeJson(DirectoryContent)));
 
-    const download = (path: string) => http.get(path).pipe(Effect.flatMap(streamBody));
+    const download = (path: string) =>
+      http.get(path).pipe(
+        Effect.flatMap((response) =>
+          streamBody(response).pipe(
+            Effect.map(
+              (stream): FileDownload => ({
+                contentType: Option.getOrElse(
+                  Headers.get(response.headers, 'content-type'),
+                  () => 'application/octet-stream',
+                ),
+                stream,
+              }),
+            ),
+          ),
+        ),
+      );
 
     const upload = (path: string, params: UploadParams) =>
       Effect.gen(function* () {

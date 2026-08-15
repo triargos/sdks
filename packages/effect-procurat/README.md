@@ -195,6 +195,24 @@ The `lastUpdate*` fields stay raw strings, because the API names no format for t
 The same service answers which date format the installation accepts on write — see
 [Dates](#dates).
 
+## File downloads
+
+`file.download*` answers with the content type alongside the bytes, because the endpoints stream
+arbitrary files and nothing in the path tells you what you got.
+
+```ts
+const { contentType, stream } = yield* procurat.file.downloadPublicFile({ path: 'info/note.pdf' });
+
+contentType; // 'application/pdf'
+yield * Stream.run(stream, sink);
+```
+
+When the installation sends no `Content-Type`, `contentType` is `'application/octet-stream'` — what
+HTTP already means by an unlabeled body, and what `file.upload*` sends when you name no type.
+
+There is no `fileName`: these endpoints address files by path, so the basename of the `path` you
+passed is the name.
+
 ## File uploads
 
 `file.upload*` buffers the whole stream into memory before sending it, because the endpoint takes

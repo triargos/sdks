@@ -60,6 +60,9 @@ export const identicalInV3: ReadonlyArray<Claim> = [
   'Schedule.exponential',
   'Schedule.jittered',
 
+  // Both majors lowercase the key and answer `Option.none()` when the header is absent.
+  'Headers.get',
+
   // `HttpClient.HttpClient.With<E>` spells the same in both majors.
   'HttpClient.HttpClient',
   'HttpClient.filterStatusOk',

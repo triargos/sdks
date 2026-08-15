@@ -137,7 +137,7 @@ describe('ProcuratClient over a v3 HttpClient', () => {
 
       const bytes = yield* Effect.gen(function* () {
         const client = yield* ProcuratClient;
-        const stream = yield* client.file.downloadPublicFile({ path: 'note.txt' });
+        const { stream } = yield* client.file.downloadPublicFile({ path: 'note.txt' });
         return yield* Stream.runCollect(stream);
       }).pipe(Effect.provide(layer));
 

@@ -1,5 +1,33 @@
 # @triargos/effect-procurat
 
+## 3.0.0
+
+### Major Changes
+
+- f8ac30d: Expose the `Content-Type` header on file downloads.
+
+  The download endpoints stream arbitrary files and the response type was thrown away one line before it reached you, so there was no way to tell a PDF from a spreadsheet without guessing from the path.
+
+  Breaking change: `file.downloadManagementFile`, `file.downloadFinanceFile` and `file.downloadPublicFile` now answer with `{ contentType, stream }` instead of a bare `Stream`.
+
+  ```ts
+  // before
+  const stream = yield * procurat.file.downloadPublicFile({ path: 'info/note.pdf' });
+
+  // after
+  const { contentType, stream } = yield * procurat.file.downloadPublicFile({ path: 'info/note.pdf' });
+  ```
+
+  `contentType` is `'application/octet-stream'` when the installation sends no `Content-Type` — what HTTP already means by an unlabeled body, and what `file.upload*` sends when you name no type.
+
+### Patch Changes
+
+- 9a6dc98: Fix the `/v3` declarations bundling a copy of `effect`'s types.
+
+  The download signatures (`file.downloadManagementFile`, `downloadFinanceFile`, `downloadPublicFile`) referred to an inlined `Stream` declaration. Its `unique symbol` type id is a different type than the one in the consumer's own `effect` install, so passing a download stream to any `Stream` combinator failed with `Property '[StreamTypeId]' is missing`. At runtime the value was always the caller's `Stream` — only the declaration was foreign.
+
+  `effect` and `@effect/platform` subpaths are now externalized in the declaration build, so consumers can drop any cast around `client.file.download*`.
+
 ## 2.3.0
 
 ### Minor Changes

@@ -10,6 +10,10 @@ export default defineConfig({
   // The package is `"type": "module"`, so `.js` is already ESM — same as the v4 build.
   outExtensions: () => ({ js: '.js', dts: '.d.ts' }),
   deps: {
-    neverBundle: ['effect', '@effect/platform'],
+    // Patterns, not names: TypeScript writes inferred types as deep imports
+    // (`effect/Stream`), and a bundled copy of `effect`'s declarations would
+    // redeclare its `unique symbol` type ids — making every type nominally
+    // foreign to the consumer's own `effect` install.
+    neverBundle: [/^effect(\/|$)/, /^@effect\/platform(\/|$)/],
   },
 });

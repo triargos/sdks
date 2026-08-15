@@ -1,5 +1,5 @@
 import { assert, describe, it } from '@effect/vitest';
-import { Effect, Layer, Redacted, Schedule } from 'effect';
+import { Chunk, Effect, Layer, Redacted, Schedule, Stream } from 'effect';
 
 import { IsoDate, ProcuratClient, type DateFormat, ProcuratRetry } from '../../dist/v3/index.js';
 import type { ProcuratError } from '../../dist/v3/errors.js';
@@ -123,6 +123,28 @@ describe('ProcuratClient over a v3 HttpClient', () => {
       assert.strictEqual(address.id, 42);
       assert.strictEqual(stub.sent[0]?.method, 'POST');
       assert.deepStrictEqual(stub.sent[0]?.body, createAddress);
+    }),
+  );
+
+  /**
+   * Typechecking is the point: a download stream must be the caller's own `effect`
+   * `Stream`. If the bundled declarations carry their own copy, its `unique symbol`
+   * type id differs and `Stream.runCollect` here rejects the value.
+   */
+  it.effect('hands back a stream the caller’s own effect combinators accept', () =>
+    Effect.gen(function* () {
+      const { layer } = clientWith({ '/files/shared/download/note.txt': { status: 200, body: 'file-bytes' } });
+
+      const bytes = yield* Effect.gen(function* () {
+        const client = yield* ProcuratClient;
+        const stream = yield* client.file.downloadPublicFile({ path: 'note.txt' });
+        return yield* Stream.runCollect(stream);
+      }).pipe(Effect.provide(layer));
+
+      const decoded = new TextDecoder().decode(
+        Uint8Array.from(Chunk.toReadonlyArray(bytes).flatMap((chunk) => [...chunk])),
+      );
+      assert.strictEqual(decoded, JSON.stringify('file-bytes'));
     }),
   );
 });

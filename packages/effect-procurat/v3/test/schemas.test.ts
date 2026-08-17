@@ -83,6 +83,18 @@ describe('schema decoding on Effect v3', () => {
     }),
   );
 
+  // The only payload where a UTC day and a Berlin day disagree, so the only one that
+  // catches `v3/overrides/shared/date.ts` drifting away from `src/shared/date.ts`.
+  it.effect('reads a Berlin midnight stored as UTC as the next day', () =>
+    Effect.gen(function* () {
+      const winter = yield* Schema.decodeUnknown(Person)({ ...personWire, birthDate: '2024-12-09T23:00:00.000Z' });
+      const summer = yield* Schema.decodeUnknown(Person)({ ...personWire, birthDate: '2024-06-09T22:00:00.000Z' });
+
+      assert.strictEqual(winter.birthDate, '2024-12-10');
+      assert.strictEqual(summer.birthDate, '2024-06-10');
+    }),
+  );
+
   it.effect('round-trips CreatePerson through decode and encode as an ISO date', () =>
     Effect.gen(function* () {
       const wire: typeof CreatePerson.Encoded = {

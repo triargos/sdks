@@ -64,13 +64,27 @@ export class ProcuratFile extends Context.Service<ProcuratFile>()('ProcuratFile'
         ),
       );
 
+    /**
+     * The multipart body is serialized here instead of sending a `FormData`-tagged
+     * body: the undici-backed client hands `FormData` to `dispatcher.request`, which
+     * cannot serialize it, so the request leaves without a multipart content type and
+     * Procurat rejects it. Bytes also survive `retryTransient` replaying the request,
+     * which a one-shot body stream would not.
+     */
     const upload = (path: string, params: UploadParams) =>
       Effect.gen(function* () {
         const blob = yield* streamToBlob(params.stream, params.contentType ?? 'application/octet-stream');
         const formData = new FormData();
         formData.append('file', blob, params.fileName);
+        // `Response` owns the boundary: it serializes the multipart body and names it in the header.
+        const serialized = new Response(formData);
+        const bytes = yield* Effect.promise(async () => new Uint8Array(await serialized.arrayBuffer()));
         return yield* http
-          .execute(HttpClientRequest.post(path).pipe(HttpClientRequest.bodyFormData(formData)))
+          .execute(
+            HttpClientRequest.post(path).pipe(
+              HttpClientRequest.bodyUint8Array(bytes, serialized.headers.get('content-type') ?? 'multipart/form-data'),
+            ),
+          )
           .pipe(Effect.asVoid);
       });
 

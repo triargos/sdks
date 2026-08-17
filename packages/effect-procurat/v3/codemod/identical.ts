@@ -71,6 +71,7 @@ export const identicalInV3: ReadonlyArray<Claim> = [
 
   'HttpClientRequest.acceptJson',
   'HttpClientRequest.bodyFormData',
+  'HttpClientRequest.bodyUint8Array',
   'HttpClientRequest.get',
   'HttpClientRequest.post',
   'HttpClientRequest.prependUrl',

@@ -33,12 +33,15 @@ export interface FileDownload {
   readonly stream: Stream.Stream<Uint8Array, ProcuratUnavailableError>;
 }
 
-export interface UploadParams {
-  readonly personId: number;
+export interface UploadFileParams {
   readonly path: string;
   readonly fileName: string;
   readonly stream: Stream.Stream<Uint8Array>;
   readonly contentType?: string;
+}
+
+export interface UploadParams extends UploadFileParams {
+  readonly personId: number;
 }
 
 export class ProcuratFile extends Context.Service<ProcuratFile>()('ProcuratFile', {
@@ -71,7 +74,7 @@ export class ProcuratFile extends Context.Service<ProcuratFile>()('ProcuratFile'
      * Procurat rejects it. Bytes also survive `retryTransient` replaying the request,
      * which a one-shot body stream would not.
      */
-    const upload = (path: string, params: UploadParams) =>
+    const upload = (path: string, params: UploadFileParams) =>
       Effect.gen(function* () {
         const blob = yield* streamToBlob(params.stream, params.contentType ?? 'application/octet-stream');
         const formData = new FormData();
@@ -136,6 +139,10 @@ export class ProcuratFile extends Context.Service<ProcuratFile>()('ProcuratFile'
       upload(`/files/person/${params.personId}/finance/${encodePath(params.path)}`, params),
     );
 
+    const uploadPublicFile = operation('file.uploadPublicFile', (params: UploadFileParams) =>
+      upload(`/files/shared/${encodePath(params.path)}`, params),
+    );
+
     return {
       listManagementFiles,
       listFinanceFiles,
@@ -145,6 +152,7 @@ export class ProcuratFile extends Context.Service<ProcuratFile>()('ProcuratFile'
       downloadPublicFile,
       uploadManagementFile,
       uploadFinanceFile,
+      uploadPublicFile,
       deleteManagementFile,
       deleteFinanceFile,
       deletePublicFile,

@@ -20,16 +20,13 @@ const capturingLayer = (captured: Array<HttpClientRequest.HttpClientRequest>) =>
     }),
   );
 
-const uploadThroughSdk = (captured: Array<HttpClientRequest.HttpClientRequest>) =>
+const withCapturedRequests = <A, E>(
+  captured: Array<HttpClientRequest.HttpClientRequest>,
+  run: (file: ProcuratFile) => Effect.Effect<A, E>,
+) =>
   Effect.gen(function* () {
     const file = yield* ProcuratFile;
-    yield* file.uploadManagementFile({
-      personId: 1,
-      path: 'docs/reports',
-      fileName: 'a.pdf',
-      stream: Stream.make(new TextEncoder().encode('hello')),
-      contentType: 'application/pdf',
-    });
+    yield* run(file);
   }).pipe(
     Effect.provide(
       ProcuratFile.layer.pipe(
@@ -38,6 +35,17 @@ const uploadThroughSdk = (captured: Array<HttpClientRequest.HttpClientRequest>) 
       ),
     ),
     Effect.runPromise,
+  );
+
+const uploadThroughSdk = (captured: Array<HttpClientRequest.HttpClientRequest>) =>
+  withCapturedRequests(captured, (file) =>
+    file.uploadManagementFile({
+      personId: 1,
+      path: 'docs/reports',
+      fileName: 'a.pdf',
+      stream: Stream.make(new TextEncoder().encode('hello')),
+      contentType: 'application/pdf',
+    }),
   );
 
 describe('uploadManagementFile', () => {
@@ -68,5 +76,25 @@ describe('uploadManagementFile', () => {
     expect(file.name).toBe('a.pdf');
     expect(file.type).toBe('application/pdf');
     expect(await file.text()).toBe('hello');
+  });
+});
+
+describe('uploadPublicFile', () => {
+  it('posts multipart bytes to the shared files endpoint without a person scope', async () => {
+    const captured: Array<HttpClientRequest.HttpClientRequest> = [];
+    await withCapturedRequests(captured, (file) =>
+      file.uploadPublicFile({
+        path: 'forms/2024',
+        fileName: 'schedule.pdf',
+        stream: Stream.make(new TextEncoder().encode('shared')),
+        contentType: 'application/pdf',
+      }),
+    );
+
+    const request = captured[0];
+    expect(request.method).toBe('POST');
+    expect(request.url).toBe('http://procurat.test/files/shared/forms/2024');
+    expect(request.body._tag).toBe('Uint8Array');
+    expect(request.headers['content-type']).toMatch(/^multipart\/form-data; boundary=/);
   });
 });

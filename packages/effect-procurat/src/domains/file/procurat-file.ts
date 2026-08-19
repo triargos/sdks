@@ -114,6 +114,20 @@ export class ProcuratFile extends Context.Service<ProcuratFile>()('ProcuratFile'
       download(`/files/shared/download/${encodePath(params.path)}`),
     );
 
+    const remove = (path: string) => http.execute(HttpClientRequest.delete(path)).pipe(Effect.asVoid);
+
+    const deleteManagementFile = operation('file.deleteManagementFile', (params: { personId: number; path: string }) =>
+      remove(`/files/person/${params.personId}/management/${encodePath(params.path)}`),
+    );
+
+    const deleteFinanceFile = operation('file.deleteFinanceFile', (params: { personId: number; path: string }) =>
+      remove(`/files/person/${params.personId}/finance/${encodePath(params.path)}`),
+    );
+
+    const deletePublicFile = operation('file.deletePublicFile', (params: { path: string }) =>
+      remove(`/files/shared/${encodePath(params.path)}`),
+    );
+
     const uploadManagementFile = operation('file.uploadManagementFile', (params: UploadParams) =>
       upload(`/files/person/${params.personId}/management/${encodePath(params.path)}`, params),
     );
@@ -131,6 +145,9 @@ export class ProcuratFile extends Context.Service<ProcuratFile>()('ProcuratFile'
       downloadPublicFile,
       uploadManagementFile,
       uploadFinanceFile,
+      deleteManagementFile,
+      deleteFinanceFile,
+      deletePublicFile,
     };
   }),
 }) {

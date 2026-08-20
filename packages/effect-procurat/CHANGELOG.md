@@ -1,5 +1,17 @@
 # @triargos/effect-procurat
 
+## 3.1.0
+
+### Minor Changes
+
+- 26794cc: Add `uploadPublicFile` on `ProcuratFile` for `POST /files/shared/**`.
+
+  Shared files could already be listed, downloaded, and deleted, but not uploaded. The new operation reuses the existing multipart upload path without a person scope. `UploadParams` now extends a new `UploadFileParams` base (no `personId`); existing callers are unaffected. Purely additive.
+
+- c4546b8: Add file delete operations: `deleteManagementFile`, `deleteFinanceFile`, and `deletePublicFile` on `ProcuratFile`.
+
+  All three file areas accept `DELETE` in the Procurat API, but the SDK had no way to remove a file once uploaded. The new operations fire the request and return void — the `SuccessResponse` body carries nothing a caller can act on, matching the existing `contactInformation.delete` precedent. Purely additive.
+
 ## 3.0.2
 
 ### Patch Changes

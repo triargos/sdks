@@ -79,6 +79,9 @@ export const updatePersonFields = (date: DateCodec) =>
     languageId: Schema.NullOr(Schema.Number),
     religionId: Schema.NullOr(Schema.Number),
     allFirstNames: Schema.NullOr(Schema.String),
+    // PersonService.handleEmailUpdate deletes the person's email contact-info row
+    // when this key is absent from the PUT body — omitting it is destructive, not a no-op
+    email: Schema.NullOr(Schema.String),
     birthName: Schema.NullOr(Schema.String),
     academicTitle: Schema.NullOr(Schema.String),
     namePrefix: Schema.NullOr(Schema.String),

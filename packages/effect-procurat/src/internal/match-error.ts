@@ -1,7 +1,7 @@
 import { Effect, Schema } from 'effect';
-import type { HttpBody } from 'effect/unstable/http';
-import type { HttpClientError } from 'effect/unstable/http/HttpClientError';
-import type { HttpClientResponse } from 'effect/unstable/http/HttpClientResponse';
+import type { HttpBody } from 'effect/http';
+import type { HttpClientError } from 'effect/http/HttpClientError';
+import type { HttpClientResponse } from 'effect/http/HttpClientResponse';
 import {
   ProcuratAuthError,
   ProcuratBadRequestError,

@@ -1,5 +1,5 @@
 import type { RewriteRule } from '../rule';
-import { configErrorType } from './config';
+import { configConstructors, configErrorType } from './config';
 import { catchAllErrors, deleteRequest } from './http-client';
 import { httpModuleSpecifiers, schemaErrorType } from './imports';
 import { unwrapEffect } from './layer';
@@ -28,6 +28,7 @@ export const rules: ReadonlyArray<RewriteRule> = [
   record(),
   codecType(),
   decodeUnknown(),
+  configConstructors(),
   configErrorType(),
   unwrapEffect(),
   catchAllErrors(),

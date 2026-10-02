@@ -1,5 +1,5 @@
 import { Context, Effect, Layer, Schema } from 'effect';
-import { HttpClientRequest } from 'effect/unstable/http';
+import { HttpClientRequest } from 'effect/http';
 import { GroupMember, type GroupMemberStatus } from '../group-member/group-member-schema';
 import { decodeJson } from '../../internal/decode';
 import { operation } from '../../internal/operation';

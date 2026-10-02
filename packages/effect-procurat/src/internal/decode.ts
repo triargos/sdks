@@ -1,5 +1,5 @@
 import { Effect, Schema, Stream } from 'effect';
-import type { HttpClientResponse } from 'effect/unstable/http/HttpClientResponse';
+import type { HttpClientResponse } from 'effect/http/HttpClientResponse';
 import { ProcuratDecodeError, ProcuratUnavailableError } from '../shared/errors';
 import { CurrentOperation } from './operation';
 

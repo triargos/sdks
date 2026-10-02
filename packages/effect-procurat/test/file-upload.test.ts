@@ -1,5 +1,5 @@
 import { Effect, Layer, Redacted, Stream } from 'effect';
-import { HttpClient, type HttpClientRequest, HttpClientResponse } from 'effect/unstable/http';
+import { HttpClient, type HttpClientRequest, HttpClientResponse } from 'effect/http';
 import { describe, expect, it } from 'vitest';
 
 import { ProcuratFile } from '../src/domains/file/procurat-file';

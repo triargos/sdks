@@ -1,6 +1,6 @@
 import { Data } from 'effect';
-import type { SchemaError } from 'effect/SchemaError';
-import type { HttpClientError } from 'effect/unstable/http/HttpClientError';
+import type { SchemaError } from 'effect/Schema';
+import type { HttpClientError } from 'effect/http/HttpClientError';
 
 /** Context carried by every failure that got an HTTP response back. */
 export interface ProcuratFailure {

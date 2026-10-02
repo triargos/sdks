@@ -1,5 +1,5 @@
 import { Context, Effect, Layer, Option, Stream } from 'effect';
-import { Headers, HttpClientRequest } from 'effect/unstable/http';
+import { Headers, HttpClientRequest } from 'effect/http';
 import { decodeJson, streamBody } from '../../internal/decode';
 import { operation } from '../../internal/operation';
 import type { ProcuratUnavailableError } from '../../shared/errors';

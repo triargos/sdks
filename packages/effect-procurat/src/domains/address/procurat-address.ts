@@ -1,5 +1,5 @@
 import { Context, Effect, Layer, Schema } from 'effect';
-import { HttpClientRequest } from 'effect/unstable/http';
+import { HttpClientRequest } from 'effect/http';
 import { decodeJson } from '../../internal/decode';
 import { operation } from '../../internal/operation';
 import { ProcuratHttpClient } from '../../shared/http-client';

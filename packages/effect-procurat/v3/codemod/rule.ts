@@ -2,7 +2,7 @@ import { type CallExpression, type Node, type SourceFile, SyntaxKind } from 'ts-
 
 /**
  * A v4 construct a rule takes responsibility for: a module specifier
- * (`"effect/unstable/http"`) or a namespace member (`"Schema.Literals"`).
+ * (`"effect/http"`) or a namespace member (`"Schema.Literals"`).
  */
 export type Claim = string;
 

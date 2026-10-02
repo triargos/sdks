@@ -1,5 +1,5 @@
 import { Config, Context, Effect, Layer, type Redacted } from 'effect';
-import type { HttpClient } from 'effect/unstable/http';
+import type { HttpClient } from 'effect/http';
 import { ProcuratAbsence } from './domains/absence/procurat-absence';
 import { ProcuratAddress } from './domains/address/procurat-address';
 import { ProcuratCommunication } from './domains/communication/procurat-communication';
@@ -94,8 +94,8 @@ export class ProcuratClient extends Context.Service<ProcuratClient>()('ProcuratC
   }): Layer.Layer<ProcuratClient, Config.ConfigError, HttpClient.HttpClient> {
     return Layer.unwrap(
       Effect.gen(function* () {
-        const apiKey = yield* options?.apiKey ?? Config.redacted('PROCURAT_API_KEY');
-        const baseUrl = yield* options?.baseUrl ?? Config.string('PROCURAT_BASE_URL');
+        const apiKey = yield* options?.apiKey ?? Config.Redacted('PROCURAT_API_KEY');
+        const baseUrl = yield* options?.baseUrl ?? Config.String('PROCURAT_BASE_URL');
         return ProcuratClient.layer({ apiKey, baseUrl, dateFormat: options?.dateFormat });
       }),
     );

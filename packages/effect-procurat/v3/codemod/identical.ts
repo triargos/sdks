@@ -48,8 +48,6 @@ export const identicalInV3: ReadonlyArray<Claim> = [
   'Stream.toReadableStream',
 
   'Config.Config',
-  'Config.redacted',
-  'Config.string',
 
   'Redacted.Redacted',
   'Redacted.value',

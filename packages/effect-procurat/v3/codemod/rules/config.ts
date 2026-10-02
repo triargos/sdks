@@ -1,6 +1,16 @@
 import { SyntaxKind } from 'ts-morph';
 
-import { ensureNamedImport, type RewriteRule } from '../rule';
+import { ensureNamedImport, renameMember, type RewriteRule } from '../rule';
+
+/** v4 names primitive config constructors after their schema (`Config.String`); v3 lowercases them. */
+export const configConstructors = (): RewriteRule => ({
+  name: 'config-constructors',
+  claims: ['Config.String', 'Config.Redacted'],
+  apply: (file) => {
+    renameMember(file, 'Config', 'String', 'string');
+    renameMember(file, 'Config', 'Redacted', 'redacted');
+  },
+});
 
 /** v4 hangs the failure type off `Config`; v3 keeps it in its own module. */
 export const configErrorType = (): RewriteRule => ({

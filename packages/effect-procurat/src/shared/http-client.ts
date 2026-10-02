@@ -1,5 +1,5 @@
 import { Context, Effect, Layer, Option, Redacted } from 'effect';
-import { HttpClient, HttpClientRequest } from 'effect/unstable/http';
+import { HttpClient, HttpClientRequest } from 'effect/http';
 import { matchError } from '../internal/match-error';
 import type { ProcuratError } from './errors';
 import { ProcuratRetry } from './retry';

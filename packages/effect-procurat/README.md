@@ -8,7 +8,7 @@ Effect-based SDK for the Procurat API.
 pnpm add @triargos/effect-procurat effect
 ```
 
-`effect@^4.0.0-beta.0` is a peer dependency.
+`effect@^4.0.0` is a peer dependency.
 
 ### On Effect v3
 
@@ -26,7 +26,7 @@ import type { ProcuratError } from '@triargos/effect-procurat/v3/errors';
 
 The subpath carries the same API, the same errors and the same schemas as the v4 entry
 points. Two spelling differences follow Effect itself: the transport comes from
-`@effect/platform` instead of `effect/unstable/http`, and a request schema such as
+`@effect/platform` instead of `effect/http`, and a request schema such as
 `CreatePerson` is a value plus a type rather than a class.
 
 Every release ships both. The v3 build is generated from the v4 sources and blocks the
@@ -34,12 +34,12 @@ release if it does not typecheck and pass its tests — see `v3/README.md`.
 
 ## Provide a transport
 
-The SDK does not ship an HTTP transport. Pick one from `effect/unstable/http` and provide it
+The SDK does not ship an HTTP transport. Pick one from `effect/http` and provide it
 alongside the client layer — `FetchHttpClient.layer` works everywhere `fetch` does.
 
 ```ts
 import { Effect, Layer, Redacted } from 'effect';
-import { FetchHttpClient } from 'effect/unstable/http';
+import { FetchHttpClient } from 'effect/http';
 import { ProcuratClient } from '@triargos/effect-procurat';
 
 const ProcuratLive = ProcuratClient.layer({

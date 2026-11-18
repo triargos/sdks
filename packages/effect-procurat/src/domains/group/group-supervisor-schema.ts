@@ -10,15 +10,17 @@ export const SupervisorRoles = membersOf(SupervisorRole)({
   Treasurer: 'treasurer',
 });
 
-export class Role extends Schema.Class<Role>('Role')({
+export const Role = Schema.Struct({
   active: Schema.Boolean,
   name: SupervisorRole,
   displayName: Schema.String,
   comment: Schema.NullOr(Schema.String),
-}) {}
+});
+export type Role = typeof Role.Type;
 
-export class GroupSupervisor extends Schema.Class<GroupSupervisor>('GroupSupervisor')({
+export const GroupSupervisor = Schema.Struct({
   groupId: Schema.Number,
   personId: Schema.Number,
   roles: Schema.Array(Role),
-}) {}
+});
+export type GroupSupervisor = typeof GroupSupervisor.Type;

@@ -1,6 +1,7 @@
 import { Schema } from 'effect';
 
-export class County extends Schema.Class<County>('County')({
+export const County = Schema.Struct({
   id: Schema.Number,
   name: Schema.String,
-}) {}
+});
+export type County = typeof County.Type;

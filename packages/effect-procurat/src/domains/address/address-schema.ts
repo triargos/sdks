@@ -1,6 +1,6 @@
 import { Schema } from 'effect';
 
-export class Address extends Schema.Class<Address>('Address')({
+export const Address = Schema.Struct({
   id: Schema.Number,
   street: Schema.NullOr(Schema.String),
   zip: Schema.NullOr(Schema.String),
@@ -12,7 +12,8 @@ export class Address extends Schema.Class<Address>('Address')({
   poBoxZip: Schema.NullOr(Schema.String),
   countyId: Schema.NullOr(Schema.Number),
   countryId: Schema.NullOr(Schema.Number),
-}) {}
+});
+export type Address = typeof Address.Type;
 
 export class CreateAddress extends Schema.Opaque<CreateAddress>()(
   Schema.Struct({

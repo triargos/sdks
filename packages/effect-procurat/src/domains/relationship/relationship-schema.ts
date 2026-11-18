@@ -84,9 +84,10 @@ export class AddChildToParent extends Schema.Opaque<AddChildToParent>()(
   }),
 ) {}
 
-export class CreatedRelationship extends Schema.Class<CreatedRelationship>('CreatedRelationship')({
+export const CreatedRelationship = Schema.Struct({
   id: Schema.Number,
-}) {}
+});
+export type CreatedRelationship = typeof CreatedRelationship.Type;
 
 export const RelationshipType = Schema.Literals([
   'father',
@@ -140,11 +141,12 @@ export const RelationshipTypes = membersOf(RelationshipType)({
   Other: 'other',
 });
 
-export class Relationship extends Schema.Class<Relationship>('Relationship')({
+export const Relationship = Schema.Struct({
   personId: Schema.Number,
   relationshipType: RelationshipType,
   custody: Schema.Boolean,
   physical: Schema.Boolean,
   realParent: Schema.Boolean,
   notes: Schema.NullOr(Schema.String),
-}) {}
+});
+export type Relationship = typeof Relationship.Type;

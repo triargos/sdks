@@ -1,7 +1,8 @@
 import { Schema } from 'effect';
 
-export class Religion extends Schema.Class<Religion>('Religion')({
+export const Religion = Schema.Struct({
   id: Schema.Number,
   name: Schema.String,
   lookupVal: Schema.NullOr(Schema.Number),
-}) {}
+});
+export type Religion = typeof Religion.Type;

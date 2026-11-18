@@ -26,7 +26,7 @@ export const GroupUdfFieldType = Schema.Literals([
 
 export const GroupUdfUsage = Schema.Literals(['address', 'group', 'person', 'groupMember']);
 
-export class GroupUdf extends Schema.Class<GroupUdf>('GroupUdf')({
+export const GroupUdf = Schema.Struct({
   id: Schema.Number,
   groupId: Schema.Number,
   groupType: Schema.NullOr(Schema.String),
@@ -39,4 +39,5 @@ export class GroupUdf extends Schema.Class<GroupUdf>('GroupUdf')({
   description: Schema.NullOr(Schema.String),
   active: Schema.Boolean,
   sortIndex: Schema.Number,
-}) {}
+});
+export type GroupUdf = typeof GroupUdf.Type;

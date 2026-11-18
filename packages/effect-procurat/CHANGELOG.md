@@ -1,5 +1,11 @@
 # @triargos/effect-procurat
 
+## 4.0.0
+
+### Major Changes
+
+- 446d8ee: Output schemas are plain structs instead of `Schema.Class`. Decoded values are plain objects, so they can be stored in Prisma Json columns. `new X(...)`, `instanceof X` and `X.make` no longer work for the output models; `X` is now a `Schema.Struct` with a same-named type (`type X = typeof X.Type`).
+
 ## 3.3.0
 
 ### Minor Changes

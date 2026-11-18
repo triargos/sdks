@@ -32,7 +32,7 @@ export class ProcuratContactInformation extends Context.Service<ProcuratContactI
           ),
       );
 
-      /** Body reuses the read class — it matches `ContactInformationDTO` field-for-field. Fetch, modify, update. */
+      /** Body reuses the read schema — it matches `ContactInformationDTO` field-for-field. Fetch, modify, update. */
       const update = operation(
         'contactInformation.update',
         (params: { contactInformation: ContactInformation }) =>

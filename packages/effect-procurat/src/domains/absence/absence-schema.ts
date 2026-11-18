@@ -10,7 +10,7 @@ export const AbsenceQueryTypes = membersOf(AbsenceQueryType)({
   SchoolYear: 'schoolyear',
 });
 
-export class Absence extends Schema.Class<Absence>('Absence')({
+export const Absence = Schema.Struct({
   id: Schema.Number,
   personId: Schema.Number,
   date: ProcuratDate,
@@ -20,7 +20,8 @@ export class Absence extends Schema.Class<Absence>('Absence')({
   medicalCertificateReceived: Schema.NullOr(ProcuratDate),
   medicalCertificateRequested: Schema.NullOr(ProcuratDate),
   medicalCertificateRequired: Schema.Boolean,
-}) {}
+});
+export type Absence = typeof Absence.Type;
 
 /** The codec is a parameter only while the API rolls over. See `shared/date`. */
 export const createAbsenceFields = (date: DateCodec) =>

@@ -1,7 +1,7 @@
 import { Schema } from 'effect';
 import { type DateCodec, ProcuratDate } from '../../shared/date';
 
-export class FollowUp extends Schema.Class<FollowUp>('FollowUp')({
+export const FollowUp = Schema.Struct({
   id: Schema.Number,
   dueDate: ProcuratDate,
   assignedPersonId: Schema.NullOr(Schema.Number),
@@ -11,7 +11,8 @@ export class FollowUp extends Schema.Class<FollowUp>('FollowUp')({
   referencedPersonId: Schema.NullOr(Schema.Number),
   referencedFile: Schema.NullOr(Schema.String),
   completed: Schema.Boolean,
-}) {}
+});
+export type FollowUp = typeof FollowUp.Type;
 
 /** The codec is a parameter only while the API rolls over. See `shared/date`. */
 export const createFollowUpFields = (date: DateCodec) =>

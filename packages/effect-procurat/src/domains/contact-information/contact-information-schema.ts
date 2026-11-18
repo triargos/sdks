@@ -63,7 +63,7 @@ export const CreateContactInformation = Schema.Union([
 ]);
 export type CreateContactInformation = typeof CreateContactInformation.Type;
 
-export class ContactInformation extends Schema.Class<ContactInformation>('ContactInformation')({
+export const ContactInformation = Schema.Struct({
   id: Schema.Number,
   order: Schema.Number,
   type: ContactInformationType,
@@ -74,4 +74,5 @@ export class ContactInformation extends Schema.Class<ContactInformation>('Contac
   content: Schema.String,
   comment: Schema.NullOr(Schema.String),
   secret: Schema.Boolean,
-}) {}
+});
+export type ContactInformation = typeof ContactInformation.Type;

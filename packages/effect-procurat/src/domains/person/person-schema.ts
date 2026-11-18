@@ -18,7 +18,7 @@ export const FamilyRoles = membersOf(FamilyRole)({
   Daughter: 'daughter',
 });
 
-export class Person extends Schema.Class<Person>('Person')({
+export const Person = Schema.Struct({
   id: Schema.Number,
   firstName: Schema.NullOr(Schema.String),
   lastName: Schema.NullOr(Schema.String),
@@ -44,7 +44,8 @@ export class Person extends Schema.Class<Person>('Person')({
   nationalityId: Schema.NullOr(Schema.Number),
   maritalStatus: Schema.NullOr(Schema.String),
   deathDate: Schema.NullOr(ProcuratDate),
-}) {}
+});
+export type Person = typeof Person.Type;
 
 /** The codec is a parameter only while the API rolls over. See `shared/date`. */
 export const createPersonFields = (date: DateCodec) =>

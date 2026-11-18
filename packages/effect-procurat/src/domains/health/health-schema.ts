@@ -1,7 +1,7 @@
 import { Schema } from 'effect';
 
 /** What `GET /health` reports about the installation behind the API. */
-export class Health extends Schema.Class<Health>('Health')({
+export const Health = Schema.Struct({
   databaseVersion: Schema.Number,
   build: Schema.Number,
   productionVersion: Schema.String,
@@ -14,4 +14,5 @@ export class Health extends Schema.Class<Health>('Health')({
   lastUpdateStart: Schema.NullOr(Schema.String),
   lastUpdateEnd: Schema.NullOr(Schema.String),
   lastUpdateFailed: Schema.NullOr(Schema.String),
-}) {}
+});
+export type Health = typeof Health.Type;

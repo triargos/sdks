@@ -13,7 +13,7 @@ export const GroupMemberStatuses = membersOf(GroupMemberStatus)({
 
 const JsonData = Schema.Record(Schema.String, Schema.Unknown);
 
-export class GroupMember extends Schema.Class<GroupMember>('GroupMember')({
+export const GroupMember = Schema.Struct({
   id: Schema.Number,
   groupId: Schema.Number,
   personId: Schema.Number,
@@ -21,7 +21,8 @@ export class GroupMember extends Schema.Class<GroupMember>('GroupMember')({
   exitDate: Schema.NullOr(ProcuratDate),
   jsonData: Schema.NullOr(JsonData),
   grade: Schema.NullOr(Schema.Number),
-}) {}
+});
+export type GroupMember = typeof GroupMember.Type;
 
 /** The codec is a parameter only while the API rolls over. See `shared/date`. */
 export const addMemberToGroupFields = (date: DateCodec) =>

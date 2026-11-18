@@ -1,6 +1,6 @@
 import { Schema } from 'effect';
 
-export class Group extends Schema.Class<Group>('Group')({
+export const Group = Schema.Struct({
   id: Schema.Number,
   parentGroupId: Schema.NullOr(Schema.Number),
   name: Schema.String,
@@ -10,4 +10,5 @@ export class Group extends Schema.Class<Group>('Group')({
   schoolYear: Schema.NullOr(Schema.String),
   additionalType: Schema.NullOr(Schema.String),
   sortKey: Schema.Number,
-}) {}
+});
+export type Group = typeof Group.Type;
